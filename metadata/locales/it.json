@@ -1,0 +1,17 @@
+{
+        "supervisor": "Relatore",
+        "undergraduate": "Laureando",
+        "academicYear": "ANNO ACCADEMICO",
+        "abstract": "Sommario",
+        "acknlowledgements": "Ringraziamenti",
+        "outline": "Indice",
+        "figuresList": "Elenco delle Figure",
+        "tablesList": "Elenco delle Tabelle",
+        "sourceCodeList": "Elenco dei Codici Sorgente",
+        "chapter": "Capitolo",
+        "ID": "Matricola",
+        "glossary": "Glossario",
+        "sitography": "Sitografia",
+        "appendix": "Appendice",
+        "copyright": "Tutti i diritti riservati"
+}

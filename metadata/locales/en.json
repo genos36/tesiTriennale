@@ -1,0 +1,17 @@
+{
+        "supervisor": "Supervisor",
+        "undergraduate": "Undergraduate",
+        "academicYear": "ACADEMIC YEAR",
+        "abstract": "Abstract",
+        "acknlowledgements": "Acknowledgements",
+        "outline": "Outline",
+        "figuresList": "List of Figures",
+        "tablesList": "List of Tables",
+        "sourceCodeList": "List of Code Snippets",
+        "chapter": "Chapter",
+        "ID": "ID number",
+        "glossary": "Glossary",
+        "sitography": "Sitography",
+        "appendix": "Appendix",
+        "copyright": "All rights reserved"
+}
