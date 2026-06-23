@@ -5,7 +5,7 @@
 #heading("Descrizione del Lavoro Svolto", depth: 1)<cap:lavoro-svolto>
 
 #text(style: "italic", [
-  In questo capitolo approfondisco le problematiche affrontate nel concreto e le reltive soluzioni.
+  In questo capitolo approfondisco le problematiche affrontate nel concreto e le relative soluzioni.
 ])
 #v(1em)
 

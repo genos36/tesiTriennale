@@ -11,8 +11,18 @@
   )
 
   // --- Figure ---
-  // Aggiunge spazio sopra e sotto tutte le figure
-  show figure: it => {
+  // Non usare figure generale in questa circostanza,usando glossarium per il glossario si va a causare la creazione di spazi enormi tra i termini, glossarium usa delle figure per permettere le reference cliccabili
+  show figure.where(kind: image): it => {
+    v(1em)
+    it
+    v(1em)
+  }
+  show figure.where(kind: table): it => {
+    v(1em)
+    it
+    v(1em)
+  }
+  show figure.where(kind: raw): it => {
     v(1em)
     it
     v(1em)
@@ -29,7 +39,7 @@
   set heading(numbering: "1.1", supplement: data.chapter)
 
   show heading.where(level: 1): it => {
-    pagebreak(to: "odd")
+    pagebreak(to: "odd", weak: true)
     stack(
       spacing: 2em,
       if it.numbering != none {
