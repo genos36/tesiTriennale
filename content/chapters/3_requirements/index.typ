@@ -8,12 +8,15 @@
 #text(style: "italic", [
   In questo capitolo effettuo l'analisi degli utenti, sviluppo le user stories e compongo la lista dei requisiti dividendoli per tipologia e necessità.
 ])
-#v(1em)
 
-== Analisi degli utenti
+#include "actor/index.typ"
+#include "use-case/index.typ"
 
-== Casi d'uso<cap:user-stories>
-Nel contesto dello sviluppo agile...
+
+
+
+
+
 
 == Lista delle user stories<cap:lista-user-stories>
 #[

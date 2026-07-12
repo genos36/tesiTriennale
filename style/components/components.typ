@@ -3,13 +3,12 @@
 #let apply-components(body) = {
   // --- Liste ---
   set list(marker: (sym.bullet, sym.dash))
-
+  show raw: set text(size: 0.85em)
   // --- Tabelle ---
   set table(
     inset: 10pt,
     fill: (x, y) => if calc.even(y) { gray.lighten(70%) } else { white },
   )
-
   // --- Figure ---
   // Non usare figure generale in questa circostanza,usando glossarium per il glossario si va a causare la creazione di spazi enormi tra i termini, glossarium usa delle figure per permettere le reference cliccabili
   show figure.where(kind: image): it => {

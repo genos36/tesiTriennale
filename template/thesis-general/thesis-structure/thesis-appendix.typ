@@ -3,7 +3,7 @@
   set page(
     numbering: "1",
     header: none,
-    footer: make-counter("1 / 1"),
+    footer: make-counter("1"),
   )
   if reset { counter(page).update(1) }
 
