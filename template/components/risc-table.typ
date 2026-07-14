@@ -6,11 +6,11 @@
   probability: str,
   consequences: content,
   columns: (0.28fr, 0.72fr),
-  fill: (_, row) => if row == 0 { luma(230) } else { white },
+  fill: (_, row) => if row == 0 { luma(99%) } else { white },
   header: ([*Campo*], [*Descrizione*]),
   r-label:none,
 ) = {
-   box(fill:luma(95%),inset:1em,radius:3%, stroke:1pt, width:100%)[
+   box(fill:color.rgb("E3f1ff"),inset:1em,radius:3%, stroke:1pt, width:100%)[
 
   #align(left)[
     #strong("Codice : "+code)
