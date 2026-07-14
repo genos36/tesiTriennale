@@ -2,7 +2,7 @@
 
 #let apply-components(body) = {
   // --- Liste ---
-  set list(marker: (sym.bullet, sym.dash))
+  set list(marker: (sym.bullet,sym.bullet.tri ,sym.dash))
   show raw: set text(size: 0.85em)
   // --- Tabelle ---
   set table(

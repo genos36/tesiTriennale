@@ -1,8 +1,8 @@
 #let use-case(
-  livello-intestazione: ,
+  livello-intestazione: 3,
   codice: none,
   nome: none,
-  attore-principale:none,
+  attore-principale: none,
   attore-secondario: none,
   pre-condizioni: none,
   post-condizioni: none,
@@ -11,47 +11,101 @@
   trigger: none,
   inclusioni: none,
   estensioni: none,
-  generalizzazioni: none,
+  specializzazioni: none,
   immagine: none,
   caption: none,
+  padding-interno:cont=>{
+          pad(left: 1em, top: 0em)[#cont]
+  }
 ) = {
 
   // 1. Intestazione
   heading(level: livello-intestazione)[#codice: #nome]
-  // (Se hai ancora la tua funzione slugify attiva, puoi aggiungere qui #label(slugify(nome)))
 
-
+  // 2. Gestione Immagine
   if immagine != none {
-    let final-caption = if caption == none { [#codice - #nome] } else { caption }
+    // In Typst le variabili sono immutabili, usiamo una variabile di appoggio per la caption
+    let local-caption = caption
+    if local-caption == none {
+      // Sostituisci con la tua funzione se definita altrove, o lascia un default
+      // local-caption = use-case-link-extended-label(nome-etichetta: nome)
+      local-caption = [Diagramma del caso d'uso: #nome]
+    }
+
     figure(
-      caption: final-caption,
-      // Se è una stringa assumiamo sia il path, altrimenti è già contenuto Typst
-      if type(immagine) == str { image(immagine) } else { immagine }
-    )
+      caption: local-caption,
+      kind: image
+    )[
+      #if type(immagine) == str {
+        image(immagine)
+      } else {
+        immagine
+      }
+    ]
   }
 
+  // 3. Costruzione degli elementi opzionali
+  let elementi-lista-opzionali = (
 
-  let campi = (
-    ("Attore principale", attore-principale),
-    ("Attore secondario", attore-secondario),
-    ("Precondizioni", pre-condizioni),
-    ("Postcondizioni", post-condizioni),
-    ("Trigger", trigger),
-    ("Scenario principale", scenario-principale),
-    ("Scenari alternativi", scenari-alternativi),
-    ("Inclusioni", inclusioni),
-    ("Estensioni", estensioni),
-    ("Specializzazioni", generalizzazioni),
+          [*Attore principale*: #attore-principale],
+    if attore-secondario != none {
+      [
+        *Attore secondario*: #attore-secondario
+      ]
+    } else { none },
+          [*Precondizioni*:\ #padding-interno(pre-condizioni) ],
+          [*Postcondizioni*:\ #padding-interno(post-condizioni )],
+
+
+
+    if scenario-principale != none {
+      [
+          #set enum(full: true)
+        *Scenario principale*: \
+        #padding-interno(scenario-principale)
+
+      ]
+    } else { none },
+
+    if scenari-alternativi != none {
+      [
+        *Scenari alternativi*: \
+        #padding-interno(scenari-alternativi)
+      ]
+    } else { none },
+
+    if inclusioni != none {
+      [
+        *Inclusioni*: \
+        #padding-interno(inclusioni)
+        // #pad(left: 1em, top: -0.5em)[ #inclusioni ]
+      ]
+    } else { none },
+
+    if estensioni != none {
+      [
+        *Estensioni*: \
+        #padding-interno(estensioni)
+      ]
+    } else { none },
+
+    if specializzazioni != none {
+      [
+        *Specializzazioni*: \
+        #padding-interno(specializzazioni)
+      ]
+    } else { none },
+
+    if trigger != none {
+      [
+        *Trigger*:#trigger #lorem(20)
+      ]
+    } else { none },
+  ).filter(item => item != none).map(it=>block(breakable: false,it))
+
+  // 4. Rendering della lista finale
+  list(
+
+    ..elementi-lista-opzionali
   )
-
-  // Filtriamo i vuoti e formattiamo automaticamente quelli pieni!
-  let elementi-lista = campi
-    .filter(campo => campo.at(1) != none)
-    .map(campo => [
-      *#campo.at(0)*: \
-      #pad(left: 1em, top: -0.5em, campo.at(1))
-    ])
-
-  // 4. Renderizziamo la lista
-  list(..elementi-lista)
 }
