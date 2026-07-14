@@ -9,6 +9,27 @@
   fill: (_, row) => if row == 0 { luma(230) } else { white },
   header: ([*Campo*], [*Descrizione*]),
 ) = {
+
+   box(fill:luma(95%),inset:1em,radius:3%, stroke:1pt, width:100%)[
+
+  #align(left)[
+    #strong("Codice : "+code)
+
+    #strong()[#name]
+
+  #box(inset:1em)[
+  
+  - #strong("Descrizione"):\ #description
+  - #strong("Mitigazione"):\ #mitigation
+  - #strong("Probabilità"):\ #probability
+  - #strong("Impatto"):\ #consequences
+
+  
+
+  
+  ]
+  ]
+    ]
   table(
     columns: columns,
     fill: fill,

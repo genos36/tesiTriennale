@@ -64,7 +64,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 I requisiti vengono analizzati e chiariti prima delle attività di codifica. Viene data priorità ad attività di studio teorico dello stack tecnologico e alla realizzazione di prototipi a diversi livelli di complessità. Sono previsti incontri iterativi con il tutor per definire chiaramente i confini del progetto e le interfacce di comunicazione.
               ],
               probability: "Medio-Alta",
-              consequences: ["Medio"],
+              consequences: [Medio],
             ),
             (
               name: "Sovradimensionamento del progetto rispetto alle tempistiche",
@@ -75,7 +75,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Le attività sono suddivise per priorità (requisiti Obbligatori, Desiderabili, Opzionali). In caso di ritardi o imprevisti strutturali, solo le attività a priorità inferiore e non vincolanti per il core del progetto subiranno ridimensionamenti.
               ],
               probability: "Media",
-              consequences: ["Alto"],
+              consequences: [Alto],
             ),
             (
               name: "Difficoltà nel coordinamento interno",
@@ -86,7 +86,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Vengono pianificati incontri periodici di allineamento, accompagnati da aggiornamenti asincroni frequenti sullo stato di avanzamento. Eventuali blocchi tecnici (blocker) vengono segnalati tempestivamente senza attendere la riunione successiva.
               ],
               probability: "Media",
-              consequences: ["Alto"],
+              consequences: [Alto],
             ),
             (
               name: "Curva di apprendimento delle tecnologie",
@@ -97,7 +97,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Le prime settimane dello stage includono ore dedicate esplicitamente allo studio della documentazione ufficiale, alla schematizzazione delle architetture e alla realizzazione di proof-of-concept (PoC) isolati.
               ],
               probability: "Bassa",
-              consequences: ["Medio"],
+              consequences: [Medio],
             ),
             (
               name: "Incompatibilità o difficoltà di integrazione con il sistema legacy",
@@ -108,7 +108,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Confronto continuo con il team di sviluppo per comprendere a fondo i contratti delle interfacce. Adozione del design pattern "Adapter" fin dalle prime fasi di progettazione per disaccoppiare la logica del nuovo sistema da quella preesistente.
               ],
               probability: "Media",
-              consequences: ["Medio"],
+              consequences: [Medio],
             ),
             (
                 name: "Saturazione delle risorse durante i benchmark",
@@ -121,7 +121,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   Verrà implementato un monitoraggio attivo delle risorse tramite il framework di observability per individuare eventuali memory leak o configurazioni sub-ottimali degli indici vettoriali prima dei test massivi.
                 ],
                 probability: "Media",
-                consequences: ["Alto"],
+                consequences: [Alto],
               ),
               (
                   name: "Rappresentatività dei dati di test e accesso limitato alla produzione",
@@ -134,7 +134,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     A valle di questo consolidamento, le misurazioni definitive verranno eseguite sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza.
                   ],
                   probability: "Alta",
-                  consequences: ["Medio"],
+                  consequences: [Medio],
                 ),
   ),
 )
