@@ -18,37 +18,6 @@
 
 
 
-== Lista delle user stories<cap:lista-user-stories>
-#[
-  #set heading(
-    numbering: (..numbers) => {
-      let level = numbers.pos().len()
-      if (level == 4) {
-        return numbering("US1", numbers.pos().at(level - 1))
-      }
-    },
-  )
-  #set heading(supplement: none)
-  #let d = [*Descrizione: *]
-  #let ac = [#v(0.5em) *Acceptance criteria: *]
-
-  #heading(numbering: none, level: 3)[Epic 1. Gestione utenti]
-  ==== Login<us:login>
-  #d Come utente non autenticato, voglio poter fare il login per accedere alle funzionalità dell’applicativo.\
-  #ac
-  1. L'utente deve poter inserire le proprie credenziali (email e password) in un modulo di login.
-  2. Se l’utente inserisce credenziali corrette, il sistema reindirizza l'utente alla dashboard.
-  3. Se l’utente inserisce credenziali errate, il sistema mostra un messaggio di errore.
-
-  ==== Registrazione<us:registrazione>
-  #d Come utente non autenticato, voglio potermi registrare per accedere alla piattaforma.
-  #ac
-  1. L'utente deve poter compilare un modulo di registrazione con i campi richiesti (nome, cognome, email, password).
-  2. Il sistema effettua la verifica che l’utente non sia già registrato in piattaforma.
-  3. Dopo la verifica, il sistema invia una email all’utente che si sta registrando con un codice per poter attivare il proprio account.
-  4. Quando l'utente inserisce il codice ricevuto nella webapp, il suo account viene attivato e ha la possibilità di accedere.
-]
-
 == Tracciamento dei requisiti
 Ad ogni requisito è associato un codice costruito in base alle sue caratteristiche:
 #v(1em)
