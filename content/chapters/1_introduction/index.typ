@@ -31,7 +31,7 @@ comporta diverse limitazioni architettoniche e operative:
   [
     Denormalizzazione dei dati:
     la natura orientata ai documenti e non relazionale di Elasticsearch obbliga a replicare e denormalizzare
-    i dati relazionali per consentire un filtraggio efficiente, aumentando la ridondanza.
+    i dati relazionali per consentire un filtraggio efficiente, aumentando la ridondanza e forzando a implementare in modo non ottimale funzioni come i join.
 
   ],
   [
@@ -58,7 +58,7 @@ e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema re
 Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti implementativi:
 #list(
   [
-    Ingestion unificata:
+    Ingestion:
     sviluppo di un modulo dedicato all'inserimento simultaneo di
     metadati relazionali e documenti non strutturati.
 

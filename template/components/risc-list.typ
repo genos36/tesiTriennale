@@ -11,11 +11,20 @@
   heading-level: 3,
   items,
 ) = {
-  let counter = 1
+items=items.map(it=>{
+                if it.at("r-label",default: none)==none{
+                        it.r-label=none
+                        return it
+                }
+                else {
+                        return it
+                }
+        })
+
+let counter = 1
   for it in items {
-    [#heading(it.name, depth: heading-level)  #label(risc-prefix + pad-number(padding: 2, num: counter))]
-    figure(
-      caption: "Rischio " + risc-prefix + pad-number(padding: 2, num: counter),
+    // [#heading(it.name, depth: heading-level)  #label(risc-prefix + pad-number(padding: 2, num: counter))]
+
       risc-table(
         code: risc-prefix + pad-number(padding: 2, num: counter),
         name: it.name,
@@ -23,8 +32,9 @@
         mitigation: it.mitigation,
         probability: it.probability,
         consequences: it.consequences,
-      ),
-    )
+        r-label:it.r-label
+      )
+
     counter = counter + 1
   }
 }

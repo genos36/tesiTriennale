@@ -65,6 +65,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               ],
               probability: "Medio-Alta",
               consequences: [Medio],
+              r-label:"r-incompletezza"
             ),
             (
               name: "Sovradimensionamento del progetto rispetto alle tempistiche",
@@ -76,6 +77,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               ],
               probability: "Media",
               consequences: [Alto],
+              r-label:"r-sovradimensionamento"
             ),
             (
               name: "Difficoltà nel coordinamento interno",
@@ -87,6 +89,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               ],
               probability: "Media",
               consequences: [Alto],
+              r-label:"r-coordinamento"
             ),
             (
               name: "Curva di apprendimento delle tecnologie",
@@ -98,6 +101,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               ],
               probability: "Bassa",
               consequences: [Medio],
+              r-label:"r-apprendimento"
             ),
             (
               name: "Incompatibilità o difficoltà di integrazione con il sistema legacy",
@@ -109,6 +113,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               ],
               probability: "Media",
               consequences: [Medio],
+              r-label:"r-integrazione"
             ),
             (
                 name: "Saturazione delle risorse durante i benchmark",
@@ -122,6 +127,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 ],
                 probability: "Media",
                 consequences: [Alto],
+                r-label:"r-saturazione"
               ),
               (
                   name: "Rappresentatività dei dati di test e accesso limitato alla produzione",
@@ -135,6 +141,65 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   ],
                   probability: "Alta",
                   consequences: [Medio],
+                  r-label:"r-rappresentatività",
                 ),
+                (
+                    name: "Difficoltà nella valutazione oggettiva dei risultati di Retrieval",
+                    description: [
+                      L'assenza di metriche standardizzate o un'errata interpretazione dei risultati potrebbe portare a conclusioni soggettive, rendendo impossibile valutare se il nuovo sistema eguaglia o supera la soluzione precedente.
+                    ],
+                    mitigation: [
+                      Le metriche di valutazione quantitativa verranno definite esplicitamente nella fase di analisi dei requisiti.
+
+                      Queste corrispondono all e metriche attualmente usate per la valutazione del sistema attuale
+
+                      È inoltre previsto un caso d'uso specifico per la produzione di una dashboard di monitoraggio, con criteri di accettazione e soglie minime di qualità chiaramente prestabiliti.
+                    ],
+                    probability: "Media",
+                    consequences: [Alto],
+                    r-label:"r-metriche"
+                  ),
+                  (
+                    name: "Sbilanciamento metodologico nel confronto",
+                    description: [
+                      Elasticsearch è un motore di ricerca nativo con analizzatori linguistici avanzati, mentre PostgreSQL nasce come RDBMS. Un set di test limitato rischierebbe di favorire asimmetricamente una tecnologia rispetto all'altra, invalidando l'equità del benchmark.
+                    ],
+                    mitigation: [
+                      Il set di query di test verrà progettato per essere eterogeneo e rappresentativo dei reali casi d'uso aziendali. Includerà intenzionalmente sia scenari che valorizzano PostgreSQL, in particolare i join, sia scenari che stressano le capacità native di Elasticsearch, funzionalità di querying avanzate come phrase queries e analisi linguistica complessa.
+                    ],
+                    probability: "Alta",
+                    consequences: [Alto],
+                    r-label:"r-sbilanciamento"
+                  ),
+                  (
+                    name: "Dispersione del perimetro di test su tecnologie alternative",
+                    description: [
+                      L'evoluzione rapida del panorama RAG solleva l'interrogativo su alternative tecnologiche, come OpenSearch.
+
+                      La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
+                    ],
+                    mitigation: [
+                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vule valutare, PostgreSQL + pgvector.
+
+                      Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico nel capitolo di analisi dello "Stato dell'Arte".
+                    ],
+                    probability: "Bassa",
+                    consequences: [Medio],
+                  ),
+                  (
+                    name: "Sovrapposizione tra le performance di Retrieval e Generation",
+                    description: [
+                      L'architettura RAG si compone di due fasi: la fase di retrieval che si occupa del recupero di informazioni e la generazione della risposta.
+                      Nel sistema attuale solo la parte di retieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema sono gestite in python puro.
+                    ],
+                    mitigation: [
+                      Vengono posti dei rigidi confini di sistema.
+                      L'implementazione, l'analisi e il testing si concentreranno unicamente sulla componente di Retriever e sul relativo modulo di ingestion.
+                      La valutazione ignorerà la qualità dell'output generativo dell'LLM, misurando esclusivamente la pertinenza e la velocità dei documenti recuperati.
+                    ],
+                    probability: "Bassa",
+                    consequences: [Alto],
+                    r-label:"r-sovrapposizione"
+                  )
   ),
 )

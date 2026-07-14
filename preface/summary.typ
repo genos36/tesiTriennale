@@ -13,13 +13,13 @@ Il presente documento descrive il lavoro svolto durante il periodo di stage curr
 
 \ \
 
-Al centro di questo elaborato vi è la progettazione e lo sviluppo di un sistema #gl("rag"). Questa architettura è oggi fondamentale poiché permette agli #gl("llm") di accedere a basi di conoscenza private e informazioni aggiornate senza la necessità di ricorrere a costosi processi di retraining, abbattendo drasticamente il rischio di allucinazioni da parte dell'Intelligenza Artificiale.
+Al centro di questo elaborato vi è la progettazione e lo sviluppo del modulo di di retrieval di un sistema #gl("rag"). Questa architettura è oggi fondamentale poiché permette agli #gl("llm") di accedere a basi di conoscenza private e informazioni aggiornate senza la necessità di ricorrere a costosi processi di retraining, abbattendo drasticamente il rischio di allucinazioni da parte dell'Intelligenza Artificiale.
 \ \
 Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per PostgreSQL, impiegandola come database unificato per l'intera pipeline RAG. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinando ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate.
 \ \
 Per convalidare questa ipotesi e fornire una misura rigorosa della qualità del sistema, l'infrastruttura progettata verrà sistematicamente sottoposta a test comparativi contro una pipeline equivalente basata su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
 \ \
-L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema (il database unificato) permetterebbe di superare il paradigma della persistenza poliglotta, eliminando la necessità di mantenere sistemi separati. Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
+L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di superare il paradigma della persistenza poliglotta e dei workaround per implementare concetti relazionali come le relazioni tra entità, eliminando la necessità di mantenere sistemi separati. Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
 
 Sono previsti test comparativi tra il nuovo sistema e il sistema attualmente in uso.
 
