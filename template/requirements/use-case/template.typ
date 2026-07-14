@@ -20,8 +20,8 @@
 ) = {
 
   // 1. Intestazione
-  heading(level: livello-intestazione)[#codice: #nome]
-
+  // heading(level: livello-intestazione)[#codice: #nome]
+  v(1em)+strong[#codice: #nome]
   // 2. Gestione Immagine
   if immagine != none {
     // In Typst le variabili sono immutabili, usiamo una variabile di appoggio per la caption
