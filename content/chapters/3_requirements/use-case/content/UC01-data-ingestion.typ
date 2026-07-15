@@ -22,7 +22,7 @@
         scenari-alternativi: [
                 - Il caricamento di una o più liste fallisce
         ],
-        trigger: [Il sistema Companion vuole effettuare un caricamento bulk di dati sul DB],
+        trigger: [Il sistema Companion vuole effettuare un caricamento bulk di dati sul sistema di permanenza dei dati],
         inclusioni: [
                 - UC-01.1
                 - UC-01.2
