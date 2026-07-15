@@ -36,3 +36,7 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
 )
 === Lista dei Casi d'Uso
 #include "content/UC01-data-ingestion.typ"
+#include "content/UC2-ricerca-singola.typ"
+#include "content/UC3-ricerca-linked.typ"
+#include "content/uc4-aggiungi query.typ"
+#include "content/uc5-rimuovi-query.typ"

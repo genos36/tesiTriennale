@@ -29,7 +29,7 @@
                 - UC-01.3
         ],
         estensioni: [
-                - UC-02
+                - UC-0?
         ],
         specializzazioni: none,
         immagine: image("/content/chapters/3_requirements/use-case/content/uc1.drawio.png"),
