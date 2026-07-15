@@ -34,5 +34,5 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
   [Trigger],
   [L'evento, l'azione o la condizione scatenante che innesca l'esecuzione del caso d'uso.],
 )
-
+=== Lista dei Casi d'Uso
 #include "content/UC01-data-ingestion.typ"
