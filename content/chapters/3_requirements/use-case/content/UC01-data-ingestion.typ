@@ -4,47 +4,106 @@
         codice: "UC-01",
         nome: "data ingestion",
         attore-principale:"Companion",
-        attore-secondario: "embedding model",
+        attore-secondario: none,
         pre-condizioni: [
-                - precondizione
-                - precondizione
-                - precondizione
+                - Il sistema è attivo
         ],
         post-condizioni: [
-                - postcondizione
-                - postcondizione
-                - postcondizione
+                - Le informazioni da salvare sono state salvate nel sistema con i relativi embedding e la relativa informazione di lingua
         ],
         scenario-principale:[
-                + passo 1
-                + passo 2
-                + passo 3
-                        + sotto passaggio 3.1
-                + passo4
+                + L'attore carica la lista di ticket
+                + L'attore carica la lista di conversation item
+                + Il sistema salva la lista di conversation item
+                + L'attore carica la lista di attachments
+                + Il sistema salva la lista di attachments
+
         ],
         scenari-alternativi: [
-                - scenario alternativo
-                - scenario alternativo
-                - scenario alternativo
+                - Il caricamento di una o più liste fallisce
         ],
-        trigger: [evento trigger],
+        trigger: [Il sistema Companion vuole effettuare un caricamento bulk di dati sul DB],
         inclusioni: [
-                (elenco esplicito senza descrizioni testuali)
-                - Inclusione
-                - Inclusione
-                - Inclusione
+                - UC-01.1
+                - UC-01.2
+                - UC-01.3
         ],
         estensioni: [
-                (elenco esplicito senza descrizioni testuali)
-                - estensione
-                - estensione
-                - estensione
+                - UC-02
         ],
-        specializzazioni: [
-                - specializzazione
-                - specializzazione
-                - specializzazione
+        specializzazioni: none,
+        immagine: image("/content/chapters/3_requirements/use-case/content/uc1.drawio.png"),
+        caption: none,
+)
+
+#use-case(
+        codice: "UC-01.1",
+        nome: "Caricamento lista ticket",
+        attore-principale:"Companion",
+        attore-secondario: none,
+        pre-condizioni: [
+                - Il sistema è attivo
+                - Il processo di ingestione dei file è stato avviato
         ],
-        immagine: [Seganposto immagine],
-        caption: [immagine temporanea],
+        post-condizioni: [
+                - Le informazioni relative ai ticket sono state salvate nel sistema con i relativi embedding e la relativa informazione di lingua
+        ],
+        scenario-principale:[
+                + L'attore carica la lista dei ticket
+                        + L'utente carica un blocco di ticket
+                + Il sistema salva la lista di ticket
+
+        ],
+        scenari-alternativi: none,
+        trigger: none,
+        inclusioni: [
+                - UC-01.1.1
+        ],
+        estensioni: none,
+        specializzazioni: none,
+        immagine: image("/content/chapters/3_requirements/use-case/content/uc1.1.drawio.png"),
+        caption: none,
+)
+
+
+
+
+
+
+
+#use-case(
+        codice: "UC-01.1.1",
+        nome: "Caricamento blocco di ticket",
+        attore-principale:"Companion",
+        attore-secondario: [
+                - Language detection model
+                - Embedding model
+        ],
+        pre-condizioni: [
+                - Il sistema è attivo
+                - Il processo di ingestione dei file è stato avviato
+                - Il processo di caricamento dei ticket è in corso
+                - N è una costante nota al sistema
+                - I ticket contenuti in ogni blocco contengono i metadati del ticket
+                - I ticket contenuti nel blocco contengono i campi testuali da embeddare già con la lista di chunk di testo da salvare e elaborare.
+        ],
+        post-condizioni: [
+                - Le informazioni relative al blocco di ticket sono state salvate nel sistema con i relativi embedding e la relativa informazione di lingua
+        ],
+        scenario-principale:[
+                + L'utente carica un blocco di ticket
+                + Il sistema rileva le informazioni di lingua da applicare ai chunk
+                        + Il sistema può usare l'informazione linguistica presente nei metadati del ticket
+                        + Il sistema può usare un modello language detection
+                + Il sistema usa il modello dei embedding per calcolare gli embedding
+                + Il sistema salva il blocco di ticket con le informazioni aggiuntive
+
+        ],
+        scenari-alternativi: none,
+        trigger: none,
+        inclusioni:none,
+        estensioni: none,
+        specializzazioni: none,
+        immagine: image("/content/chapters/3_requirements/use-case/content/uc1.1.1v2.drawio.png"),
+        caption: none,
 )

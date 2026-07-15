@@ -98,7 +98,7 @@
 
     if trigger != none {
       [
-        *Trigger*:#trigger #lorem(20)
+        *Trigger*:#trigger
       ]
     } else { none },
   ).filter(item => item != none).map(it=>block(breakable: false,it))
