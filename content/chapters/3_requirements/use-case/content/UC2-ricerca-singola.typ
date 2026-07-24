@@ -199,6 +199,8 @@
         ],
         post-condizioni: [
                 - Companion ha ricevuto i risultati della query.
+                - Il sistema ha scartato i risultati con una soglia di similarità troppo bassa
+                - Companion sa da quale campo è arrivato il match
         ],
         scenario-principale:[
           + Companion invia una query di ricerca

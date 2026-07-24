@@ -1,3 +1,5 @@
+#import "/template/mod.typ":slugify
+
 #let use-case(
   livello-intestazione: 3,
   codice: none,
@@ -22,7 +24,7 @@
   // 1. Intestazione
   // heading(level: livello-intestazione)[#codice: #nome]
 block(breakable: false)[  
-  #{v(1em)+strong[#codice: #nome]
+  #{v(1em)+strong[#codice: #nome #label(slugify(nome))]
   // 2. Gestione Immagine
   if immagine != none {
     // In Typst le variabili sono immutabili, usiamo una variabile di appoggio per la caption

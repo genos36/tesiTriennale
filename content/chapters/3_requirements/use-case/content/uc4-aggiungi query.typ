@@ -17,7 +17,7 @@
           + Il supervisore seleziona dati di ritorno
           + Il supervisore imposta filtro
           + Il supervisore configura i criteri di pertinenza
-          + il supervisore inserisce il valore identificativo atteso 
+          + il supervisore inserisce i valori identificativi attesi 
         ],
         scenari-alternativi: [
             -  query non valida
@@ -190,7 +190,7 @@
 )
 #use-case(
         codice: "UC-04.6",
-        nome: "",
+        nome: "fffffffff",
         attore-principale:"Supervisore",
         attore-secondario: none,
         pre-condizioni: [

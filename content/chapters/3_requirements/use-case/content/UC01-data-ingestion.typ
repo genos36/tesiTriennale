@@ -10,13 +10,12 @@
         ],
         post-condizioni: [
                 - Le informazioni da salvare sono state salvate nel sistema con i relativi embedding e la relativa informazione di lingua
+                - Informazioni duplicate sono state aggiornate
         ],
         scenario-principale:[
                 + L'attore carica la lista di ticket
                 + L'attore carica la lista di conversation item
-                + Il sistema salva la lista di conversation item
                 + L'attore carica la lista di attachment
-                + Il sistema salva la lista di attachment
 
         ],
         scenari-alternativi: [
