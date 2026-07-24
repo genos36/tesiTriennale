@@ -10,7 +10,7 @@
   header: ([*Campo*], [*Descrizione*]),
   r-label:none,
 ) = {
-   box(fill:color.rgb("E3f1ff"),inset:1em,radius:3%, stroke:1pt, width:100%)[
+   box(fill:color.rgb("E8F3FF"),inset:1em,radius:3%, stroke:1pt, width:100%)[
 
   #align(left)[
     #strong("Codice : "+code)
