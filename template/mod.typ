@@ -4,3 +4,5 @@
 #import "thesis-general/thesis-structure/thesis-main.typ": mainmatter
 #import "requirements/requirements-us.typ": requiremnts-us-title as us-title
 #import "general-macros/img.typ": img
+
+#import "/template/slugify.typ":slugify

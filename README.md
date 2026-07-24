@@ -1,3 +1,5 @@
+link pdf:[https://genos36.github.io/tesiTriennale/tesi.pdf](https://genos36.github.io/tesiTriennale/tesi.pdf)
+
 > [!NOTE]
 > 🇦🇺 English localization is currently only supported via [constants.typ](https://github.com/tlazzarin/thesis-template/blob/main/config/constants.typ) as the documentation is written in Italian. Please use machine translation or read the code 🙂.
 # 🇮🇹 Introduzione

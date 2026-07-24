@@ -34,5 +34,12 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
   [Trigger],
   [L'evento, l'azione o la condizione scatenante che innesca l'esecuzione del caso d'uso.],
 )
+=== Lista dei Casi d'Uso
+ #include "/content/chapters/3_requirements/use-case/content/uc-list/uc-list.typ"
+
 
 #include "content/UC01-data-ingestion.typ"
+#include "content/UC2-ricerca-singola.typ"
+#include "content/UC3-ricerca-linked.typ"
+#include "content/uc4-aggiungi query.typ"
+#include "content/uc5-rimuovi-query.typ"

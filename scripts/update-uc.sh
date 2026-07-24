@@ -1,0 +1,1 @@
+python3 scripts/manager.py content/chapters/3_requirements/use-case/content/deps/config/config.yaml "$@"

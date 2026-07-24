@@ -1,0 +1,92 @@
+# Configurazione dei casi d'uso
+settings:
+  # Percorso dove creare i file (relativo allo script)
+  output_dir: "content/chapters/3_requirements/use-case/content/uc-list"
+
+  # Nome del file aggregatore (se lasciato vuoto, non lo crea)
+  index_file: "uc-list.typ"
+
+  # Il prefisso non può contenere il carattere di title separator
+  prefix: "UC"
+  # Estensione dei file generati
+  extension: ".typ"
+
+  # Regole di numerazione e stile
+  formatting:
+    padding: 2 # Zeri iniziali: 2 -> "01", 3 -> "001"
+    separator: "." # Separatore numeri: "1.1" vs "1-1"
+    title_separator: "_" # Separatore tra numero e titolo: "01_Titolo"
+    filename_style: "snake_case" # "snake_case" (a_b) o "kebab_case" (a-b)
+
+  # (Opzionale) File template da copiare per i nuovi file
+  template_path: "content/chapters/3_requirements/use-case/content/deps/template-uc/template.typ"
+
+# La struttura gerarchica
+structure:
+    - Ingestion di documenti:
+      - Ingestione lista ticket:
+        - Carica blocco ticket
+      - Ingestione lista conversation item:
+        - Carica blocco conversation item
+      - Ingestione lista attachments:
+        - Carica blocco attachment
+    - Fallimento ingestion
+    - Ricerca su singola entità:
+      - Inserimento query su singola entità
+      - Ricerca full-text
+      - Ricerca semantica
+      - Ricerca ibrida:
+        - Ricerca ibrida con RRF
+        - Ricerca ibrida con modello di re-ranking
+    - Ricerca linked:
+      - Inserimento query linked
+      - Ricerca linked full-text
+      - Ricerca linked semantica
+      - Ricerca linked ibrida:
+        - Ricerca linked ibrida con RRF
+        - Ricerca linked ibrida con modello di re-ranking
+    - Aggiungi query di test:
+      - Selezione tipo ricerca:
+        - Selezione ricerca full-text
+        - Selezione ricerca semantica
+        - Selezione ricerca ibrida
+      - Selezione scope ricerca:
+        - Selezione ricerca su singola entità:
+          - Selezione ricerca sui ticket
+          - Selezione ricerca sui conversation item
+          - Selezione ricerca sugli attachment
+        - Selezione ricerca linked 
+      - Inserimento lista campi di ritorno:
+        - Visualizza lista campi di ritorno disponibili
+        - Inserimento campo di ritorno
+      - Inserimento filtri di ricerca:
+        - Inserimento condizione unitaria:
+          - Inserimento vincolo di ordinamento
+          - Inserimento vincolo di uguaglianza
+          - Inserimento vincolo di nullità
+        - Inserimento vincolo composto:
+          - Inserimento vincolo AND
+          - Inserimento vincolo OR
+          - Inserimento vincolo di appartenenza
+        - Inserimento vincolo unitario:
+          - Inserimento vincolo negazione
+      - Configurazione dei criteri di similarità:
+        - Inserimento lista campi da analizzare:
+          - Visualizza lista campi ricercabili con similarità
+          - Selezione campi per la ricerca corrente
+        - Inserimento testo di confronto:
+        - Inserimento lingua testo:
+            - Selezione lingua da lista lingue
+            - Selezione UNK_LANG
+      - Inserimento dei match corretti:
+          - Inserimento identificativo match
+    - imposta carico test:
+      - Inserimento utenti paralleli da simulare
+    - avvia test
+    - aggiungi indice:
+      - Inserimento ottimizzazione:
+      # bisogna descrivere i passi per creare indici testuali, vettoriali, btree e relativi indici parziali, expression index e combinazioni
+        - inserimento criteri di ottimizzazione
+      
+      - seleziona tipo di ottimizzazione
+    - rimuovi indice:

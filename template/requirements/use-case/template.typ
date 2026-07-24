@@ -1,3 +1,5 @@
+#import "/template/mod.typ":slugify
+
 #let use-case(
   livello-intestazione: 3,
   codice: none,
@@ -21,7 +23,8 @@
 
   // 1. Intestazione
   // heading(level: livello-intestazione)[#codice: #nome]
-  v(1em)+strong[#codice: #nome]
+block(breakable: false)[  
+  #{v(1em)+strong[#codice: #nome #label(slugify(nome))]
   // 2. Gestione Immagine
   if immagine != none {
     // In Typst le variabili sono immutabili, usiamo una variabile di appoggio per la caption
@@ -42,8 +45,8 @@
         immagine
       }
     ]
-  }
-
+  }}
+]
   // 3. Costruzione degli elementi opzionali
   let elementi-lista-opzionali = (
 
@@ -98,7 +101,7 @@
 
     if trigger != none {
       [
-        *Trigger*:#trigger #lorem(20)
+        *Trigger*:#trigger
       ]
     } else { none },
   ).filter(item => item != none).map(it=>block(breakable: false,it))
