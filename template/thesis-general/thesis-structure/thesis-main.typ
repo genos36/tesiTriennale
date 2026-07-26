@@ -2,7 +2,7 @@
 #let mainmatter(body, reset: true) = {
   set page(
     header: align(left, print-current-header()),
-    footer: make-counter("1"),
+    footer: align(center,make-counter("1")),
   )
   if reset { counter(page).update(1) }
   body

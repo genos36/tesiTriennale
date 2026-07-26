@@ -3,7 +3,33 @@
 
 #let use-case-nome="Selezione tipo ricerca"
 // #let depth=
+#let diagram=none
 
+
+#if utils.debug == true{
+        diagram=utils.draw-uc-expansion(
+                system-name:"Benchmark-Frontend",
+  parent-uc: "aggiungi query di test",             // Nome mostrato sulla linguetta; default = target-uc
+  target-uc: use-case-nome,
+  actors: ("Supervisore",),
+  ext-actors: (),
+  includes: (),
+  extends: (:),
+  generalizations: (
+        "selezione ricerca full text",
+        "selezione ricerca semantica",
+        "selezione ricerca ibrida",
+  ),
+  spacing: (0.2cm, 1cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 9,
+  ext-actor-offset: 0,
+  note-offset: (1, 0.6),
+  tab-offset: (-25pt, -25pt),
+  top-padding: 1,   
+        )
+}
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
@@ -27,6 +53,6 @@
                 - #utils.uc-link("Selezione ricerca semantica")
                 - #utils.uc-link("Selezione ricerca ibrida")
         ],
-        immagine: none,
+        immagine: diagram,
         caption: none,
 )

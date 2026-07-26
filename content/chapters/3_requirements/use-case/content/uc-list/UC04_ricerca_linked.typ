@@ -3,6 +3,31 @@
 
 #let use-case-nome="Ricerca linked"
 // #let depth=
+#let diagram=none
+
+
+#if utils.debug == true{
+        diagram=utils.draw-uc-diagram(
+                system-name: "Sistema core - API",
+  target-uc: use-case-nome,
+  actors: ("Companion",),
+  ext-actors: (),
+  includes: ("inserimento query linked",),
+  extends: (:),
+  generalizations: (
+        "Ricerca linked full-text",
+        "Ricerca linked semantica",
+        "Ricerca linked ibrida",
+  ),
+  spacing: (0.5cm, 3cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 0,
+  ext-actor-offset: 0.9,
+  
+  )
+} 
+
 
 #use-case(
         codice: get-use-case-code(use-case-nome),
@@ -34,6 +59,6 @@
                 - #utils.uc-link("Ricerca linked semantica")
                 - #utils.uc-link("Ricerca linked ibrida")
         ],
-        immagine: none,
+        immagine: diagram,
         caption: none,
 )

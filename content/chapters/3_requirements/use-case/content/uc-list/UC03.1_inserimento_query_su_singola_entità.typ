@@ -11,19 +11,19 @@
         attore-secondario: none,
         pre-condizioni:[
                 - Nel sistema è stata avviata una query di ricerca su una singola entità
-                - La query di ricerca specifica un'entità valida per la ricerca
-                - La query di ricerca contiene le informazioni da recuperare
-                - La query di ricerca contiene il numero di risultati da restituire.
-                - La query di ricerca contiene le informazioni su cui filtrare
-                - La query di ricerca contiene il testo da usare per valutare la pertinenza dei dati sul sistema di pertinenza
-                - La query di ricerca contiene l'informazione sulla presenza della lingua
+                // - La query di ricerca specifica un'entità valida per la ricerca
+                // - La query di ricerca contiene le informazioni da recuperare
+                // - La query di ricerca contiene il numero di risultati da restituire.
+                // - La query di ricerca contiene le informazioni su cui filtrare
+                // - La query di ricerca contiene il testo da usare per valutare la pertinenza dei dati sul sistema di pertinenza
+                // - La query di ricerca contiene l'informazione sulla presenza della lingua
                 
         ],
         post-condizioni: [
                 - Il sistema ha elaborato la query
                         ],
         scenario-principale:[
-                + Companion inserisce la query di ricerca
+                + Companion invia la query di ricerca
         ],
         scenari-alternativi:none,
         trigger: none,

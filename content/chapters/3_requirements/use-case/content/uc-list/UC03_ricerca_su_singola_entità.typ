@@ -3,6 +3,31 @@
 
 #let use-case-nome="Ricerca su singola entità"
 // #let depth=
+#let diagram=none
+
+
+#if utils.debug == true{
+        diagram=utils.draw-uc-diagram(
+                system-name: "Sistema core - API",
+  target-uc: use-case-nome,
+  actors: ("Companion",),
+  ext-actors: (),
+  includes: ("inserimento query su singola entità",),
+  extends: (:),
+  generalizations: (
+        "Ricerca full-text",
+        "Ricerca semantica",
+        "Ricerca ibrida",
+  ),
+  spacing: (0.5cm, 3cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 0,
+  ext-actor-offset: 0.9,
+  
+  )
+} 
+
 
 #use-case(
         codice: get-use-case-code(use-case-nome),
@@ -15,7 +40,7 @@
         post-condizioni: [
                 - Companion ha ricevuto i risultati della ricerca.
                 - Companion riceve l'identificativo del chunk su cui è stato trovato il match
-                - Companion riceve solo il chunk di testo su cui è stato trovato un match
+                - Companion riceve il chunk di testo su cui è stato trovato il match
                         ],
         scenario-principale:[
                 + Companion inserisce una query
@@ -34,6 +59,6 @@
                 - #utils.uc-link("Ricerca semantica")
                 - #utils.uc-link("Ricerca ibrida")
         ],
-        immagine: none,
+        immagine: diagram,
         caption: none,
 )

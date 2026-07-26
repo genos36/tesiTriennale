@@ -3,7 +3,31 @@
 
 #let use-case-nome="Ricerca linked ibrida con modello di re ranking"
 // #let depth=
+#let diagram=none
 
+
+#if utils.debug == true{
+        diagram=utils.draw-uc-expansion(
+                system-name:"Sistema core - API",
+  parent-uc: "ricerca ibrida",             // Nome mostrato sulla linguetta; default = target-uc
+  target-uc: use-case-nome,
+  actors: ("Companion",),
+  ext-actors: (
+        "Modello di re ranking",
+  ),
+  includes: (),
+  extends: (:),
+  generalizations: (),
+  spacing: (4cm, 3cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 0,
+  ext-actor-offset: 0,
+  note-offset: (1, 0.6),
+  tab-offset: (-25pt, -25pt),
+  top-padding: 0.1,   
+        )
+}
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
@@ -28,6 +52,6 @@
         inclusioni: none,
         estensioni: none,
         specializzazioni: none,
-        immagine: none,
+        immagine: diagram,
         caption: none,
 )

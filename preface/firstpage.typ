@@ -1,4 +1,4 @@
-#let logo = "/images/unipd-logo.svg"
+#let logo = "/images/unipd-logo.jpeg"
 
 #import "/metadata/mod.typ": data
 //#import "../config/variables.typ": myAY, myDegree, myDepartment, myFaculty, myMatricola, myName, myProf, myTitle, myUni

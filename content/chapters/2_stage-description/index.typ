@@ -73,7 +73,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Le attività previste potrebbero rivelarsi eccessive rispetto al monte ore disponibile e alle tempistiche di apprendimento, con il rischio di non completare tutti gli obiettivi prefissati.
               ],
               mitigation: [
-                Le attività sono suddivise per priorità (requisiti Obbligatori, Desiderabili, Opzionali). In caso di ritardi o imprevisti strutturali, solo le attività a priorità inferiore e non vincolanti per il core del progetto subiranno ridimensionamenti.
+                Le attività sono suddivise per priorità (requisiti obbligatori, desiderabili, opzionali). In caso di ritardi o imprevisti strutturali, solo le attività a priorità inferiore e non vincolanti per lo scopo principale del progetto subiranno ridimensionamenti.
               ],
               probability: "Media",
               consequences: [Alto],
@@ -85,7 +85,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 La comunicazione con il tutor aziendale o con gli stakeholder potrebbe risultare discontinua, rallentando il processo decisionale tecnico e causando incomprensioni.
               ],
               mitigation: [
-                Vengono pianificati incontri periodici di allineamento, accompagnati da aggiornamenti asincroni frequenti sullo stato di avanzamento. Eventuali blocchi tecnici (blocker) vengono segnalati tempestivamente senza attendere la riunione successiva.
+                Vengono pianificati incontri periodici di allineamento, accompagnati da aggiornamenti asincroni frequenti sullo stato di avanzamento. Eventuali blocchi tecnici vengono segnalati tempestivamente senza attendere la riunione successiva.
               ],
               probability: "Media",
               consequences: [Alto],
@@ -97,7 +97,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 L'assimilazione delle tecnologie necessarie (es. pgvector, framework NLP) potrebbe richiedere un tempo di studio superiore alle stime iniziali.
               ],
               mitigation: [
-                Le prime settimane dello stage includono ore dedicate esplicitamente allo studio della documentazione ufficiale, alla schematizzazione delle architetture e alla realizzazione di proof-of-concept (PoC) isolati.
+                Le prime settimane dello stage includono ore dedicate esplicitamente allo studio della documentazione ufficiale, alla schematizzazione delle architetture e alla realizzazione di proof of concept isolati.
               ],
               probability: "Bassa",
               consequences: [Medio],
@@ -165,7 +165,8 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       Elasticsearch è un motore di ricerca nativo con analizzatori linguistici avanzati, mentre PostgreSQL nasce come RDBMS. Un set di test limitato rischierebbe di favorire asimmetricamente una tecnologia rispetto all'altra, invalidando l'equità del benchmark.
                     ],
                     mitigation: [
-                      Il set di query di test verrà progettato per essere eterogeneo e rappresentativo dei reali casi d'uso aziendali. Includerà intenzionalmente sia scenari che valorizzano PostgreSQL, in particolare i join, sia scenari che stressano le capacità native di Elasticsearch, funzionalità di querying avanzate come phrase queries e analisi linguistica complessa.
+                      Il set di query di test verrà progettato per essere eterogeneo e rappresentativo dei reali casi d'uso aziendali.
+                      Includerà intenzionalmente sia scenari che valorizzano PostgreSQL, sia scenari che valorizzano Elasticsearch.
                     ],
                     probability: "Alta",
                     consequences: [Alto],
@@ -179,9 +180,9 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
                     ],
                     mitigation: [
-                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vule valutare, PostgreSQL + pgvector.
+                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, PostgreSQL + pgvector.
 
-                      Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico nel capitolo di analisi dello "Stato dell'Arte".
+                      Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico.
                     ],
                     probability: "Bassa",
                     consequences: [Medio],
@@ -190,12 +191,12 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     name: "Sovrapposizione tra le performance di Retrieval e Generation",
                     description: [
                       L'architettura RAG si compone di due fasi: la fase di retrieval che si occupa del recupero di informazioni e la generazione della risposta.
-                      Nel sistema attuale solo la parte di retieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema sono gestite in python puro.
+                      Nel sistema attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema sono gestite in Python puro.
                     ],
                     mitigation: [
-                      Vengono posti dei rigidi confini di sistema.
+                      Vengono posti dei rigidi confini sul sistema da implementare.
                       L'implementazione, l'analisi e il testing si concentreranno unicamente sulla componente di Retriever e sul relativo modulo di ingestion.
-                      La valutazione ignorerà la qualità dell'output generativo dell'LLM, misurando esclusivamente la pertinenza e la velocità dei documenti recuperati.
+                      La valutazione ignorerà la qualità dell'output generativo dell'LLM, misurando esclusivamente la pertinenza dei documenti e la velocità di recupero.
                     ],
                     probability: "Bassa",
                     consequences: [Alto],

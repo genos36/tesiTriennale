@@ -29,7 +29,7 @@ si traduce ogni entità in 2 tabelle
   - testo del chunk
   - lingua del testo
   - embedding del chunk
-  - i campi dati filterable, questa scelta di normalizzazione è dovuta alla necessità di poter ottimizzare query con clausole where, permette anche l'applicazione di indici b-tree, che permetterebbero al planner di postgres di analizzare  la selettività di una clausola where ed eventualmente posticipare le ricerche esatte e semantiche
+  - i campi dati filterable, questa scelta di de-normalizzazione è dovuta alla necessità di poter ottimizzare query con clausole where, permette anche l'applicazione di indici b-tree, che permetterebbero al planner di postgres di analizzare  la selettività di una clausola where ed eventualmente posticipare le ricerche esatte e semantiche
 
 
 
@@ -40,7 +40,7 @@ questo è necessario per permettere di effettuare ricerche sui singoli campi in 
 Il "costo" di questa ottimizzazione è che se si effettua una ricerca su più campi e si vogliono N risultati, è necessario effettuare la query su tutte le partizioni interessate e recuperare un totale di N \* numero di campi su cui cercare per poi combinare i risultati:
   - Si usa il re-scoring se i vettori di embedding sono compatibili
   - si usa RRF se i vettori di embedding non sono compatibili
-comunque è buona norma usare le iterative scan quando si effettuano ricerche con clausole where insieme a ricerche vettoriali, questi ermettono di continuare a recuperare risultati fino alla soglia desiderata senza rinunciare all'ottimizzazione dell'indexing
+comunque è buona norma usare le iterative scan quando si effettuano ricerche con clausole where insieme a ricerche vettoriali, questi emettono di continuare a recuperare risultati fino alla soglia desiderata senza rinunciare all'ottimizzazione dell'indexing
 
 
 
@@ -78,9 +78,52 @@ Tuttavia per visualizzare le metriche di testing relative alle performance del d
 
 è necessario sviluppare il sistema su 2 moduli distinti
 - Modulo core, risolve il problema della retrieval e dell'ingestion, realizza un'architettura esagonale incentrata su quel problema
-- Modulo di bench marking, realizzabile come esagonale se si considera il database sql come parte integrate del dominio (se ricordo bene il criterio per cui n'architettura è esagonale è che comunica con "l'esterno" tramite unità di dominio)
+- Modulo di bench marking, realizzabile come esagonale se si considera il database sql come parte integrate del dominio (se ricordo bene il criterio per cui un'architettura è esagonale è che comunica con "l'esterno" tramite unità di dominio)
 
 
 
-probabilmente un terzo modulo che avvi i test automatici e utilizzando i 2 moduli sopra descritti e mostri i risultati, probabilmente è un frontend molto semplice o una cli che fa chiamate api ed eventualmente può avviare un script python che simula l'invio di dati in ingestion o in retrieval
+probabilmente un terzo modulo che avvi i test automatici e utilizzando i 2 moduli sopra descritti e mostri i risultati, sarebbe un frontend molto semplice o una cli che fa chiamate api ed eventualmente può avviare un script che simula l'invio di dati in ingestion o in retrieval
+
+Al fine di eseguire le query di test e i test di ingestion conviene includere la possibilità che glie embedding siano inviabili lato client
+
+
+
+== Modulo core
+
+
+Questo modulo deve contenere le classi che rappresentano l'organizzazione dei dati, conviene progettarlo senza dipendenze dalle tecnologie, 
+
+Tale oggetto/struttura dati deve esprimere le caratteristiche di ogni entità, ruoli dei campi dati (ovvero  quali devono essere utilizzabili per i filtraggio, quali per ricerche semantiche e full text, e ibrida) e relativi vincoli.
+
+devono poi essere messe insieme in un'altra classe che sarà quella usata all'interno del sistema per passare le informazioni relative ai dati
+
+questa non sarà impostabile direttamente tramite interfacce o simili, sarà un file di configurazione a cui si accede tramite una porta, questo permette comunque di non hard codare la configurazione ma mi evita la gestione dell'interazione dell'utente con questo aspetto.
+
+Rimane comunque discretamente flessibile perché è modificabile 
+
+si possono configurare le porte e gli adapter inbound di ingestione per accettare un input coerente con la configurazione
+
+lo stesso database può essere generato / configurato in modo da essere coerente con la configurazione
+
+i dettagli di come il database ottimizza la sua struttura per rendere le letture più efficienti non sono conosciute alla configurazione, il db usa la configurazione per decidere la propria struttura 
+
+
+inoltre servono delle classi che rappresentino le singole entità da trattare in fase di ingestion
+
+
+per quanto riguarda le classi da usare per ritornare i dati dopo una ricerca conviene modellarli più verso un concetto di risultato di una ricerca
+
+bisogna anche modellare il concetto di query che deve essere passata al sistema 
+
+
+
+
+
+
+
+== Modulo Benchmark-Frontend
+
+Servono delle classi che rappresentano le query di test, queste contengono anche i risultati attesi e non serve ricalcolare gli embedding, perciò un layer di permanenza potrebbe essere un semplice file json, ma servono delle interfacce per l'aggiunta, 
+
+
 

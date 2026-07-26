@@ -18,7 +18,7 @@
                 - Companion riceve un messaggio di errore esplicativo
                         ],
         scenario-principale:[
-                + Si verifica un evento imprevisto che interrompe il salvataggio dei dati
+                + Nel sistema si verifica un evento imprevisto che interrompe il salvataggio dei dati
         ],
         scenari-alternativi:none,
         trigger: none,

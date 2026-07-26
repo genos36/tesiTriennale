@@ -2,23 +2,25 @@
 
 Al fine di modellare correttamente le interazioni e definire i confini del sistema oggetto del tirocinio, è necessario individuare gli attori coinvolti.
 
-In accordo con le metodologie di ingegneria del software, gli attori comprendono sia gli utenti umani sia i sistemi software esterni che interagiscono direttamente con l'architettura.
+In accordo con le metodologie dell'ingegneria del software, gli attori comprendono sia gli utenti umani sia i sistemi software esterni che interagiscono direttamente con l'architettura.
 
 
 Gli attori sono classificati in due categorie:
 
-    - Attori Primari: entità che avviano i casi d'uso e richiedono un servizio al sistema.
+    - Attori primari: entità che avviano i casi d'uso e richiedono un servizio al sistema.
 
-    - Attori Secondari: servizi o sistemi esterni invocati dal sistema per completare una specifica elaborazione.
+    - Attori secondari: servizi o sistemi esterni invocati dal sistema per completare una specifica elaborazione.
 
 
-=== Attori Primari
+=== Attori primari
 
 - #block()[ *Companion*
 
-        Con il termine *Companion* si identifica l'applicativo aziendale di Intelligenza Artificiale di livello superiore. Questo attore software funge da client principale: è il sistema reale all'interno del quale il modulo sviluppato durante lo stage verrebbe integrato (a scopo esplorativo).
+        Con il termine *Companion* si identifica l'applicativo aziendale di Intelligenza Artificiale di livello superiore. Questo attore software è il client principale: è il software applicativo reale all'interno del quale il modulo sviluppato durante lo stage verrebbe integrato a scopo esplorativo.
 
-        Il Companion interagisce con il sistema per due scopi fondamentali: delegare l'ingestione dei dati documentali e interrogare la base di conoscenza tramite la pipeline RAG per ottenere il contesto necessario alla generazione delle risposte.
+        Companion interagisce con il sistema tramite chiamate api.
+
+        Companion interagisce con il sistema per due scopi fondamentali: delegare l'ingestione dei dati documentali e interrogare la base di conoscenza tramite la pipeline RAG per ottenere il contesto necessario alla generazione delle risposte.
 ]
 
 - #block(breakable: false)[
@@ -31,7 +33,7 @@ Gli attori sono classificati in due categorie:
 ]
 
 
-=== Attori Secondari
+=== Attori secondari
 - #block()[
 *Modello di Embedding*
 

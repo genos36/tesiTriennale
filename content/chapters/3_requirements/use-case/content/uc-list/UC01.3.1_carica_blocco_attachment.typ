@@ -3,7 +3,32 @@
 
 #let use-case-nome="Carica blocco attachment"
 // #let depth=
+#let diagram=none
 
+
+#if utils.debug == true{
+        diagram=utils.draw-uc-expansion(
+                system-name:"Sistema core - API",
+  parent-uc: "Ingestione lista attachments",             // Nome mostrato sulla linguetta; default = target-uc
+  target-uc: use-case-nome,
+  actors: ("Companion",),
+  ext-actors: (
+        "Modello di embedding",
+        "Modello di language detection",
+  ),
+  includes: (),
+  extends: (:),
+  generalizations: (),
+  spacing: (4cm, 3cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 0,
+  ext-actor-offset: 0,
+  note-offset: (1, 0.6),
+  tab-offset: (-25pt, -25pt),
+  top-padding: 0.1,   
+        )
+}
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
@@ -17,7 +42,7 @@
                 - N è una costante nota al sistema
                 - Il blocco da salvare contiene almeno N attachment
                 - I attachment contengono i loro metadati
-                - I attachment contenuti nel blocco contengono i campi testuali divisi in chunk.
+                - I attachment contengono i campi testuali divisi in chunk.
         ],
         post-condizioni: [
                 - Le informazioni relative al blocco di attachment sono state salvate nel sistema 
@@ -26,10 +51,14 @@
                         ],
         scenario-principale:[
                 + L'utente carica un blocco di attachment
+                + Il sistema salva i metadati dei attachment
+                + Il sistema salva i chunk di testo
                 + Il sistema rileva le informazioni di lingua da applicare ai chunk
-                        + Il sistema può usare l'informazione linguistica presente nei metadati del attachment
+                        + Il sistema può usare l'informazione linguistica presente nei dati caricati
                         + Il sistema può usare un modello language detection
-                + Il sistema usa il modello di embedding per calcolare gli embedding
+                + Il sistema recupera l'embedding da associare al chunk
+                        + Il sistema può usare l'embedding presente nei dati caricati
+                        + Il sistema può calcolare l'embedding usando un modello di embedding esterno
                 + Il sistema salva il blocco di attachment
                 + Il sistema salva gli embedding
                 + Il sistema salva le informazioni di lingua
@@ -40,6 +69,6 @@
         inclusioni: none,
         estensioni: none,
         specializzazioni: none,
-        immagine: none,
+        immagine: diagram,
         caption: none,
 )
