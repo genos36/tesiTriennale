@@ -1,26 +1,24 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Fallimento ingestion"
+#let use-case-nome="Errore ricerca su singola entità"
 // #let depth=
-
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il processo di caricamento lista di entità è in corso
+                - Nel sistema è in corso una ricerca su una singola entità
+                - Nel sistema siè verificato un errore durante la ricerca
         ],
         post-condizioni: [
-                - Il sistema non ha salvato i record non validi
-                - Companion riceve un messaggio di errore esplicativo
+                - Companion riceve notifica esplicita dell'errore
                         ],
         scenario-principale:[
-                + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco       
-                + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
-                ],
+                + Il sistema interrompe la ricerca
+                + Companion riceve un messaggio d'errore esplicativo
+        ],
         scenari-alternativi:none,
         trigger: none,
         inclusioni: none,

@@ -281,6 +281,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     Scenario principale: 
     serve definire esattamente quali sono le metriche rilevanti (quali sono le metriche relative alla qualità della retrieval:recall e simili, e anche quelle relative a performance pure)
     \[inserire elenco  metriche\]
+    
   ],
   [
     Trigger: il supervisore vuole configurare i parametri dei test

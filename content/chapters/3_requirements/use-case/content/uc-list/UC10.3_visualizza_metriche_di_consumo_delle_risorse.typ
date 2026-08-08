@@ -1,26 +1,23 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Fallimento ingestion"
+#let use-case-nome="Visualizza metriche di consumo delle risorse"
 // #let depth=
 
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
-        attore-principale:[Companion],
+        attore-principale:[Supervisore],
         attore-secondario: none,
         pre-condizioni:[
-                - Il processo di caricamento lista di entità è in corso
+                - Il supervisore sta visualizzando la dashboard delle performance
         ],
         post-condizioni: [
-                - Il sistema non ha salvato i record non validi
-                - Companion riceve un messaggio di errore esplicativo
+                - Il supervisore ha visualizzato le metriche relative al consumo di risorse del DB.
                         ],
         scenario-principale:[
-                + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco       
-                + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
-                ],
+                + ANCORA DA DECIDERE IN ATTESA DI INDICAZIONI DAL TUTOR
+        ],
         scenari-alternativi:none,
         trigger: none,
         inclusioni: none,

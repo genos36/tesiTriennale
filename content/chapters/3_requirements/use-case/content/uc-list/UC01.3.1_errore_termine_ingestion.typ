@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Fallimento ingestion"
+#let use-case-nome="Errore termine ingestion"
 // #let depth=
 
 #use-case(
@@ -10,17 +10,19 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il processo di caricamento lista di entità è in corso
+                - Nel sistema è attiva una sessione di ingestion
+                - Nel sistema i dati inseriti sono stati resi disponibili per la ricerca
+
         ],
         post-condizioni: [
-                - Il sistema non ha salvato i record non validi
-                - Companion riceve un messaggio di errore esplicativo
+                - Nel sistema rimane attiva la sessione di ingestion
+                - Companion viene notificato dell'errore
                         ],
         scenario-principale:[
-                + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco       
-                + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
-                ],
+                + Companion chiede il termine della sessione di ingestion
+                + Il sistema rileva che è ancora in corso l'elaborazione dei dati
+                + Companion riceve una notifica esplicativa dell'errore
+        ],
         scenari-alternativi:none,
         trigger: none,
         inclusioni: none,

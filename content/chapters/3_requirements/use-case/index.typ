@@ -26,7 +26,7 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
   [Scenario alternativo],
   [Flussi di esecuzione secondari che deviano dallo scenario base, tipicamente per gestire anomalie, errori o percorsi non standard.],
   [Inclusioni],
-  [Relazioneverso un altro caso d'uso, il cui comportamento è obbligatoriamente e incondizionatamente incorporato nello scenario corrente.],
+  [Relazione verso un altro caso d'uso, il cui comportamento è obbligatoriamente e incondizionatamente incorporato nello scenario corrente.],
   [Estensioni],
   [Relazione che introduce un comportamento opzionale o alternativo, attivato unicamente al verificarsi di specifiche condizioni.],
   [Specializzazioni],
@@ -37,9 +37,9 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
 === Lista dei Casi d'Uso
  #include "/content/chapters/3_requirements/use-case/content/uc-list/uc-list.typ"
 
-
-#include "content/UC01-data-ingestion.typ"
-#include "content/UC2-ricerca-singola.typ"
-#include "content/UC3-ricerca-linked.typ"
-#include "content/uc4-aggiungi query.typ"
-#include "content/uc5-rimuovi-query.typ"
+=== 
+// #include "content/UC01-data-ingestion.typ"
+// #include "content/UC2-ricerca-singola.typ"
+// #include "content/UC3-ricerca-linked.typ"
+// #include "content/uc4-aggiungi query.typ"
+// #include "content/uc5-rimuovi-query.typ"

@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Fallimento ingestion"
+#let use-case-nome="Inserimento query su singola entità non valida"
 // #let depth=
 
 #use-case(
@@ -10,17 +10,17 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il processo di caricamento lista di entità è in corso
+                - Nel sistema è in corso una ricerca su una singola entità
+                - Companion ha inserito una query non valida
         ],
         post-condizioni: [
-                - Il sistema non ha salvato i record non validi
-                - Companion riceve un messaggio di errore esplicativo
+                - Companion riceve notifica esplicita dell'errore
                         ],
         scenario-principale:[
-                + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco       
-                + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
-                ],
+                + Il sistema rileva la non validità della query
+                + Il sistema interrompe la ricerca
+                + Companion riceve un messaggio d'errore esplicativo
+        ],
         scenari-alternativi:none,
         trigger: none,
         inclusioni: none,

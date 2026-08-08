@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Inserimento query su singola entità"
+#let use-case-nome="Inserimento query linked"
 // #let depth=
 #let diagram=none
 
@@ -14,7 +14,7 @@
   ext-actors: (),
   includes: (),
   extends: (
-        "Inserimento query su singola entità non valida":[Companion inserisce una query non valida],
+        "Inserimento query linked non valida":[Companion inserisce una query non valida],
         ),
   generalizations: (),
   spacing: (0.5cm, 3cm),
@@ -32,7 +32,7 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è in corso una ricerca su una singola entità
+                - Nel sistema è in corso una ricerca linked
         ],
         post-condizioni: [
                 - Il sistema ha elaborato la query
@@ -41,13 +41,13 @@
                 + Companion inserisce la query di ricerca
         ],
         scenari-alternativi:[
-                - Errore query non valida #sym.arrow #utils.uc-link("Inserimento query su singola entità non valida")
+                - Errore query non valida #sym.arrow #utils.uc-link("Inserimento query linked non valida")
 
         ],
         trigger: none,
         inclusioni: none,
         estensioni: [
-                - #utils.uc-link("Inserimento query su singola entità non valida")
+                - #utils.uc-link("Inserimento query linked non valida")
         ],
         specializzazioni: none,
         immagine: diagram,

@@ -24,69 +24,54 @@ settings:
 # La struttura gerarchica
 structure:
     - Ingestion di documenti:
-      - Ingestione lista ticket:
-        - Carica blocco ticket
-      - Ingestione lista conversation item:
-        - Carica blocco conversation item
-      - Ingestione lista attachments:
-        - Carica blocco attachment
+      - Avvia ingestion
+      - Ingestion liste entità:
+        - ingestion lista entità:
+            - Caricamento blocco entità
+        - Ingestione lista ticket:
+        - Ingestione lista conversation item:
+        - Ingestione lista attachments:
+      - Termina Ingestion:
+        - Errore termine ingestion
     - Fallimento ingestion
     - Ricerca su singola entità:
       - Inserimento query su singola entità
+      - Ricezione risultati ricerca singola entità
       - Ricerca full-text
       - Ricerca semantica
       - Ricerca ibrida:
         - Ricerca ibrida con RRF
         - Ricerca ibrida con modello di re-ranking
+    - Inserimento query su singola entità non valida
+    - Errore ricerca su singola entità 
     - Ricerca linked:
       - Inserimento query linked
+      - Ricezione risultati ricerca linked
       - Ricerca linked full-text
       - Ricerca linked semantica
       - Ricerca linked ibrida:
         - Ricerca linked ibrida con RRF
         - Ricerca linked ibrida con modello di re-ranking
-    - Aggiungi query di test:
-      - Selezione tipo ricerca:
-        - Selezione ricerca full-text
-        - Selezione ricerca semantica
-        - Selezione ricerca ibrida
-      - Selezione scope ricerca:
-        - Selezione ricerca su singola entità:
-          - Selezione ricerca sui ticket
-          - Selezione ricerca sui conversation item
-          - Selezione ricerca sugli attachment
-        - Selezione ricerca linked 
-      - Inserimento lista campi di ritorno:
-        - Visualizza lista campi di ritorno disponibili
-        - Inserimento campo di ritorno
-      - Inserimento filtri di ricerca:
-        - Inserimento condizione unitaria:
-          - Inserimento vincolo di ordinamento
-          - Inserimento vincolo di uguaglianza
-          - Inserimento vincolo di nullità
-        - Inserimento vincolo composto:
-          - Inserimento vincolo AND
-          - Inserimento vincolo OR
-          - Inserimento vincolo di appartenenza
-        - Inserimento vincolo unitario:
-          - Inserimento vincolo negazione
-      - Configurazione dei criteri di similarità:
-        - Inserimento lista campi da analizzare:
-          - Visualizza lista campi ricercabili con similarità
-          - Selezione campi per la ricerca corrente
-        - Inserimento testo di confronto:
-        - Inserimento lingua testo:
-            - Selezione lingua da lista lingue
-            - Selezione UNK_LANG
-      - Inserimento dei match corretti:
-          - Inserimento identificativo match
-    - imposta carico test:
-      - Inserimento utenti paralleli da simulare
-    - avvia test
-    - aggiungi indice:
-      - Inserimento ottimizzazione:
-      # bisogna descrivere i passi per creare indici testuali, vettoriali, btree e relativi indici parziali, expression index e combinazioni
-        - inserimento criteri di ottimizzazione
-      
-      - seleziona tipo di ottimizzazione
-    - rimuovi indice:
+    - Inserimento query linked non valida
+    - Errore ricerca linked 
+    - Avvia test
+    - Visualizza dashboard performance:
+
+      - Visualizza id run test
+      - Visualizza metriche di performance:
+
+        - Visualizzazione retrieval latency:
+          - Visualizzazione retrieval latency con ingestion attiva
+          - Visualizzazione retrieval latency con ingestion non attiva
+        - Visualizzazione retrieval answer rate
+        - Visualizzazione retrieval mrr
+        - Visualizzazione retrieval hitrate@1
+        - Visualizzazione retrieval hitrate@5
+        - Visualizzazione retrieval hitrate@10
+        - Visualizzazione retrieval wins
+        - Visualizzazione not found
+      - Visualizza metriche di consumo delle risorse:
+    - Visualizza dashboard performance test in corso:
+    - Visualizza dashboard performance test terminato:
+
+    - Nessuna run di test trovata

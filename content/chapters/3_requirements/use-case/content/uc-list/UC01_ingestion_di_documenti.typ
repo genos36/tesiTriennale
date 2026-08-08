@@ -14,13 +14,13 @@
         actors: ("Companion",),        // Attori primari, a sinistra
         ext-actors: (),              // Attori esterni/secondari, sul lato opposto
         includes: (
-                "Ingestione lista ticket",
-                "Ingestione lista conversation item",
-                "Ingestione lista attachments",
+                "Avvia ingestion",
+                "Ingestion liste entità",
+                "Termina ingestion"
                 ),
-        extends: ("Fallimento ingestion":"Errore nell'ingestion dei dati"),
+        extends: (:),
         generalizations: (),
-        spacing: (2.5cm, 2cm),
+        spacing: (3cm, 2cm),
         width: 100%,                 // Come width per le immagini: si adatta al contenitore
         max-height: none,            // Limite opzionale, utile per non sforare la pagina
         actor-offset: 1.05,
@@ -36,35 +36,30 @@
         attore-secondario: none,
         pre-condizioni:[
                 - Il sistema è attivo
+                - Nel sistema non ci sono sessioni di ingestion di documenti attive
         ],
         post-condizioni: [
-                - Le informazioni sono state salvate nel sistema
-                - Gli embedding associati sono stati salvati nel sistema
-                - Le informazioni di lingua associate sono state salvate nel sistema
-                - Informazioni duplicate sono state aggiornate
-                - Companion viene notificato del corretto salvataggio dei dati.
+                - Il sistema ha salvato le informazioni ricevute
+                - Il sistema ha salvato gli embedding relativi ai dati
+                - Il sistema ha salvato le informazioni di lingua relative ai dati
+                - Il sistema ha reso le informazioni disponibili per la ricerca
+                // - Il sistema ha risolto conflitti di inserimento con l'aggiornamento
                         ],
         scenario-principale:[
-                + Companion avvia il processo di ingestion dei dati 
-                + Companion carica la lista di ticket #sym.arrow #utils.uc-link("ingestione lista ticket")
-                + Companion carica la lista di conversation item #sym.arrow #utils.uc-link("ingestione lista conversation item")
-                + Companion carica la lista di attachment #sym.arrow #utils.uc-link("ingestione lista attachments")
+                + Companion avvia il processo di ingestion dei dati #sym.arrow #utils.uc-link("Avvia ingestion")
+                + Companion carica le liste di entità #sym.arrow #utils.uc-link("ingestion liste entità")
+                + Companion termina il processo di ingestion #sym.arrow #utils.uc-link("Termina ingestion")
+                + Companion viene notificato del corretto salvataggio dei dati.
 
         ],
-        scenari-alternativi:[
-                - Fallimento dell'ingestion #sym.arrow #utils.uc-link("Fallimento ingestion")
-        ],
+        scenari-alternativi:none,
         trigger: [Companion vuole caricare dei documenti sul sistema],
         inclusioni: [
-                - #utils.uc-link("ingestione lista ticket")
-                - #utils.uc-link("ingestione lista conversation item")
-                - #utils.uc-link("ingestione lista attachments")
+                - #utils.uc-link("Avvia ingestion")
+                - #utils.uc-link("ingestion liste entità")
+                - #utils.uc-link("Termina ingestion")
         ],
-        estensioni: 
-        [
-                - #utils.uc-link("Fallimento ingestion")
-        ]
-        ,
+        estensioni: none,
         specializzazioni: none,
         immagine: diagram,
         caption: none,
