@@ -2,7 +2,7 @@
 #import "/metadata/mod.typ": data
 
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ": uc-link, uc-link-extended
-
+#import "/content/chapters/3_requirements/requirement/requisiti-vincolo/requisiti-obbligatori/content/deps/code-set-up.typ" : req-link as rcm-link
 #pagebreak(to: "odd")
 
 = Introduzione Teorica<cap:introduzione-teorica>
@@ -11,76 +11,136 @@
 ])
 #v(1em)
 
-== Contesto e problema
+== Contesto e problema <teoria:contesto-problema>
 
 Il progetto ha una finalità esplorativa, mira solo a valutare l'adeguatezza di Postgres come sistema di information retrieval.
 
 L'adeguatezza è valutata secondo due criteri: i tempi di risposta e la qualità del retrieval, misurata tramite metriche di hit rate a diversi livelli di granularità. La definizione completa delle metriche è riportata nel caso d'uso #uc-link-extended("Visualizza metriche di performance",separator: "-").
 
-L'azienda dispone già di un sistema di information retrieval basato su Elasticsearch, tuttavia questo sistema ha delle limitazioni legate alla sua natura non relazionale e orientata ai documenti. Il sistema basato su Postgres mirerà a replicarne le funzionalità in modo fedele eccetto per alcune deviazioni, indicate nella @limiti-elasticsearch, che rispecchiano quanto realmente voluto dall'azienda ma che non era possibile realizzare in un sistema basato su Elasticsearch 
-
-Per giustificare alcune scelte e capire meglio l'utilità di alcune funzionalità , in particolare della ricerca linked, è utile ricordare che il sistema di information retrieval si colloca dentro un sistema RAG, per ulteriori informazioni si veda @cap:descrizione-stage
+#upper("è") stato esplicitamente concordato con il tutor aziendale che le metriche relative al consumo di risorse non sono prioritarie per il tirocinio, in quanto una volta effettuato il deployment su server aziendale è già realizzato il tracciamento del consumo di risorse ed è quindi possibile estendere la dashboard Grafana per mostrare anche quello
 
 
-=== Limiti di elastic <limiti-elasticsearch>
-Il limite principale di elastic è la non natività dei join, non nascendo come database relazionale il supporto ai join non è nativo e richiede work-around.
+L'azienda dispone già di un sistema di information retrieval basato su Elasticsearch, tuttavia questo sistema ha delle limitazioni legate alla sua natura non relazionale e orientata ai documenti. Il sistema basato su Postgres mira a replicarne le funzionalità in modo fedele eccetto per alcune deviazioni, indicate nella @limiti-elasticsearch, che rispecchiano quanto realmente voluto dall'azienda ma che non è possibile realizzare nel sistema basato su Elasticsearch 
 
-Un altro limite dell sistema basato su Elasticsearch è l'impossibilità di eseguire la ricerca per similarità su sottoinsiemi di campi di testo divisi in chunk, questo non è un limite esclusivo di Elasticsearch ma anche dell'applicativo aziendale che lo usa. Tale funzionalità però è implementata per la ricerca full-text.
+Per giustificare alcune scelte e capire meglio l'utilità di alcune funzionalità, in particolare della ricerca linked, è utile ricordare che il sistema di information retrieval si colloca dentro un sistema RAG, per ulteriori informazioni si veda @cap:descrizione-stage
 
-Per questo motivo il sistema di ricerca realizzato durante il tirocinio non rispecchierà elasticsearch sotto questo aspetto, invece si allineerà con il comportamento desiderato dall'impresa.
+#block(breakable: false)[
+Come già detto nel requisito #rcm-link("Rispetto modello dati hda") il modello dati di riferimento è quello del ticket service HDA.
 
+Costituito dai seguenti elementi:
+- Ticket
+- Conversation item
+- Attachments 
 
+E dalle seguenti relazioni 1 a molti:
+- Ticket #sym.arrow.long Conversation item
+- Ticket #sym.arrow.long Attachment
+- Conversation item #sym.arrow.long Attachment
 
-l'adeguatezza viene valutata in base alle metriche di performance relative alla velocità, alla qualità dei risultati io sviluppo il sistema di test perché una funzionalità potrebbe renderlo incompatibile con la forma delle query del sistema precedente, 
+]
 
-per quanto riguarda il consumo di risorse l'azienda dispone già di tool di observability che permettono di osservare cose come il peso del db, per me sarebbe più un integrarle nella dashboard
+La ricerca per similarità viene eseguita in due modalità: su singola entità e linked 
 
-Nel contesto reale questo sistema si integra in un sistema RAG, questo è utile a capire la finalità della ricerca linked
-L'azienda ha un sistema rag, il sistema che viene usato per la parte generativa è ok e non richiede valutazioni, solo il sistema di retrieval è sottoposto a valutazione, tuttavia il senso della ricerca linked emerge bene se tale dettaglio è fornito, altrimenti per il lettore ha poco senso a mio parere personale (forse non è il punto della tesi giusto per dare tale info, più adatto alla descrizione del tirocinio)
+La ricerca su singola entità esegue la ricerca solo su una delle entità del modello dati mentre la ricerca linked cerca su tutte le unità del modello e ricostruisce per ogni entità cercata una visione globale del risultato tramite join e poi unisce i dati ottenuti in un unico risultato, il funzionamento dettagliato è descritto in TODO CAP PROGETTAZIONE
 
-Attualmente il sistema utilizza una base di dati non relazionale elasticsearch, che seppur offra una ricerca full text di alto livello non è pensata per i join e l'applicativo attuale non supporta bene l'utilizzo di vettori di embedding multipli per i campi dati testuali(è più un problema dell'applicativo software, ma non si possono avere embedding di 2 campi, ad esempio se un allegato avesse un campo dati summary e un campo dati content , entrambi divisi in chunk di testo, questi sarebbero ricercabili separatamente solo tramite full text, non tramite ricerca semantica, ma ome ho detto è più un limite dell'applicativo aziendale corrente che un limite di elastic) 
+=== Limiti di Elasticsearch <limiti-elasticsearch>
+Il limite principale di Elasticsearch è la non natività dei join, non nascendo come database relazionale il supporto ai join non è nativo e richiede work-around.
 
-Il sistema cerca di rispecchiare il comportamento di elasticsearch per onesta nel confronto, tranne per la ricerca su sotto insiemi di campi dati ricercabili (prima non era possibile cercare solo su content dell'allegato, solo su summary oppure solo su un terzo campo e varie combinazioni di questi), questa differenza di progettazione è accettata anzi necessaria perché il vecchio applicativo non la realizzava per un limite tecnico accettato
+Un altro limite del sistema basato su Elasticsearch è l'impossibilità di eseguire la ricerca per similarità su sottoinsiemi di campi di testo divisi in chunk, questo non è un limite esclusivo di Elasticsearch ma anche dell'applicativo aziendale che lo usa. Tale funzionalità però è implementata per la ricerca full-text.
 
-Il problema dell'information retrieval in questo contesto assume 2 sfumature: ricerca su singola entità e ricerca linked.
+Per rendere più chiaro in cosa consiste questo limite utilizziamo un esempio, è possibile che si voglia effettuare la ricerca semantica solo sul campo dati Problem o solo sul campo Solution di un ticket, con l'attuale sistema basato su Elasticsearch non è possibile.
 
-La ricerca su singola entità passa in rassegna la collezione dati relativa solo a quell'entità e cerca il testo più simile
-
-La ricerca linked per ogni entità del sistema esegue la ricerca di similarità sulla singola entità poi dai risultati ottenuti va a fare dei join sulle altre entità del sistema sulla base di regole configurate alla creazione del sistema, successivamente viene applicata una fusione dei risultati ottenuti dalle varie entità.
-
-
-vengno date info sul modelllo dati nella descrizione delloo stage e nei requisiti di vincolo, non mi ero reso conto che conviene dare un breve recap del modello dati
-
-
-
+Per questo motivo il sistema di ricerca realizzato durante il tirocinio non rispecchierà Elasticsearch sotto questo aspetto, invece si allineerà con il comportamento desiderato dall'impresa.
 
 == Basi teoriche
+L'#gl("information-retrieval",long:true) si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
 
-=== Information retrieval e ricerca full-text
-=== Ricerca semantica e vector embedding
-=== Ricerca ibrida
+I risultati restituiti da un sistema di IR non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema
+
+Per recuperare i dati da un sistema di information retrieval vengono usate delle funzioni di #gl("similarity-search").
+
+All'interno del progetto vengono usati i seguenti tipi di ricerca per similarità:
+#list(
+  [
+    *ricerca full-text*, usa un criterio di similarità basato sulla corrispondenza di lessemi e parole chiave;
+  ],
+  [
+    *ricerca semantica*, usa un criterio di similarità basato sulla distanza dei vettori di embedding corrispondenti alle frasi confrontate;
+  ],
+  [
+    *ricerca ibrida*, utilizza sia ricerca semantica sia ricerca full-text e ne combina i risultati con tecniche che ne gestiscono la diversa scala di punteggi.
+  ]
+)
+
+La ricerca ibrida è la tipologia più rilevante ai fini del progetto. Le altre due assumono invece un ruolo secondario, principalmente di supporto al debugging: valutare le query di ricerca full-text e semantica in isolamento permette di individuare più facilmente la causa di un comportamento inaspettato nella ricerca ibrida, che altrimenti ne combinerebbe gli effetti rendendone più difficile l'analisi.
+
+La ricerca ibrida combina i punti di forza della ricerca semantica e di quella full-text. La ricerca semantica non offre buone prestazioni nel keyword matching, punto di forza della ricerca full-text; quest'ultima, di contro, non è in grado di tracciare termini simili ma con forma testuale molto diversa, né di cogliere significati legati al contesto, aspetti in cui la ricerca semantica eccelle.
+
+La combinazione unisce i risultati di entrambe le ricerche, assegnando un punteggio maggiore (boost) a quelli individuati da entrambe, senza scartare i risultati rilevanti prodotti da una sola delle due.
+
+Questa fusione avviene principalmente tramite Reciprocal Rank Fusion (RRF) (casi d'uso #uc-link-extended("Ricerca ibrida con RRF") e #uc-link-extended("Ricerca linked ibrida con RRF")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking")).
 
 == Architettura del progetto
+Ho scelto di separare il progetto in due sistemi distinti e indipendenti: #link(<teoria:main-system>,"sistema principale") e #link(<teoria:test-system>,"sistema di test").
 
-=== Sistema principale
-=== Sistema di test
+Tale separazione garantisce lo sviluppo e la manutenzione indipendenti dei due sistemi.
+
+=== Sistema principale <teoria:main-system>
+Il sistema principale è responsabile dell'implementazione del sistema di information retrieval: offre funzionalità di ingestion dei dati e di ricerca secondo le diverse modalità descritte in @teoria:contesto-problema.
+
+Segue il pattern dell'architettura esagonale per ridurre il rischio che dei bias modellino il sistema in modo da dare un vantaggio ingiusto a Postgres, come indicato dal rischio #link(<r-bias-requisiti>,"R10").
+
+È pensato per l'esecuzione su server.
+
+=== Sistema di test <teoria:test-system>
+Il sistema di test ha il ruolo di eseguire i test di performance della ricerca e calcolare le relative metriche. Simula un numero configurabile di utenti paralleli che inviano richieste di ricerca al sistema principale, confronta i risultati ottenuti con la ground truth attesa, e registra query di test, ground truth e risultati su un database dedicato.
+
+Segue anch'esso il pattern dell'architettura esagonale, per coerenza con il sistema principale e per facilitarne la manutenzione.
+
+È pensato per l'esecuzione locale, sulla macchina da cui viene avviato il test.
+
+=== Dashboard Grafana
+Nel rispetto del requisito #rcm-link("Utilizzo di grafana") la dashboard per il controllo delle performance è gestita con Grafana.
+
+Legge il database del sistema di test per calcolare le metriche, gestendo automaticamente il refresh e la selezione della dashboard relativa all'esecuzione di test più recente.
+
+Grafana non fa parte dei sistemi applicativi sviluppati: vengono forniti solamente i file YAML e JSON necessari a costruirla.
+
 === Relazione tra i sistemi
+I due sistemi non condividono né codice (eccetto un riuso di tipo copia-incolla, per convenienza) né risorse, e sono sviluppati su repository separati.
+
+Il sistema di test comunica con il sistema principale simulando client esterni che inviano richieste di ricerca, mentre Grafana accede direttamente al database del sistema di test, bypassandolo, per leggerne le metriche.
+
+
 
 == Criteri di scelta delle tecnologie 
-Come menzionato nella @tab:requisiti-vincolo la gran parte dello stack tecnologico è già stato deciso dall'azienda
+I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui vengono approfonditi separatamente nelle sezioni #link(<criteri:main-system>)[sistema principale] e #link(<criteri:test-system>)[sistema di test].
+=== Sistema principale <criteri:main-system>
+La maggior parte delle tecnologie è fissata dai requisiti di vincolo (@tab:requisiti-vincolo). Sono rimaste come scelte libere la libreria di language detection e la scelta del meccanismo di ricerca full-text.
 
-Si è scelto di limitare il più possibile l'aggiunta di ulteriori librerie che potrebbero nascondere aspetti rilevanti per il progetto, in particolare non vengono usate librerie per la costruzione delle query o ORM, in quanto possono andare a nascondere parte della complessità di integrazione tra postgres e il sistema principale e vi è il rischio seppur remoto di non riuscire a ottimizzare le ricerche costruite con tool di terze parti.
+Per la ricerca full-text, oltre alla soluzione nativa di Postgres basata su tsvector e tsquery, sono state valutate alcune estensioni che la implementano tramite l'algoritmo BM25. I criteri richiesti sono: assenza di problemi di licenza compatibili con l'uso in un prodotto commerciale, e un livello di funzionalità sufficientemente avanzato rispetto alle esigenze del progetto.
 
-Il progetto ha una finalità esplorativa perciò non sono state adottate rigorosamente pratiche di contrrollo di qualità del codice
+Un'altra scelta libera riguarda la libreria utilizzata per il riconoscimento della lingua del testo. Il criterio decisivo non è la compatibilità con la versione di Python utilizzata dal progetto (3.14).
 
+Inoltre si è preferito non adottare librerie di query building, per mantenere il massimo controllo possibile sul codice SQL prodotto e non nasconderne la complessità, coerentemente con il criterio già seguito per l'architettura del sistema (@teoria:main-system).
+
+=== Sistema di test <criteri:test-system>
+Non sono stati posti vincoli specifici sulle tecnologie adottate: la scelta è stata guidata dalla loro capacità di soddisfare i requisiti, cercando al contempo di non introdurre tecnologie ulteriori rispetto a quelle già usate nel sistema principale, per non aumentare la curva di apprendimento necessaria allo sviluppo.
 
 == Tecnologie del sistema di ricerca principale
+Il progetto è composto da 2 sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni 
+#link(<tec:main-system>)[sistema principale] e #link(<tec:test-system>)[sistema principale].
 
+Fanno eccezione Python e Postgres, in quanto comuni ad entrambi gli stack tecnologici.
+
+=== Sistema principale <tec:main-system>
+Le tecnologie adottate all'interno del sistema principale sono divise come segue.
 === backend
 === database
 === deployment
 
-== Tecnologie del sistema di test
+
+=== Sistema di test <tec:test-system>
 === database
 === deployment
 == Librerie e strumenti di supporto

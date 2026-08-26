@@ -22,7 +22,7 @@ Il progetto ha come obiettivo principale la riprogettazione e la sostituzione de
 
 Attualmente, l'impresa adotta una soluzione basata sul paradigma della persistenza poliglotta.
 
-Tale architettura prevede l'utilizzo congiunto di due sistemi separati: PostgreSQL per la gestione dei dati strettamente relazionali ed Elasticsearch per l'indicizzazione dei documenti, la ricerca full-text, la gestione degli embedding vettoriali e le operazioni di filtraggio avanzato.
+Tale architettura prevede l'utilizzo congiunto di due sistemi separati: PostgresQL per la gestione dei dati strettamente relazionali ed Elasticsearch per l'indicizzazione dei documenti, la ricerca full-text, la gestione degli embedding vettoriali e le operazioni di filtraggio avanzato.
 
 Sebbene questo approccio ibrido sia funzionale e ampiamente utilizzato,
 la divisione dei carichi di lavoro su motori di database differenti
@@ -36,7 +36,7 @@ comporta diverse limitazioni architettoniche e operative:
   ],
   [
     Overhead di sincronizzazione:
-    il mantenimento della coerenza tra il database primario PostgreSQL e il motore di ricerca Elasticsearch
+    il mantenimento della coerenza tra il database primario PostgresQL e il motore di ricerca Elasticsearch
     richiede complesse pipeline di allineamento,
     esponendo il sistema a ritardi di sincronizzazione o disallineamenti.
 
@@ -51,7 +51,7 @@ comporta diverse limitazioni architettoniche e operative:
 )
 
 Per superare queste criticità, il progetto esplora la transizione verso un paradigma a database unificato.
-L'obiettivo è accentrare l'intero carico di lavoro su PostgreSQL sfruttando pgvector,
+L'obiettivo è accentrare l'intero carico di lavoro su PostgresQL sfruttando pgvector,
 un'estensione open-source che introduce il supporto nativo alla persistenza dei vettori di embedding
 e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema relazionale.
 
@@ -65,7 +65,7 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
   ],
   [
     Ottimizzazione degli indici:
-    sfruttamento delle capacità di indicizzazione full-text native di PostgreSQL
+    sfruttamento delle capacità di indicizzazione full-text native di PostgresQL
     e creazione di indici vettoriali dedicati tramite
     pgvector per garantire l'efficienza scalabile della ricerca semantica.
 

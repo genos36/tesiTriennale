@@ -35,7 +35,7 @@ Ad ogni requisito è associato un codice costruito in base alle sue caratteristi
 - R (_Requirement_): requisito
 #v(1em)
 
-In @tab:requisiti-funzionali, tab:requisiti-qualitativi e tab:requisiti-vincolo sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
+In @tab:requisiti-funzionali, @tab:requisiti-qualità e @tab:requisiti-vincolo sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
 
 #include "requirement/index.typ"
 

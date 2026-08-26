@@ -20,7 +20,7 @@
 
 #let req-link(nome,extended:false,separator:none)={
   link(
-    label(slugify(nome)),
+    label(get-req-code(nome)),
     get-req-code(nome)+if extended{
       separator+nome
     } else {[]}

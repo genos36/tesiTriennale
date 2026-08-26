@@ -91,7 +91,7 @@ le tabelle dei chunk sono partizionate sul campo fieldname,
 questo è fondamentale al supporto efficiente della ricerca per sotto insiemi
 
 === Indici
-Nell'analisi degli indici vengono omessi gli indici creati in modo autonomo da postgres in corrispondenza di chiavi primarie
+Nell'analisi degli indici vengono omessi gli indici creati in modo autonomo da Postgres in corrispondenza di chiavi primarie
 va comunque ricordato che essi esistono
 
 le seguenti tabelle hanno i seguenti indici:
@@ -103,7 +103,7 @@ le seguenti tabelle hanno i seguenti indici:
 
         un'altra raccomandazione è utilizzare gli indici composti per indicizzare una versione a precisione ridotta dei vettori e utilizzare il re-ranking sui valori esatti
       ]
-      - Indici btree su tutti i campi denormalizzati, questo ha la funzionalità di mitigare i problemi di filtering associati agli indici approssimati vettoriali, se una query con filtro è particolarmente selettiva è possibile che il planner di postgres decida di apllicare prima il filtro e poi fare un calcolo della similarità sui risutlati ottenuti, senza l'inidce postgres avrebbe prima recuperato i risultati e poi applicato il filtro, potenzialemtne perdendo tutti i risultati, per i filtri poco selettivi invece l'oversampling e iterative scan mitigano la perdita di risultati
+      - Indici btree su tutti i campi denormalizzati, questo ha la funzionalità di mitigare i problemi di filtering associati agli indici approssimati vettoriali, se una query con filtro è particolarmente selettiva è possibile che il planner di Postgres decida di apllicare prima il filtro e poi fare un calcolo della similarità sui risutlati ottenuti, senza l'inidce Postgres avrebbe prima recuperato i risultati e poi applicato il filtro, potenzialemtne perdendo tutti i risultati, per i filtri poco selettivi invece l'oversampling e iterative scan mitigano la perdita di risultati
       - Indici testuali GIN, sulle colonne ts vector vengono creati degli indici testuali per il filtering durante la ricerca full text
         - su tsv simple viene costruito un normale indice gin normale
         - su tsv lang viene costruito un indice parziale per lingua 
@@ -113,7 +113,7 @@ le seguenti tabelle hanno i seguenti indici:
 
       vi è una duplicazione sugli indici ts vector a causa di una funzionalità che va supportata ma che la full text nativa non supporta, ricerca con matching di solo un tot di parole
       per tale ricerca è necessario considerare i tsvector come semplici array di testo, entrambi gli indici sono utilizzati solo in fase di filtering, quindi solo un tipo di indici rimane necessario
-      il ranking rimane affidato alla full text search di postgres che non necessità comunque dell'indice.
+      il ranking rimane affidato alla full text search di Postgres che non necessità comunque dell'indice.
 
   ],
   [tabella delle ingestion session
@@ -129,7 +129,7 @@ Il progetto si divide in 2 sistemi separati
 - Retriever-trial, sistema di test, si interfaccia al sistema principale usando locust per simulare diversi utenti che eseguono query, poi logga i risultati della ricerca su un db che tramite una view calcola le metriche
 
 === Retriever
-Segue il principio dell'architettura esagonale, questo permette di modellare il sistema basandosi solo sul problema senza modellare funzioni non utili in questa fase esplorativa e che potrebbero andare a lodare postgres per via di un bias
+Segue il principio dell'architettura esagonale, questo permette di modellare il sistema basandosi solo sul problema senza modellare funzioni non utili in questa fase esplorativa e che potrebbero andare a lodare Postgres per via di un bias
 
 le porte sono realizzate con ereditarietà da ABC e abstract method
 
@@ -181,7 +181,7 @@ La pipeline di ingestion segue il principio dell'architettura esagonale
 
   ],
   [
-    gli adapter sono gli unici a conoscere il db postgres, ricevono il connection pool alla creazione
+    gli adapter sono gli unici a conoscere il db Postgres, ricevono il connection pool alla creazione
 
     gli adapter per il tracciamento della sessione usano le tabelle per loggare lo stato, una sessione di ingestion può avere tre stati aperta chiusa e finalizzata, da aperta a chiusa vuol dire che si possono ricevere richiest di inserimento dati e non si possono aprire altre sessioni, da closed a finalized non è più possibile caricare dati ma non si possono avviare nuove sessioni
 
@@ -606,7 +606,7 @@ così la query esterna si limita a fare un union all order by
 == Progettazione della ricerca full text
 
 la ricerca full text ha adottato un'approccio simile alla semantica, viene mantenuta la struttura a partition queries perchè servono a mantenere semplice la ricerca su sotto insiemi di field name e ad applicare facilemnte i pesi, in questo caso questa forma non è vincolante ma stat più un riuso del codice della ricerca semantica
-la ranking function nativa di postgres per la ricerca full text non ha come in elastic search la funzione di boosting progressivo, ad esmpio non è possibile dire alla ranking function di dare un boost grande se è un match su frase uno piccolo se è un match su tutte le parole ma non in ordine e poco se vi sono corrispondenze parziali di parole
+la ranking function nativa di Postgres per la ricerca full text non ha come in elastic search la funzione di boosting progressivo, ad esmpio non è possibile dire alla ranking function di dare un boost grande se è un match su frase uno piccolo se è un match su tutte le parole ma non in ordine e poco se vi sono corrispondenze parziali di parole
 
 per simulare questo comportamento è necessario sommare più ranking function una phrase query e una allwords query se usatein una funzione rank danno lo stesso punteggio se si tratta di un match di frase, mentre se non vi è l'ordine la phrase query da 0
 
@@ -614,7 +614,7 @@ per simulare questo comportamento è necessario sommare più ranking function un
 un'altra limitazione è l'impossibilità di filtrare con criterio match tot parole, che però è possibile reimplementarlo tramite operazioni sugli array
 
 
-estraiamo i lessemi del testo della query, lo fa dentro postgres altrimenti vi è il rischio di stemming incoerente se fatto con un tool esterno
+estraiamo i lessemi del testo della query, lo fa dentro Postgres altrimenti vi è il rischio di stemming incoerente se fatto con un tool esterno
 
 #code-snippet(
 

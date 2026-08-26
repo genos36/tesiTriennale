@@ -61,13 +61,13 @@ Per la gestione del chunking esistono 3 opzioni principali:
   - indicizzazione, se si vuole fare comunque una ricerca su tutti i campi sono comunque applicabili i normali indici testuali e vettoriali.
   - se invece si vuole fare ricerche solo su specifici campi la documentazione ufficiale di pg_vector consiglia caldamente il partitioning (fattibile in quanto abbiamo già incluso field_name su un vincolo di unique)
 
-Alcune ulteriori note sul partitioning, questa funzionalità base di postgres permette di gestire le singole partition in modo molto personalizzabile.
+Alcune ulteriori note sul partitioning, questa funzionalità base di Postgres permette di gestire le singole partition in modo molto personalizzabile.
 
 In particolare ogni partition ha il suo indice che è indipendente da quello delle altre tabelle, questo permette un fine tuning sia in termini di risorse da allocare per la ricerca, sia in termini di ottimizzazione dell'indice, volendo si può applicare una misura di distanza specifica solo su una singola partizione oppure di eseguire un casting a un formato  più leggero (vector #sym.arrow halfvec #sym.arrow bit), questi non precludono la ricerca globale sulla tabella a patto che la query sia coerente con l'indice generale, tuttavia la penalizzano in quanto devono essere richieste N righe per ogni partizione, il fa scalare le risorse necessarie linearmente rispetto al numero di partizioni, oltre a richiedere di eseguire query che potrebbero non contribuire al risultato finale.
 
 Gli indici testuali invece beneficiano di un ridotto peso, infatti il costo di mantenimento viene diviso equamente su tutti gli indici, ed essendo un indice esatto non subisce penalizzazioni da  parte del partitioning
 
-se invece escludiamo completamente la ricerca globale sulla tabella, possiamo decidere di assegnare ad ogni partizione un vettore di embedding di dimensione diversa, postgres permette di non specificare la dimensione del vettore alla creazione della tabella, tuttavia ritornerà un errore run time ogni qualvolta si cercherà di castare esplicitamente o implicitamente un vettore a una dimensione diversa, tuttavia col partitioning è sufficiente aggiungere un check all'inserimento per garantire la consistenza dei vettori in una singola partizione.
+se invece escludiamo completamente la ricerca globale sulla tabella, possiamo decidere di assegnare ad ogni partizione un vettore di embedding di dimensione diversa, Postgres permette di non specificare la dimensione del vettore alla creazione della tabella, tuttavia ritornerà un errore run time ogni qualvolta si cercherà di castare esplicitamente o implicitamente un vettore a una dimensione diversa, tuttavia col partitioning è sufficiente aggiungere un check all'inserimento per garantire la consistenza dei vettori in una singola partizione.
 
 <metodo-2>
 ],

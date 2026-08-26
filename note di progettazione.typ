@@ -29,7 +29,7 @@ si traduce ogni entità in 2 tabelle
   - testo del chunk
   - lingua del testo
   - embedding del chunk
-  - i campi dati filterable, questa scelta di de-normalizzazione è dovuta alla necessità di poter ottimizzare query con clausole where, permette anche l'applicazione di indici b-tree, che permetterebbero al planner di postgres di analizzare  la selettività di una clausola where ed eventualmente posticipare le ricerche esatte e semantiche
+  - i campi dati filterable, questa scelta di de-normalizzazione è dovuta alla necessità di poter ottimizzare query con clausole where, permette anche l'applicazione di indici b-tree, che permetterebbero al planner di Postgres di analizzare  la selettività di una clausola where ed eventualmente posticipare le ricerche esatte e semantiche
 
 
 
