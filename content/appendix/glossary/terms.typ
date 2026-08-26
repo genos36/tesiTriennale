@@ -39,4 +39,14 @@
       Funge da piattaforma di retrieval e salva dati strutturati, non strutturati e dati vettoriali.
     ],
   ),
+  (
+    key: "linked-search",
+    short: [Linked search],
+    // long: [Large Language Model],
+    description: [
+        Modalità di ricerca che analizza ogni entità del database, con la possibilità di applicare un filtro,
+        e combina i risultati secondo una configurazione che specifica come eseguire i join, 
+        vi è anche la possibilità di applicare un filtro al termine del join
+    ],
+  ),
 )

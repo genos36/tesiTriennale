@@ -40,6 +40,7 @@ structure:
       - Ricerca full-text
       - Ricerca semantica
       - Ricerca ibrida:
+        - Aggiunta pesi di fusione ricerca singola entità
         - Ricerca ibrida con RRF
         - Ricerca ibrida con modello di re-ranking
     - Inserimento query su singola entità non valida
@@ -50,6 +51,7 @@ structure:
       - Ricerca linked full-text
       - Ricerca linked semantica
       - Ricerca linked ibrida:
+        - Aggiunta pesi di fusione ricerca linked
         - Ricerca linked ibrida con RRF
         - Ricerca linked ibrida con modello di re-ranking
     - Inserimento query linked non valida

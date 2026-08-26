@@ -8,14 +8,14 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core - API",
+                system-name:"Sistema core",
   parent-uc: "ricerca linked",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
         "Modello di embedding",
   ),
-  includes: (),
+  includes: ("Aggiunta pesi di fusione ricerca linked",),
   extends: (:),
   generalizations: (
         "Ricerca linked ibrida con rrf",
@@ -25,7 +25,7 @@
   width: 100%,
   max-height: none,
   actor-offset: 0,
-  ext-actor-offset: 0,
+  ext-actor-offset: (1,-0.7),
   note-offset: (1, 0.6),
   tab-offset: (-25pt, -25pt),
   top-padding: 0.5,   
@@ -46,6 +46,7 @@
 ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query linked")
+                + Companion inserisce i pesi da usare durante la fusione dei risultati di ricerca ibrida e full-text #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
                 + Il sistema esegue la query valutando la pertinenza in base alla ricerca semantica
                 + Il sistema esegue la query valutando la pertinenza in base alla ricerca full-text
                 + Il sistema fonde i risultati                
@@ -53,7 +54,9 @@
         ],
         scenari-alternativi:none,
         trigger: [Companion vuole eseguire una ricerca su tutte le entità],
-        inclusioni: none,
+        inclusioni: [
+                - #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
+        ],
         estensioni: none,
         specializzazioni: none,
         immagine: diagram,

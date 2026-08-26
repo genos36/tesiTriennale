@@ -9,7 +9,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-diagram(
-        system-name: "Sistema core - API", // Nome nell'angolo del recinto
+        system-name: "Sistema core", // Nome nell'angolo del recinto
         target-uc: use-case-nome,
         actors: ("Companion",),        // Attori primari, a sinistra
         ext-actors: (),              // Attori esterni/secondari, sul lato opposto

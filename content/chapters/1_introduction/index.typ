@@ -20,7 +20,7 @@
 == Il progetto
 Il progetto ha come obiettivo principale la riprogettazione e la sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
 
-Attualmente, l'impresa adotta una soluzione consolidata basata sul paradigma della persistenza poliglotta.
+Attualmente, l'impresa adotta una soluzione basata sul paradigma della persistenza poliglotta.
 
 Tale architettura prevede l'utilizzo congiunto di due sistemi separati: PostgreSQL per la gestione dei dati strettamente relazionali ed Elasticsearch per l'indicizzazione dei documenti, la ricerca full-text, la gestione degli embedding vettoriali e le operazioni di filtraggio avanzato.
 
@@ -60,7 +60,7 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
   [
     Ingestion:
     sviluppo di un modulo dedicato all'inserimento simultaneo di
-    metadati relazionali e documenti non strutturati.
+    dati relazionali e documenti.
 
   ],
   [
@@ -73,7 +73,7 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
   [
     Integrazione relazionale:
     utilizzo di costrutti SQL per correlare dinamicamente i documenti e
-    i vettori alle entità strutturate di dominio preesistenti nel gestionale.
+    i vettori tra le varie entità del sistema.
 
   ],
   [
@@ -81,6 +81,13 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
     implementazione di una logica di recupero che combini la precisione lessicale
     della ricerca testuale con la profondità concettuale della ricerca semantica,
     fondendo i risultati tramite l'algoritmo di Reciprocal Rank Fusion.
+
+  ],
+  [
+    Ricerca Linked:
+    modalità di ricerca che permette di eseguire in modo automatico una ricerca
+    che analizza ogni entità del sistema e ricostruisce un quadro complessivo dell'informazione
+    tramite join.
 
   ],
 )
@@ -112,8 +119,8 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
 == Scelta del progetto
 Ho scelto questo progetto per 3 ragioni principali:
-+ Rilevanza dell'argomento: nell'informatica moderna, l'integrazione di funzionalità basate sull'Intelligenza Artificiale rappresenta un fattore competitivo e innovativo.
++ Rilevanza dell'argomento: alla base dei moderni sistemi di Intelligenza Artificiale, come la RAG, che lo utilizzano per fornire contesto ai Large Language Models.
 
-+ Centralità della manutenzione: il progetto permette di intervenire direttamente sulla fase più estesa, costosa e critica del ciclo di vita di un prodotto software aziendale.
++ Evoluzione di un sistema reale: permette di partecipare all'evoluzione di un software in produzione, che durante il percorso universitario non ho affrontato.
 
-+ Stack tecnologico all'avanguardia: offre l'opportunità di operare sul campo con strumenti e framework moderni.
++ Stack tecnologico: offre l'opportunità di operare sul campo con strumenti e framework moderni.

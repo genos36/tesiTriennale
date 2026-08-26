@@ -16,7 +16,7 @@ Gli attori sono classificati in due categorie:
 
 - #block()[ *Companion*
 
-        Con il termine *Companion* si identifica l'applicativo aziendale di Intelligenza Artificiale di livello superiore. Questo attore software è il client principale: è il software applicativo reale all'interno del quale il modulo sviluppato durante lo stage verrebbe integrato a scopo esplorativo.
+        Con il termine *Companion* si identifica l'applicativo aziendale di Intelligenza Artificiale di livello superiore. Questo attore software è il client principale: è il software applicativo reale che utilizza il modulo di information retrieval.
 
         Companion interagisce con il sistema tramite chiamate api.
 
@@ -35,9 +35,14 @@ Gli attori sono classificati in due categorie:
 
 === Attori secondari
 - #block()[
-*Modello di Embedding*
+*Modello di embedding*
 
 Si tratta di un attore software esterno che fornisce il servizio di vettorizzazione.
 Il sistema oggetto dello stage invoca questo attore delegandogli il compito computazionale di trasformare i chunk di testo grezzo in vettori numerici, questi vettori verranno poi usati per popolare l'indice vettoriale e per l'esecuzione della ricerca semantica.
 
+]
+- #block()[
+*Modello di re-ranking*
+
+Si tratta di un attore software esterno che realizza la funzione di merge dei risultati della ricerca semantica e della ricerca full-text
 ]

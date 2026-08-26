@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name: "Sistema core - API"
+                system-name: "Sistema core"
 ,  parent-uc: "Ingestion liste entità",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
@@ -18,14 +18,14 @@
   generalizations: (        "Ingestione lista ticket",
         "Ingestione lista conversation item",
         "Ingestione lista attachments"),
-  spacing: (4cm, 3cm),
+  spacing: (1cm, 3cm),
   width: 100%,
   max-height: none,
-  actor-offset: 0,
+  actor-offset: 1,
   ext-actor-offset: 0.9,
   note-offset: (1, 0.6),
   tab-offset: (-25pt, -25pt),
-  top-padding: 0.1,   
+  top-padding: 0.8,   
         )
 }
 #use-case(

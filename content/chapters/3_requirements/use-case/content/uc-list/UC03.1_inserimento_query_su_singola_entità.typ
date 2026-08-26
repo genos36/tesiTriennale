@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-diagram(
-                system-name: "Sistema core - API",
+                system-name: "Sistema core",
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (),

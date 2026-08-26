@@ -14,7 +14,7 @@
                 - Companion ha inserito una query non valida
         ],
         post-condizioni: [
-                - Companion riceve notifica esplicita dell'errore
+                - Companion riceve notifica esplicativa dell'errore
                         ],
         scenario-principale:[
                 + Il sistema rileva la non validità della query

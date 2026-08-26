@@ -8,24 +8,24 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core - API",
+                system-name:"Sistema core",
   parent-uc: "ricerca su singola entità",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
         "Modello di embedding",
   ),
-  includes: (),
+  includes: ("Aggiunta pesi di fusione ricerca singola entità",),
   extends: (:),
   generalizations: (
         "Ricerca ibrida con rrf",
         "Ricerca ibrida con modello di re ranking",
   ),
-  spacing: (4cm, 3cm),
+  spacing: (2cm, 3cm),
   width: 100%,
   max-height: none,
   actor-offset: 0,
-  ext-actor-offset: 0,
+  ext-actor-offset: (1,-0.7),
   note-offset: (1, 0.6),
   tab-offset: (-25pt, -25pt),
   top-padding: 0.5,   
@@ -46,6 +46,7 @@
                         ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query su singola entità")
+                + Companion può inserire i pesi da utilizzare durante la fusione di ricerca full-text e semantica  #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca singola entità")
                 + Il sistema esegue la query valutando la pertinenza in base alla ricerca semantica
                 + Il sistema esegue la query valutando la pertinenza in base alla ricerca full-text
                 + Il sistema fonde i risultati                
@@ -53,7 +54,9 @@
         ],
         scenari-alternativi:none,
         trigger: [Companion vuole eseguire una ricerca su una singola entità],
-        inclusioni: none,
+        inclusioni: [
+                - #utils.uc-link("Aggiunta pesi di fusione ricerca singola entità")
+        ],
         estensioni: none,
         specializzazioni: [
                 - #utils.uc-link("Ricerca ibrida con rrf")

@@ -21,7 +21,7 @@
 == Tracciamento dei requisiti
 Ad ogni requisito è associato un codice costruito in base alle sue caratteristiche:
 #v(1em)
-#align(center)[*(F/Q/C)(M/D/O)R*]
+#align(center)[*R(F/Q/C)(M/D/O)*]
 #v(1em)
 #set list(marker: none)
 - F (_Functional_): definisce una funzione di un sistema o dei suoi componenti;
@@ -34,70 +34,41 @@ Ad ogni requisito è associato un codice costruito in base alle sue caratteristi
 #v(0.3em)
 - R (_Requirement_): requisito
 #v(1em)
-In @tab:requisiti-funzionali, @tab:requisiti-qualitativi e @tab:requisiti-vincolo sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
-#[
-  #show figure: set block(breakable: true)
-  #set table(
-    align: (center + horizon, left + horizon, center + horizon),
-    columns: (auto, 5fr, 1.5fr),
-  )
-  #v(1em)
-  #figure(
-    table(
-      table.header(
-        [*Codice*],
-        [*Descrizione*],
-        [*Fonti*],
-      ),
-      // ..getFR().flatten()
-    ),
-    caption: "Tracciamento dei requisiti funzionali.",
-  )
-  <tab:requisiti-funzionali>
 
-  #v(2em)
-  #figure(
-    table(
-      align: (center + horizon, left + horizon, center + horizon),
-      table.header(
-        [*Codice*],
-        [*Descrizione*],
-        [*Fonti*],
-      ),
-      // ..getQR().flatten()
-    ),
-    caption: "Tracciamento dei requisiti di qualità.",
-  )
-  <tab:requisiti-qualitativi>
+In @tab:requisiti-funzionali, tab:requisiti-qualitativi e tab:requisiti-vincolo sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
 
-  #v(2em)
-  #figure(
-    table(
-      align: (center + horizon, left + horizon, center + horizon),
-      table.header(
-        [*Codice*],
-        [*Descrizione*],
-        [*Fonti*],
-      ),
-      // ..getCR().flatten()
-    ),
-    caption: "Tracciamento dei requisiti di vincolo.",
-  )
-  <tab:requisiti-vincolo>
+#include "requirement/index.typ"
+
+
 
   #v(2em)
   Di seguito, nella @tab:riepilogo-requisiti ho inserito il riepilogo dei requisiti, suddivisi per tipologia e necessità.
   #v(1em)
   #show figure: set block(breakable: false)
+
+  #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb as f-obb,des as f-des,opz as f-opz 
+  #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as m-obb,des as m-des,opz as m-opz 
+
+  #let functional-count=(
+    f-obb.len(),
+    f-des.len(),
+    f-opz.len(),
+  )
+  #let mandatory-count=(
+    m-obb.len(),
+    m-des.len(),
+    m-opz.len(),
+  )
   #figure(
     table(
       columns: (auto, 1fr, 1fr, auto, auto),
       table.header([*Tipo*], [*Mandatory*], [*Desirable*], [*Optional*], [*Somma*]),
       [Functional],
-      // [#getFR(getLen: true).at(0)],
-      // [#getFR(getLen: true).at(1)],
-      // [#getFR(getLen: true).at(2)],
-      // [#getFR(getLen: true).sum()],
+      ..functional-count.map(it=>str(it)),
+      [#functional-count.sum()],
+      [Mandatory],
+      ..mandatory-count.map(it=>str(it)),
+      [#mandatory-count.sum()],
 
       // [Qualitative],
       // [#getQR(getLen: true).at(0)],
@@ -121,4 +92,5 @@ In @tab:requisiti-funzionali, @tab:requisiti-qualitativi e @tab:requisiti-vincol
     ),
     caption: "Riepilogo dei requisiti.",
   )<tab:riepilogo-requisiti>
-]
+
+

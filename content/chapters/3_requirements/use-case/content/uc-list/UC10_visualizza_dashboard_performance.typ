@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-diagram(
-                system-name:"Sistema test - API",
+                system-name:"Sistema test",
   target-uc: use-case-nome,
   actors: ("Supervisore",),
   ext-actors: (),
@@ -37,8 +37,8 @@
         attore-principale:[Supervisore],
         attore-secondario: none,
         pre-condizioni:[
-                - Il sistema è attivo
-        ],
+                - Il sistema di test è attivo
+                - Il sistema core è attivo        ],
         post-condizioni: [
                 - Il supervisore ha visualizzato lo stato dell'ultima run di test avviata
                         ],

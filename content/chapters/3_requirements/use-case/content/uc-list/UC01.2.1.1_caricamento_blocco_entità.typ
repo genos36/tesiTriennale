@@ -8,13 +8,12 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core - API",
+                system-name:"Sistema core",
   parent-uc: "Ingestion lista entità",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
         "Modello di embedding",
-        "Modello di language detection",
   ),
   includes: (),
   extends: ("Fallimento ingestion":"Uno o più record non validi"),
@@ -33,10 +32,7 @@
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
-        attore-secondario: [
-                - Modello di embedding
-                - Modello di language detection
-        ],
+        attore-secondario: [Modello di embedding],
         pre-condizioni:[
                 - Il processo di caricamento lista di entità è in corso
                 // - N è una costante nota al sistema
@@ -55,7 +51,7 @@
                 + Il sistema calcola l'embedding da associare ai chunk di testo usando il modello di embedding
                 + Il sistema rileva le informazioni di lingua da applicare ai chunk
                         + Il sistema può usare l'informazione linguistica presente nei dati caricati
-                        + Il sistema può usare un modello language detection
+                        + Il sistema può usare rileva la lingua del testo
                 + Il sistema associa gli embedding al relativo frammento di testo
                 + Il sistema associa la lingua al relativo frammento di testo
                 + Il sistema salva il blocco di entità

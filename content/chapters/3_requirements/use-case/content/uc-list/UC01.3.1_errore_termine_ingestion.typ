@@ -21,7 +21,7 @@
         scenario-principale:[
                 + Companion chiede il termine della sessione di ingestion
                 + Il sistema rileva che è ancora in corso l'elaborazione dei dati
-                + Companion riceve una notifica esplicativa dell'errore
+                + Companion riceve una notifica dell'errore
         ],
         scenari-alternativi:none,
         trigger: none,

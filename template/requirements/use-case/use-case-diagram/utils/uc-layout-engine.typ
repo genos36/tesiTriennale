@@ -35,6 +35,17 @@
   let num-act = actors.len()
   let num-ext-act = ext-actors.len()
 
+  // ext-actor-offset accetta sia un numero (offset solo orizzontale,
+  // comportamento storico) sia una coppia (dx, dy) per poter spingere
+  // gli attori esterni anche in verticale e mitigare le sovrapposizioni
+  // di layout. Un valore scalare viene completato con dy = 0, quindi le
+  // chiamate esistenti restano invariate.
+  let ext-actor-offset = if type(ext-actor-offset) == array {
+    ext-actor-offset
+  } else {
+    (ext-actor-offset, 0)
+  }
+
   let ext-list = if type(extends) == dictionary { extends.pairs() } else { extends.map(e => (e, none)) }
   let num-ext = ext-list.len()
 
@@ -53,13 +64,13 @@
 
   // Colonna degli attori esterni: sul lato opposto rispetto agli attori
   // primari, oltre la colonna degli include.
-  let x-act-ext = x-inc + ext-actor-offset
+  let x-act-ext = x-inc + ext-actor-offset.at(0)
 
   let start-x-gen = target-x - spread-gen
   let start-x-ext = target-x - spread-ext
   let start-y-inc = target-y - if num-inc > 0 { (num-inc - 1) / 2.0 } else { 0.0 }
   let start-y-act = target-y - if num-act > 0 { (num-act - 1) / 2.0 } else { 0.0 }
-  let start-y-act-ext = target-y - if num-ext-act > 0 { (num-ext-act - 1) / 2.0 } else { 0.0 }
+  let start-y-act-ext = target-y - if num-ext-act > 0 { (num-ext-act - 1) / 2.0 } else { 0.0 } + ext-actor-offset.at(1)
 
   // ---- Assemblaggio ----
   let elements = ()

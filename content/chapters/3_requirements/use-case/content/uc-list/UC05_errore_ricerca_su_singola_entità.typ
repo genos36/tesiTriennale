@@ -13,7 +13,7 @@
                 - Nel sistema siè verificato un errore durante la ricerca
         ],
         post-condizioni: [
-                - Companion riceve notifica esplicita dell'errore
+                - Companion riceve notifica esplicativa dell'errore
                         ],
         scenario-principale:[
                 + Il sistema interrompe la ricerca

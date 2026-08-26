@@ -14,16 +14,18 @@ Il tirocinio è strutturato per favorire lo sviluppo di un ventaglio di competen
 
 Dal punto di vista metodologico, lo stage mira a consolidare le capacità di analisi dei requisiti,
 astrazione dei problemi complessi e progettazione di soluzioni algoritmiche generali e scalabili,
-promuovendo inoltre la collaborazione attiva con i tutor e gli stakeholder aziendali.
+promuovendo inoltre la collaborazione con i tutor.
 
 Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e approfondire le seguenti tematiche:
-- Sistemi AI e NLP: Comprensione dei fondamenti del Natural Language Processing e integrazione di modelli linguistici e framework associati.
-- Database Avanzati: Padronanza nell'utilizzo di PostgreSQL non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
-- Progettazione della Ricerca Ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di PostgreSQL, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
-- Testing Comparativo: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
+- Database avanzati: Padronanza nell'utilizzo di PostgreSQL non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
+- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di PostgreSQL, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
+- Testing delle performance: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
 == Vincoli
-Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca. Il vincolo primario è l'adozione esclusiva dell'estensione pgvector su ecosistema PostgreSQL per la gestione e l'interrogazione dei vettori di embedding.
+Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca. 
 
+I vincoli principali sono i seguenti:
+- Utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
+- Utilizzo della ricerca full-text nativa di Postgres, per semplicità di licensing.
 
 == Pianificazione
 
@@ -31,15 +33,19 @@ Il progetto è soggetto a specifici vincoli architetturali volti a garantire la 
 Lo stage si articola in 320 ore distribuite su otto settimane da 40 ore.
 
 La pianificazione, derivata dal piano di lavoro, è la seguente:
+
 + Prima Settimana - Studio e analisi iniziale del nuovo e del vecchio stack tecnologico e setup (40 ore): studio delle tecnologie, setup dell'ambiente di lavoro locale e prove generiche;
 
-+ Seconda Settimana - Analisi comparativa dettagliata di elastic search e Postgres con tentativo di modellazione di un sottoinsieme limitato del probleme;
-+ Terza Settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale
-+ Quarta settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale e ottimizzazione tramite indici
-+ Quinta settimana - Strutturazione del modulo di ingestion
-+ Sesta settimana - Strutturazione del modulo API e integrazione dei framework di observability
-+ Settima settimana - Testing e ottimizzazioni
-+ Ottava settimana - Testing e ottimizzazioni
++ Seconda Settimana - Analisi comparativa dettagliata di elastic search e Postgres con tentativo di modellazione di un sottoinsieme limitato del problema;
+
++ Terza Settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale;
+
++ Quarta settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale e ottimizzazione tramite indici;
+
++ Quinta settimana - Progettazione di alto livello del sistema e inizio della codifica del modulo di ingestion;
++ Sesta settimana - Completamento della codifica del modulo di ingestion e dei moduli di ricerca, completa delle relative interfacce; 
++ Settima settimana - Progettazione e implementazione del sistema di test partendo da dei dati locali fittizi; 
++ Ottava settimana - Benchmarking, realizzazione della dashboard e deployment.
 
 
 
@@ -94,7 +100,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
             (
               name: "Curva di apprendimento delle tecnologie",
               description: [
-                L'assimilazione delle tecnologie necessarie (es. pgvector, framework NLP) potrebbe richiedere un tempo di studio superiore alle stime iniziali.
+                L'assimilazione delle tecnologie necessarie (es. pgvector, fts postgres) potrebbe richiedere un tempo di studio superiore alle stime iniziali.
               ],
               mitigation: [
                 Le prime settimane dello stage includono ore dedicate esplicitamente allo studio della documentazione ufficiale, alla schematizzazione delle architetture e alla realizzazione di proof of concept isolati.
@@ -162,15 +168,27 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Sbilanciamento metodologico nel confronto",
                     description: [
-                      Elasticsearch è un motore di ricerca nativo con analizzatori linguistici avanzati, mentre PostgreSQL nasce come RDBMS. Un set di test limitato rischierebbe di favorire asimmetricamente una tecnologia rispetto all'altra, invalidando l'equità del benchmark.
+                      Essendo PostgreSQL nato come RDBMS ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
                     ],
                     mitigation: [
-                      Il set di query di test verrà progettato per essere eterogeneo e rappresentativo dei reali casi d'uso aziendali.
-                      Includerà intenzionalmente sia scenari che valorizzano PostgreSQL, sia scenari che valorizzano Elasticsearch.
+                      Il set di query e il benchmark verranno definiti e "congelati" a priori, in stretta parità di funzionalità con l'attuale utilizzo in produzione, evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma, cercheranno solo di rappresentare lo scenario reale.
                     ],
                     probability: "Alta",
                     consequences: [Alto],
                     r-label:"r-sbilanciamento"
+                  ),
+                  (
+                    name: "Bias tecnologico e deriva dei requisiti",
+                    description: [
+                      Esiste il rischio di adattare inconsciamente l'implementazione per favorire le peculiarità di PostgreSQL, introducendo logiche non necessarie o deviazioni dai requisiti originali solo per giustificare l'adozione della nuova tecnologia.
+                     
+                    ],
+                    mitigation: [
+                      Adozione  dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di PostgreSQL non inquinino il comportamento atteso del sistema.
+                    ],
+                    probability: "Media",
+                    consequences: [Alto],
+                    r-label:"r-bias-requisiti"
                   ),
                   (
                     name: "Dispersione del perimetro di test su tecnologie alternative",

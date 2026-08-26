@@ -16,7 +16,7 @@
                 - Il supervisore ha visualizzato le metriche relative al consumo di risorse del DB.
                         ],
         scenario-principale:[
-                + ANCORA DA DECIDERE IN ATTESA DI INDICAZIONI DAL TUTOR
+                + Il supervisore visualizza le metriche relative al consumo di risorse del database
         ],
         scenari-alternativi:none,
         trigger: none,

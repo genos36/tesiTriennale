@@ -1,0 +1,78 @@
+# Configurazione dei casi d'uso
+settings:
+  # Percorso dove creare i file (relativo allo script)
+  output_dir: "content/chapters/3_requirements/requirement/requisiti-funzionali/requisiti-obbligatori/content/req-list"
+
+  # Nome del file aggregatore (se lasciato vuoto, non lo crea)
+  index_file: "requisiti-funzionali-obbligatori-list.typ"
+
+  # Il prefisso non può contenere il carattere di title separator
+  prefix: "RFM"
+  # Estensione dei file generati
+  extension: ".typ"
+
+  # Regole di numerazione e stile
+  formatting:
+    padding: 2 # Zeri iniziali: 2 -> "01", 3 -> "001"
+    separator: "." # Separatore numeri: "1.1" vs "1-1"
+    title_separator: "_" # Separatore tra numero e titolo: "01_Titolo"
+    filename_style: "snake_case" # "snake_case" (a_b) o "kebab_case" (a-b)
+
+
+  index_header_template: "content/chapters/3_requirements/requirement/requisiti-funzionali/requisiti-obbligatori/content/deps/index_header_template.typ"
+  index_row_template: "content/chapters/3_requirements/requirement/requisiti-funzionali/requisiti-obbligatori/content/deps/index_row_template.typ"
+  index_footer_template: "content/chapters/3_requirements/requirement/requisiti-funzionali/requisiti-obbligatori/content/deps/index_footer_template.typ"
+
+  # (Opzionale) File template da copiare per i nuovi file
+  template_path: "content/chapters/3_requirements/requirement/requisiti-funzionali/requisiti-obbligatori/content/deps/template.typ"
+
+# La struttura gerarchica
+structure:
+    - Ingestion di documenti:
+    - Avvia ingestion
+    - Ingestion liste entità:
+    - ingestion lista entità:
+    - Caricamento blocco entità
+    - Ingestione lista ticket:
+    - Ingestione lista conversation item:
+    - Ingestione lista attachments:
+    - Termina Ingestion:
+    - Errore termine ingestion
+    - Fallimento ingestion
+    - Ricerca su singola entità:
+    - Inserimento query su singola entità
+    - Ricezione risultati ricerca singola entità
+    - Ricerca full-text
+    - Ricerca semantica
+    - Ricerca ibrida:
+    - Aggiunta pesi di fusione ricerca singola entità
+    - Ricerca ibrida con RRF
+    - Inserimento query su singola entità non valida
+    - Errore ricerca su singola entità 
+    - Ricerca linked:
+    - Inserimento query linked
+    - Ricezione risultati ricerca linked
+    - Ricerca linked full-text
+    - Ricerca linked semantica
+    - Ricerca linked ibrida:
+    - Aggiunta pesi di fusione ricerca linked
+    - Ricerca linked ibrida con RRF
+    - Inserimento query linked non valida
+    - Errore ricerca linked 
+    - Avvia test
+    - Visualizza dashboard performance:
+    - Visualizza id run test
+    - Visualizza metriche di performance:
+    - Visualizzazione retrieval latency:
+    - Visualizzazione retrieval latency con ingestion attiva
+    - Visualizzazione retrieval latency con ingestion non attiva
+    - Visualizzazione retrieval answer rate
+    - Visualizzazione retrieval mrr
+    - Visualizzazione retrieval hitrate@1
+    - Visualizzazione retrieval hitrate@5
+    - Visualizzazione retrieval hitrate@10
+    - Visualizzazione retrieval wins
+    - Visualizzazione not found
+    - Visualizza dashboard performance test in corso:
+    - Visualizza dashboard performance test terminato:
+    - Nessuna run di test trovata

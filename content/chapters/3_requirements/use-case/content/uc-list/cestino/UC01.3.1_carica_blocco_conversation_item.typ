@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core - API",
+                system-name:"Sistema core",
   parent-uc: "Ingestione lista conversation item",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),

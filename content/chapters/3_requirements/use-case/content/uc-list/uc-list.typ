@@ -34,9 +34,11 @@
 
 #include "UC03.5_ricerca_ibrida.typ"
 
-#include "UC03.5.1_ricerca_ibrida_con_rrf.typ"
+#include "UC03.5.1_aggiunta_pesi_di_fusione_ricerca_singola_entità.typ"
 
-#include "UC03.5.2_ricerca_ibrida_con_modello_di_re_ranking.typ"
+#include "UC03.5.2_ricerca_ibrida_con_rrf.typ"
+
+#include "UC03.5.3_ricerca_ibrida_con_modello_di_re_ranking.typ"
 
 #include "UC04_inserimento_query_su_singola_entità_non_valida.typ"
 
@@ -54,9 +56,11 @@
 
 #include "UC06.5_ricerca_linked_ibrida.typ"
 
-#include "UC06.5.1_ricerca_linked_ibrida_con_rrf.typ"
+#include "UC06.5.1_aggiunta_pesi_di_fusione_ricerca_linked.typ"
 
-#include "UC06.5.2_ricerca_linked_ibrida_con_modello_di_re_ranking.typ"
+#include "UC06.5.2_ricerca_linked_ibrida_con_rrf.typ"
+
+#include "UC06.5.3_ricerca_linked_ibrida_con_modello_di_re_ranking.typ"
 
 #include "UC07_inserimento_query_linked_non_valida.typ"
 
