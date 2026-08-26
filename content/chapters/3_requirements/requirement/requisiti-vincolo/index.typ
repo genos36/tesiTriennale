@@ -7,6 +7,6 @@
 
 #let constr-req=obb+des+opz
 
-#figure(caption:"Requisiti funzionali")[
+#figure(caption:"Requisiti di vincolo")[
 #req-table(constr-req, columns: (auto,2fr,1fr))
 ]<tab:requisiti-vincolo>

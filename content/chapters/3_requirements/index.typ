@@ -47,17 +47,28 @@ In @tab:requisiti-funzionali, tab:requisiti-qualitativi e tab:requisiti-vincolo 
   #show figure: set block(breakable: false)
 
   #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb as f-obb,des as f-des,opz as f-opz 
-  #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as m-obb,des as m-des,opz as m-opz 
+  #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as c-obb,des as c-des,opz as c-opz 
+  #import "/content/chapters/3_requirements/requirement/requisiti-qualita/index.typ":obb as q-obb,des as q-des,opz as q-opz 
 
   #let functional-count=(
     f-obb.len(),
     f-des.len(),
     f-opz.len(),
   )
-  #let mandatory-count=(
-    m-obb.len(),
-    m-des.len(),
-    m-opz.len(),
+  #let constraint-count=(
+    c-obb.len(),
+    c-des.len(),
+    c-opz.len(),
+  )
+  #let quality-count=(
+    q-obb.len(),
+    q-des.len(),
+    q-opz.len(),
+  )
+  #let total-count=(
+    functional-count.at(0)+constraint-count.at(0)+quality-count.at(0),
+    functional-count.at(1)+constraint-count.at(1)+quality-count.at(1),
+    functional-count.at(2)+constraint-count.at(2)+quality-count.at(2),
   )
   #figure(
     table(
@@ -66,9 +77,12 @@ In @tab:requisiti-funzionali, tab:requisiti-qualitativi e tab:requisiti-vincolo 
       [Functional],
       ..functional-count.map(it=>str(it)),
       [#functional-count.sum()],
-      [Mandatory],
-      ..mandatory-count.map(it=>str(it)),
-      [#mandatory-count.sum()],
+      [Constraint],
+      ..constraint-count.map(it=>str(it)),
+      [#constraint-count.sum()],
+      [Qualitative],
+      ..quality-count.map(it=>str(it)),
+      [#quality-count.sum()],
 
       // [Qualitative],
       // [#getQR(getLen: true).at(0)],
@@ -83,10 +97,8 @@ In @tab:requisiti-funzionali, tab:requisiti-qualitativi e tab:requisiti-vincolo 
       // [#getCR(getLen: true).sum()],
 
       [*Totale*],
-      // [*#{ getFR(getLen: true).at(0) + getQR(getLen: true).at(0) + getCR(getLen: true).at(0) }*],
-      // [*#{ getFR(getLen: true).at(1) + getQR(getLen: true).at(1) + getCR(getLen: true).at(1) }*],
-      // [*#{ getFR(getLen: true).at(2) + getQR(getLen: true).at(2) + getCR(getLen: true).at(2) }*],
-      // [*#{ getFR(getLen: true).sum() + getQR(getLen: true).sum() + getCR(getLen: true).sum() }*],
+      ..total-count.map(it=>str(it)),
+      [#total-count.sum()],
 
       align: (center + horizon),
     ),

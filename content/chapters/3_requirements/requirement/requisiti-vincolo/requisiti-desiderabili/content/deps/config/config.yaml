@@ -30,4 +30,4 @@ settings:
 structure:
     - Uso kubernetes
     - Non ordine dei dati in ingestion
-    - Benchmark avanzati
+    # - Benchmark avanzati

@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Prova prova"
+#let req-name="Benchmark intermedio"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,11 +11,10 @@
     ],
 
   descrizione:[
+    Il sistema deve superare i benchmark previsti sul seguente volume di dati di  100 000 ticket
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:(
-    
-  )
+  fonti:[Colloqui con il tutor]
 )

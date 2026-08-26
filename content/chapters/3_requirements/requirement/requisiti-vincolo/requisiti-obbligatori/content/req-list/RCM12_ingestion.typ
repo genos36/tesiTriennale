@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Non ordine dei dati in ingestion"
+#let req-name="Ingestion"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,11 +11,9 @@
     ],
 
   descrizione:[
-    Il sistema principale deve supportare flussi di dati paralleli e non ordinati di dati durante l'ingestion.
-
-    Con non ordinati si intende che è possibile caricare prima gli attachment e poi i ticket.
+    Il sistema principale deve implementare la funzionalità di ingestion dei dati
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[Colloquio con il tutor]
+  fonti:[Piano di lavoro]
 )

@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Non ordine dei dati in ingestion"
+#let req-name="Utilizzo di postgresql"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,11 +11,15 @@
     ],
 
   descrizione:[
-    Il sistema principale deve supportare flussi di dati paralleli e non ordinati di dati durante l'ingestion.
+    Il sistema principale deve utilizzare un database relazionale postgres.
 
-    Con non ordinati si intende che è possibile caricare prima gli attachment e poi i ticket.
+    La ricerca semantica va realizzata sfruttando l'estensione pgvector.
+
+    La ricerca full-text va realizzata sfruttando le funzioni native di postgres
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[Colloquio con il tutor]
+  fonti:[
+    Piano di lavoro
+  ]
 )

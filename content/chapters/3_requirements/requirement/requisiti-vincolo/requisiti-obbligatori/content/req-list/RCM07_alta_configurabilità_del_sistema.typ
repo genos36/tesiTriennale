@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-      Il sistema e il suo modello dati devono essere altamente configurabili.
+      Il sistema principale e il suo modello dati devono essere altamente configurabili.
       #set list(marker: sym.bullet)
 
       La richiesta di configurabilità è da intendersi nel seguente modo:

@@ -19,13 +19,9 @@
 
 #let table-cells=(:)
 
-#import "RQD01_prova_prova.typ": data as item_0, req-name as req-0
-
-#{
-item_0.fonti=utils.format-array(item_0.fonti,transf:utils.uc-link)
+#import "RQD01_benchmark_intermedio.typ": data as item_0, req-name as req-0
 
 
-}
 #table-cells.insert(
   req-0
   ,

@@ -41,17 +41,6 @@
 
 
 
-#import "RCD03_benchmark_avanzati.typ": data as item_2, req-name as req-2
-
-
-#table-cells.insert(
-  req-2
-  ,
-  item_2
-  )
-
-
-
 
 
 // ============================================================================

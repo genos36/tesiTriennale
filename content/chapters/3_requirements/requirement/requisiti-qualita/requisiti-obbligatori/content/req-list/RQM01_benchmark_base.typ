@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Utilizzo di postgresql"
+#let req-name="Benchmark base"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,15 +11,10 @@
     ],
 
   descrizione:[
-    Deve essere utilizzato un database relazionale postgres.
+    Il sistema deve superare i benchmark previsti sul seguente volume di dati di  10 000 ticket
 
-    La ricerca semantica va realizzata sfruttando l'estensione pgvector.
-
-    La ricerca full-text va realizzata sfruttando le funzioni native di postgres
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[
-    Piano di lavoro
-  ]
+  fonti:[Colloqui con il tutor]
 )

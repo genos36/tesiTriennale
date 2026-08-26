@@ -28,13 +28,17 @@ settings:
 
 # La struttura gerarchica
 structure:
-    - Rispetto modello dati HDA
+    - Utilizzo python
+    - Utilizzo fastapi
+    - Utilizzo embedder remoto
     - Utilizzo di PostgreSQL
+    - Utilizzo di grafana
+    - Rispetto modello dati HDA
     - Alta configurabilità del sistema
     - Realizzazione ricerche similarità
-    - Benchmark base
+    # - Benchmark base
     - Ricerca full text ottimizzata su lingua
     - Ricerca linked
     - Roundtrip unico per le ricerche
     - Ingestion
-
+    - specifiche sistema di test

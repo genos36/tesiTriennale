@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Realizzazione ricerche similarità"
+#let req-name="Utilizzo di grafana"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,13 +11,9 @@
     ],
 
   descrizione:[
-    #set list(marker:sym.bullet)
-      Il sistema deve implementare i seguenti tipi di ricerche di similarità sulle singole entità:
-      - Semantica
-      - Full-text
-      - Ibrida
+    Il sistema di test deve utilizzare grafana per la costruzione e gestione della dashboard
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[Piano di lavoro]
+  fonti:[Colloqui con il tutor]
 )

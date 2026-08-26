@@ -19,7 +19,7 @@
 
 #let table-cells=(:)
 
-#import "RCM01_rispetto_modello_dati_hda.typ": data as item_0, req-name as req-0
+#import "RCM01_utilizzo_python.typ": data as item_0, req-name as req-0
 
 
 #table-cells.insert(
@@ -30,7 +30,7 @@
 
 
 
-#import "RCM02_utilizzo_di_postgresql.typ": data as item_1, req-name as req-1
+#import "RCM02_utilizzo_fastapi.typ": data as item_1, req-name as req-1
 
 
 #table-cells.insert(
@@ -41,7 +41,7 @@
 
 
 
-#import "RCM03_alta_configurabilità_del_sistema.typ": data as item_2, req-name as req-2
+#import "RCM03_utilizzo_embedder_remoto.typ": data as item_2, req-name as req-2
 
 
 #table-cells.insert(
@@ -52,7 +52,7 @@
 
 
 
-#import "RCM04_realizzazione_ricerche_similarità.typ": data as item_3, req-name as req-3
+#import "RCM04_utilizzo_di_postgresql.typ": data as item_3, req-name as req-3
 
 
 #table-cells.insert(
@@ -63,7 +63,7 @@
 
 
 
-#import "RCM05_benchmark_base.typ": data as item_4, req-name as req-4
+#import "RCM05_utilizzo_di_grafana.typ": data as item_4, req-name as req-4
 
 
 #table-cells.insert(
@@ -74,7 +74,7 @@
 
 
 
-#import "RCM06_ricerca_full_text_ottimizzata_su_lingua.typ": data as item_5, req-name as req-5
+#import "RCM06_rispetto_modello_dati_hda.typ": data as item_5, req-name as req-5
 
 
 #table-cells.insert(
@@ -85,7 +85,7 @@
 
 
 
-#import "RCM07_ricerca_linked.typ": data as item_6, req-name as req-6
+#import "RCM07_alta_configurabilità_del_sistema.typ": data as item_6, req-name as req-6
 
 
 #table-cells.insert(
@@ -96,7 +96,7 @@
 
 
 
-#import "RCM08_roundtrip_unico_per_le_ricerche.typ": data as item_7, req-name as req-7
+#import "RCM08_realizzazione_ricerche_similarità.typ": data as item_7, req-name as req-7
 
 
 #table-cells.insert(
@@ -107,13 +107,57 @@
 
 
 
-#import "RCM09_ingestion.typ": data as item_8, req-name as req-8
+#import "RCM09_ricerca_full_text_ottimizzata_su_lingua.typ": data as item_8, req-name as req-8
 
 
 #table-cells.insert(
   req-8
   ,
   item_8
+  )
+
+
+
+#import "RCM10_ricerca_linked.typ": data as item_9, req-name as req-9
+
+
+#table-cells.insert(
+  req-9
+  ,
+  item_9
+  )
+
+
+
+#import "RCM11_roundtrip_unico_per_le_ricerche.typ": data as item_10, req-name as req-10
+
+
+#table-cells.insert(
+  req-10
+  ,
+  item_10
+  )
+
+
+
+#import "RCM12_ingestion.typ": data as item_11, req-name as req-11
+
+
+#table-cells.insert(
+  req-11
+  ,
+  item_11
+  )
+
+
+
+#import "RCM13_specifiche_sistema_di_test.typ": data as item_12, req-name as req-12
+
+
+#table-cells.insert(
+  req-12
+  ,
+  item_12
   )
 
 

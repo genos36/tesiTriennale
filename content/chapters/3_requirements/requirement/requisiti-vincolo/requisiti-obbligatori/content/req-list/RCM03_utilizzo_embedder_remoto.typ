@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Ingestion"
+#let req-name="Utilizzo embedder remoto"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,9 +11,9 @@
     ],
 
   descrizione:[
-    Il sistema deve implementare la funzionalità di ingestion dei dati
+    Il sistema principale deve utilizzare un modello di embedding remoto di proprietà dell'azienda
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[Piano di lavoro]
+  fonti:[Colloquio con il tutor]
 )
