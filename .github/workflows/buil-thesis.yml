@@ -18,7 +18,7 @@ jobs:
         uses: typst-community/setup-typst@v3
 
       - name: Compile thesis
-        run: typst compile main.typ thesis.pdf
+        run: typst compile tesi.typ tesi.pdf
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
