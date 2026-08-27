@@ -146,10 +146,10 @@ La pipeline di ingestion segue il principio dell'architettura esagonale
     hanno tutti una porta inbound specifica (suffisso use case) per lo scopo che devono realizzare
     La serializzazione e deserializzazione è in automatico con pydantic
 
-    l'adapter inbound per l'ingestion è realizzato con fast api, prende in input un array di raw batch un'entità che rappresenta un blocco di dati grezzi in input
+    l'adapter inbound per l'ingestion è realizzato con fastapi, prende in input un array di raw batch un'entità che rappresenta un blocco di dati grezzi in input
     ritorna una streaming response che comunica su quali record è fallito il processo di ingestion
 
-    inizialmente è stata progettata per avere uno stream sia in input che in output ma fast api non supporta tale funzione, perciò il passaggio a lista di blocchi è stato un fix di convenienza 
+    inizialmente è stata progettata per avere uno stream sia in input che in output ma fastapi non supporta tale funzione, perciò il passaggio a lista di blocchi è stato un fix di convenienza 
 
   ],
   [

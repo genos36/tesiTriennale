@@ -17,8 +17,8 @@ astrazione dei problemi complessi e progettazione di soluzioni algoritmiche gene
 promuovendo inoltre la collaborazione con i tutor.
 
 Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e approfondire le seguenti tematiche:
-- Database avanzati: Padronanza nell'utilizzo di PostgresQL non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
-- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di PostgresQL, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
+- Database avanzati: Padronanza nell'utilizzo di Postgres non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
+- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
 - Testing delle performance: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
 == Vincoli
 Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca. 
@@ -170,7 +170,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Sbilanciamento metodologico nel confronto",
                     description: [
-                      Essendo PostgresQL nato come RDBMS ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
+                      Essendo Postgres nato come RDBMS ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
                     ],
                     mitigation: [
                       Il set di query e il benchmark verranno definiti e "congelati" a priori, in stretta parità di funzionalità con l'attuale utilizzo in produzione, evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma, cercheranno solo di rappresentare lo scenario reale.
@@ -182,11 +182,11 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Bias tecnologico e deriva dei requisiti",
                     description: [
-                      Esiste il rischio di adattare inconsciamente l'implementazione per favorire le peculiarità di PostgresQL, introducendo logiche non necessarie o deviazioni dai requisiti originali solo per giustificare l'adozione della nuova tecnologia.
+                      Esiste il rischio di adattare inconsciamente l'implementazione per favorire le peculiarità di Postgres, introducendo logiche non necessarie o deviazioni dai requisiti originali solo per giustificare l'adozione della nuova tecnologia.
                      
                     ],
                     mitigation: [
-                      Adozione  dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di PostgresQL non inquinino il comportamento atteso del sistema.
+                      Adozione  dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema.
                     ],
                     probability: "Media",
                     consequences: [Alto],
@@ -200,7 +200,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
                     ],
                     mitigation: [
-                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, PostgresQL + pgvector.
+                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, Postgres + pgvector.
 
                       Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico.
                     ],

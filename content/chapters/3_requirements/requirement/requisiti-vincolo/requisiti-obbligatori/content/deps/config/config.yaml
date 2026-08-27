@@ -31,7 +31,7 @@ structure:
     - Utilizzo python
     - Utilizzo fastapi
     - Utilizzo embedder remoto
-    - Utilizzo di PostgresQL
+    - Utilizzo di Postgres
     - Utilizzo di grafana
     - Rispetto modello dati HDA
     - Alta configurabilità del sistema

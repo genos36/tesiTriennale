@@ -27,7 +27,7 @@
     short: [Pgvector],
     // long: [Large Language Model],
     description: [
-      Estensione per PostgresQL, un database management system, che semplifica l'utilizzo dei vettori, consentendoti di archiviarli, cercarli e indicizzarli direttamente nel tuo database relazionale.
+      Estensione per Postgres, un database management system, che semplifica l'utilizzo dei vettori, consentendoti di archiviarli, cercarli e indicizzarli direttamente nel tuo database relazionale.
     ],
   ),
   (
