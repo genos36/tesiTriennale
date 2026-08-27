@@ -44,6 +44,8 @@ L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale sem
 / #link(
     <cap:introduzione-teorica>,
   )[Il quarto capitolo]: descrive le tecnologie esistenti per risolvere i problemi indicando gli aspetti teorici alla base, gli strumenti che sono stati scelti e con quali criteri;
+    <cap:analisi-iniziale>,
+  )[Il quarto capitolo]: descrive le tecnologie esistenti per risolvere i problemi indicando gli aspetti teorici alla base, gli strumenti che sono stati scelti e con quali criteri;
 / #link(
     <cap:lavoro-svolto>,
   )[Il quinto capitolo]: descrive nel dettaglio le problematiche sorte nel concreto durante lo svolgimento del progetto;

@@ -37,7 +37,7 @@
                 - Nel sistema è attiva una sessione di ingestion
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni relative alle liste liste di entità
+                - Il sistema ha salvato le informazioni relative alle liste di entità
                 - Il sistema ha salvato gli embedding relativi alle liste di entità
                 - Il sistema ha salvato le informazioni di lingua relative alle liste di entità
                         ],

@@ -47,7 +47,7 @@ La ricerca su singola entità esegue la ricerca solo su una delle entità del mo
 === Limiti di Elasticsearch <limiti-elasticsearch>
 Il limite principale di Elasticsearch è la non natività dei join, non nascendo come database relazionale il supporto ai join non è nativo e richiede work-around.
 
-Un altro limite del sistema basato su Elasticsearch è l'impossibilità di eseguire la ricerca per similarità su sottoinsiemi di campi di testo divisi in chunk, questo non è un limite esclusivo di Elasticsearch ma anche dell'applicativo aziendale che lo usa. Tale funzionalità però è implementata per la ricerca full-text.
+Un altro limite del sistema basato su Elasticsearch è l'impossibilità di eseguire la ricerca per similarità su sottoinsiemi di campi di testo divisi in chunk, questo non è direttamente un limite di Elasticsearch ma deriva anche da come viene usato nell'applicativo aziendale che lo usa. Tale funzionalità però è implementata per la ricerca full-text.
 
 Per rendere più chiaro in cosa consiste questo limite utilizziamo un esempio, è possibile che si voglia effettuare la ricerca semantica solo sul campo dati Problem o solo sul campo Solution di un ticket, con l'attuale sistema basato su Elasticsearch non è possibile.
 
@@ -143,7 +143,7 @@ Ogni tecnologia è contrassegnata anche dal relativo numero di versione, in quan
 Il progetto è composto da 2 sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni 
 #link(<tec:main-system>)[sistema principale] e #link(<tec:test-system>)[sistema di test].
 
-Fanno eccezione Python e Postgres, in quanto comuni ad entrambi gli stack tecnologici, mentre Grafana non fa formalmente parte di nessuno dei 2 sistemi.
+Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stack tecnologici, mentre Grafana non fa formalmente parte di nessuno dei 2 sistemi.
 
 #technology-sheet(
   nome: "Python",
@@ -159,6 +159,21 @@ Fanno eccezione Python e Postgres, in quanto comuni ad entrambi gli stack tecnol
   ],
   alternative: (),
 )
+
+#technology-sheet(
+  nome: "Poetry",
+  versione: "2.0.0",
+  // logo: "/images/postgres.png",
+  // caption: "Logo Postgres",
+  descrizione: [
+    Strumento per la gestione delle dipendenze
+  ],
+  motivazione: [
+    Scelto perché è uno strumento che ho già usato in passato 
+  ],
+  alternative: (),
+)
+
 #technology-sheet(
   nome: "PostgreSQL",
   t-label: "tec:postgres",
@@ -375,9 +390,12 @@ Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgre
 
 
 ==== Deployment
-Il sistema di test è progettato per essere containerizzato tramite Docker, viene usato docker compose per l'orchestrazione e la gestione del database.
+Anche il sistema di test è containerizzato tramite Docker ed è orchestrato, insieme a database delle metriche e Grafana, tramite un'unica configurazione Docker Compose.
 
-Per lo sviluppo in locale questo sistema si occupa anche di istanziare Grafana
+La containerizzazione di Locust non risponde a un'esigenza tecnica stretta: durante lo sviluppo è stato utilizzato esclusivamente in modalità headless, e potrebbe quindi essere eseguito direttamente sulla macchina host. 
+È stata comunque scelta per uniformità con il resto dello stack e per poter avviare l'intero ambiente di test con un unico comando, senza dover gestire manualmente le dipendenze. 
+
+Vi è inoltre il vantaggio di un'evoluzione più semplice qualora in futuro si volesse utilizzare l'interfaccia UI offerta da Locust.
 
 ==== Strumenti di supporto
 Viene usato pydantic-settings per semplificare la gestione delle variabili d'ambiente
