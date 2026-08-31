@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Utilizzo di Postgresql"
+#let req-name="Utilizzo di Postgres"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)

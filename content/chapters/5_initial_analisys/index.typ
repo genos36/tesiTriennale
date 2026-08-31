@@ -1,9 +1,9 @@
 #import "/metadata/mod.typ": data
 #pagebreak(to: "odd")
 
-= Analisi iniziale<cap:analisi-iniziale>
+= Principi e caratteristiche del sistema  <cap:analisi-iniziale>
 #text(style: "italic", [
-  In questo capitolo descrivo i primi approcci e le prime idee applicate allo svolgimento del progetto.
-
+In questo capitolo vengono descritti i principi e le caratteristiche che guidano la progettazione dei due sistemi,
 ])
 #v(1em)
+

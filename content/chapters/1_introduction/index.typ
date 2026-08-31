@@ -119,8 +119,8 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
 == Scelta del progetto
 Ho scelto questo progetto per 3 ragioni principali:
-+ Rilevanza dell'argomento: alla base dei moderni sistemi di Intelligenza Artificiale, come la RAG, che lo utilizzano per fornire contesto ai Large Language Models.
++ Rilevanza dell'argomento: alla base dei moderni sistemi di Intelligenza Artificiale, come la #gl("rag"), che utilizzano l'information retrieval per fornire contesto agli #gl("llm").
 
-+ Evoluzione di un sistema reale: permette di partecipare all'evoluzione di un software in produzione, che durante il percorso universitario non ho affrontato.
++ Evoluzione di un sistema reale: permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato.
 
-+ Stack tecnologico: offre l'opportunità di operare sul campo con strumenti e framework moderni.
++ Stack tecnologico: offre l'opportunità di operare con strumenti e framework moderni.

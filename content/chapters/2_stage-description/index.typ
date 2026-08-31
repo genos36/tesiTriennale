@@ -27,6 +27,8 @@ I vincoli principali sono i seguenti:
 - Utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
 - Utilizzo della ricerca full-text nativa di Postgres, per semplicità di licensing.
 
+Estensioni più evolute come ParadeDB, pur essendo state valutate in quanto si propongono come sostituto diretto della componente full-text di Elasticsearch su Postgres, sono state escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
+
 == Pianificazione
 
 
@@ -195,7 +197,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Dispersione del perimetro di test su tecnologie alternative",
                     description: [
-                      L'evoluzione rapida del panorama RAG solleva l'interrogativo su alternative tecnologiche, come OpenSearch.
+                      L'evoluzione rapida dell'information retrieval solleva l'interrogativo su alternative tecnologiche, come OpenSearch.
 
                       La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
                     ],

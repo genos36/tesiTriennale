@@ -12,46 +12,8 @@
 ])
 #v(1em)
 
-== Contesto e problema <teoria:contesto-problema>
+#include "analisi-terorica/contesto-problema.typ"
 
-Il progetto ha una finalità esplorativa, mira solo a valutare l'adeguatezza di Postgres come sistema di information retrieval.
-
-L'adeguatezza è valutata secondo due criteri: i tempi di risposta e la qualità del retrieval, misurata tramite metriche di hit rate a diversi livelli di granularità. La definizione completa delle metriche è riportata nel caso d'uso #uc-link-extended("Visualizza metriche di performance",separator: "-").
-
-#upper("è") stato esplicitamente concordato con il tutor aziendale che le metriche relative al consumo di risorse non sono prioritarie per il tirocinio, in quanto una volta effettuato il deployment su server aziendale è già realizzato il tracciamento del consumo di risorse ed è quindi possibile estendere la dashboard Grafana per mostrare anche quello
-
-
-L'azienda dispone già di un sistema di information retrieval basato su Elasticsearch, tuttavia questo sistema ha delle limitazioni legate alla sua natura non relazionale e orientata ai documenti. Il sistema basato su Postgres mira a replicarne le funzionalità in modo fedele eccetto per alcune deviazioni, indicate nella @limiti-elasticsearch, che rispecchiano quanto realmente voluto dall'azienda ma che non è possibile realizzare nel sistema basato su Elasticsearch 
-
-Per giustificare alcune scelte e capire meglio l'utilità di alcune funzionalità, in particolare della ricerca linked, è utile ricordare che il sistema di information retrieval si colloca dentro un sistema RAG, per ulteriori informazioni si veda @cap:descrizione-stage
-
-#block(breakable: false)[
-Come già detto nel requisito #rcm-link("Rispetto modello dati hda") il modello dati di riferimento è quello del ticket service HDA.
-
-Costituito dai seguenti elementi:
-- Ticket
-- Conversation item
-- Attachments 
-
-E dalle seguenti relazioni 1 a molti:
-- Ticket #sym.arrow.long Conversation item
-- Ticket #sym.arrow.long Attachment
-- Conversation item #sym.arrow.long Attachment
-
-]
-
-La ricerca per similarità viene eseguita in due modalità: su singola entità e linked 
-
-La ricerca su singola entità esegue la ricerca solo su una delle entità del modello dati mentre la ricerca linked cerca su tutte le unità del modello e ricostruisce per ogni entità cercata una visione globale del risultato tramite join e poi unisce i dati ottenuti in un unico risultato, il funzionamento dettagliato è descritto in TODO CAP PROGETTAZIONE
-
-=== Limiti di Elasticsearch <limiti-elasticsearch>
-Il limite principale di Elasticsearch è la non natività dei join, non nascendo come database relazionale il supporto ai join non è nativo e richiede work-around.
-
-Un altro limite del sistema basato su Elasticsearch è l'impossibilità di eseguire la ricerca per similarità su sottoinsiemi di campi di testo divisi in chunk, questo non è direttamente un limite di Elasticsearch ma deriva anche da come viene usato nell'applicativo aziendale che lo usa. Tale funzionalità però è implementata per la ricerca full-text.
-
-Per rendere più chiaro in cosa consiste questo limite utilizziamo un esempio, è possibile che si voglia effettuare la ricerca semantica solo sul campo dati Problem o solo sul campo Solution di un ticket, con l'attuale sistema basato su Elasticsearch non è possibile.
-
-Per questo motivo il sistema di ricerca realizzato durante il tirocinio non rispecchierà Elasticsearch sotto questo aspetto, invece si allineerà con il comportamento desiderato dall'impresa.
 
 == Basi teoriche
 L'#gl("information-retrieval",long:true) si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
@@ -184,7 +146,7 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Comunemente noto come *Postgres*,  è un database open source che vanta una solida reputazione in termini di affidabilità, flessibilità e supporto degli standard tecnici aperti.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("Utilizzo di PostgreSQL") 
+    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS") 
   ],
   alternative: (),
 )
@@ -306,7 +268,7 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
     Estensione Postgres che implementa funzionalità di ricerca semantica basate sui vettori
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("Utilizzo di PostgreSQL") 
+    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS") 
   ],
   alternative: (),
 )

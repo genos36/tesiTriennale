@@ -12,20 +12,17 @@
 Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare, della durata di circa trecentoventi ore, dal laureando #data.myName presso l'azienda #data.myCompany. Lo stage è stato condotto sotto la supervisione del tutor aziendale #data.myTutor, mentre il prof. #data.myProf ha ricoperto il ruolo di tutor accademico.
 
 \ \
-
   Al centro di questo elaborato vi è la progettazione e lo sviluppo del modulo di information retrieval basato su ricerca semantica, ricerca full-text e ricerca ibrida.
-
-  Questo sistema trova applicazione nella parte retrieval dei sistemi #gl("rag"), oggi fondamentale poiché permettono agli #gl("llm") di accedere a basi di conoscenza private e informazioni aggiornate senza la necessità di ricorrere a costosi processi di retraining, abbattendo drasticamente il rischio di allucinazioni da parte dell'Intelligenza Artificiale.
 \ \
-Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate, in particolare swi valuterà una modalità di ricerca detta linked che permette di cercare un'informazione all'interno dell'intero database.
+Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate, in particolare si valuterà una modalità di ricerca detta linked che permette di cercare un'informazione all'interno dell'intero database e di ricostruirne il contesto.
 \ \
-Per convalidare questa ipotesi e fornire una misura rigorosa della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test comparativi contro una pipeline basata su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
+Per convalidare questa ipotesi e fornire una misura rigorosa della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test comparativi contro un sistema basato su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
 
 I 2 sistemi potrebbero non adottare approcci equivalenti qualora pgvector e Postgres permettano di implementare funzionalità utili non attualmente utilizzate sul sistema basato su elasticsearch. 
 \ \
-L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di superare il paradigma della persistenza poliglotta e dei workaround per implementare concetti relazionali come le relazioni tra entità, eliminando la necessità di mantenere sistemi separati. Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
+L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di eliminare i workaround che implementano concetti relazionali, di eliminare la necessità di 2 sistemi di persistenza dei dati che utilizzano linguaggi diversi.
 
-// Sono previsti test comparativi tra il nuovo sistema e il sistema attualmente in uso.
+Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
 
 #linebreak()
 #text(24pt, weight: "semibold")[Organizzazione del testo]
@@ -40,18 +37,19 @@ L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale sem
   )[Il secondo capitolo]: descrive l'azienda, il progetto e l'organizzazione del lavoro, definendo gli obiettivi e analizzando i rischi;
 / #link(
     <cap:analisi-requisiti>,
-  )[Il terzo capitolo]: descrive l’analisi dei requisiti del progetto, indicando un’analisi degli utenti, i casi d’uso e il tracciamento dei requisiti;
+  )[Il terzo capitolo]: descrive l'analisi dei requisiti del progetto, indicando un'analisi degli utenti, i casi d'uso e il tracciamento dei requisiti;
 / #link(
     <cap:introduzione-teorica>,
-  )[Il quarto capitolo]: descrive le tecnologie esistenti per risolvere i problemi indicando gli aspetti teorici alla base, gli strumenti che sono stati scelti e con quali criteri;
-    <cap:analisi-iniziale>,
-  )[Il quarto capitolo]: descrive le tecnologie esistenti per risolvere i problemi indicando gli aspetti teorici alla base, gli strumenti che sono stati scelti e con quali criteri;
+  )[Il quarto capitolo]: descrive le tecnologie usate per risolvere i problemi indicando gli aspetti teorici alla base, gli strumenti che sono stati scelti e con quali criteri;
+/ #link(
+      <cap:analisi-iniziale>,
+  )[Il quinto capitolo]: descrive le fasi iniziali di ricerca, le informazioni così ricavate e come queste hanno influenzato lo sviluppo;
 / #link(
     <cap:lavoro-svolto>,
-  )[Il quinto capitolo]: descrive nel dettaglio le problematiche sorte nel concreto durante lo svolgimento del progetto;
+  )[Il sesto capitolo]: descrive nel dettaglio le problematiche sorte nel concreto durante lo svolgimento del progetto;
 / #link(
     <cap:conclusioni>,
-  )[Il sesto capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.
+  )[Il settimo capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.
 #linebreak()
 #text(24pt, weight: "semibold", "Convenzioni tipografiche")
 #linebreak()

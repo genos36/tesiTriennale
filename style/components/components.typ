@@ -35,8 +35,9 @@
   show heading: set block(above: 2em, below: 1.4em)
 
   // Impostiamo di default la traduzione di "Capitolo"
-  set heading(numbering: "1.1", supplement: data.chapter)
-
+  set heading(numbering: "1.1", )
+  show heading.where(level: 1): set heading(supplement: data.chapter)
+  
   show heading.where(level: 1): it => {
     pagebreak(to: "odd", weak: true)
     stack(

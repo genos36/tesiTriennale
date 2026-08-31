@@ -52,7 +52,7 @@
 
 
 
-#import "RCM04_utilizzo_di_postgresql.typ": data as item_3, req-name as req-3
+#import "RCM04_utilizzo_di_postgres.typ": data as item_3, req-name as req-3
 
 
 #table-cells.insert(
