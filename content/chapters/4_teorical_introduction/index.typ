@@ -41,7 +41,7 @@ La ricerca ibrida combina i punti di forza della ricerca semantica e di quella f
 
 La combinazione unisce i risultati di entrambe le ricerche, assegnando un punteggio maggiore (boost) a quelli individuati da entrambe, senza scartare i risultati rilevanti prodotti da una sola delle due.
 
-Questa fusione avviene principalmente tramite Reciprocal Rank Fusion (RRF) (casi d'uso #uc-link-extended("Ricerca ibrida con RRF") e #uc-link-extended("Ricerca linked ibrida con RRF")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking")).
+Questa fusione avviene principalmente tramite Reciprocal Rank Fusion(casi d'uso #uc-link-extended("Ricerca ibrida con RRF") e #uc-link-extended("Ricerca linked ibrida con RRF")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking")).
 
 == Architettura del progetto
 Ho scelto di separare il progetto in due sistemi distinti e indipendenti: #link(<teoria:main-system>,"sistema principale") e #link(<teoria:test-system>,"sistema di test").
@@ -258,6 +258,7 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
     (nome: "ParadeDB",versione:"0.25.0", motivo: "licenza incompatibile con i vincoli aziendali sull'uso commerciale"),
     (nome: "pg_textsearch (TimescaleDB)",versione:"1.3.1", motivo: [il rapporto tra vantaggi,limitazioni e incognite da valutare non è stato ritenuto sufficientemente alto da giustificarne l'adozione, per le limitazioni si veda #link("https://github.com/timescale/pg_textsearch/blob/v1.3.1/README.md#limitations"), le più importanti sono la mancanza di phrase_query, l'incognita di comparabilità dei punteggi di diverse partizioni di una tabella, il partizionamento era già previsto per conformarsi raccomandazioni di pg vector, la stessa incognita va applicata alla confrontabilità dei punteggi di 2 entità diverse durante la ricerca linked]),
   ),
+  t-label: "tec:fts-nativa"
 )
 #technology-sheet(
   nome: "Pgvector",

@@ -29,14 +29,14 @@ I vincoli principali sono i seguenti:
 
 Estensioni più evolute come ParadeDB, pur essendo state valutate in quanto si propongono come sostituto diretto della componente full-text di Elasticsearch su Postgres, sono state escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
 
-== Pianificazione
+== Pianificazione <pianificazione-settimane>
 
 
 Lo stage si articola in 320 ore distribuite su otto settimane da 40 ore.
 
 La pianificazione, derivata dal piano di lavoro, è la seguente:
 
-+ Prima Settimana - Studio e analisi iniziale del nuovo e del vecchio stack tecnologico e setup (40 ore): studio delle tecnologie, setup dell'ambiente di lavoro locale e prove generiche;
++ Prima Settimana - Studio e analisi iniziale del nuovo e del vecchio stack tecnologico e setup: studio delle tecnologie, setup dell'ambiente di lavoro locale e prove generiche;
 
 + Seconda Settimana - Analisi comparativa dettagliata di elastic search e Postgres con tentativo di modellazione di un sottoinsieme limitato del problema;
 

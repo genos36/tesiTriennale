@@ -73,4 +73,12 @@
         Processo algoritmico con cui un sistema assegna un punteggio di rilevanza a un insieme di documenti rispetto a una query, ordinandoli in una lista decrescente.
     ],
   ),
+  (
+    key: "principio-dei-cassetti",
+    // short: [IR],
+    long: [Principio dei cassetti],
+    description: [
+        Noto anche come 'pigeonhole principle', indica una classe di problemi in cui _n_ oggetti vengono distribuiti in _m_ contenitori, con $n > m$; ne consegue necessariamente che almeno un contenitore conterrà più di un oggetto.
+    ],
+  ),
 )
