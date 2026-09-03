@@ -33,7 +33,7 @@ Non tutte le capacità di Postgres analizzate in questa fase sono state successi
 
 == Principi del sistema principale
 In questa sezione vengono trattati principi e caratteristiche relativi al sistema principale.
-=== Definizione modello dati
+=== Definizione modello dati <main-system-definizione-modello-dati>
 Il modello dati del sistema principale deve rappresentare le entità del dominio del service desk HDA, articolate in ticket, conversation item e attachment #rcm-link("Rispetto modello dati hda"), collegate tra loro secondo una struttura relazionale gerarchica.
 
 Aggiungendo le caratteristiche richieste dal requisito #rcm-link("Alta configurabilità del sistema"), il modello dati così definito costituisce la fonte di verità del sistema, e comprende:
@@ -70,7 +70,7 @@ Questa necessità nasce da una differenza di principio tra le due tecnologie: El
 
 La stessa struttura facilita inoltre l'introduzione futura di ottimizzazioni mirate a sottoinsiemi di dati, ad esempio con gli indici parziali.
 
-==== Gestione della staging area
+==== Gestione della staging area <gestione-staging-area>
 Nella staging area vengono replicate solo le tabelle delle entità e dei chunk.
 
 Poiché le sessioni di ingestion vengono avviate e concluse esplicitamente, il database deve tenerne traccia dello stato. A tale scopo sono previste due tabelle:
@@ -97,7 +97,7 @@ L'adozione di impostazioni uniformi evita inoltre problemi in fase di combinazio
 
 Il presente lavoro non affronta la questione della paragonabilità diretta tra i punteggi prodotti da due o più fusioni RRF: stabilire se un semplice rescoring sia sufficiente, oppure se sia necessario un ulteriore livello di fusione, resta un aspetto da approfondire in lavori futuri.
 
-==== Ricerca semantica
+==== Ricerca semantica <analisi-ricerca-semantica>
 La configurazione condivisa per la ricerca semantica, richiamata in apertura di sezione, recepisce le seguenti ottimizzazioni raccomandate da pgvector:
 
 #list(
@@ -294,7 +294,7 @@ Anche la fase di ingestion adotta un principio di riduzione del numero di chiama
 == Principi del sistema di test
 In questa sezione vengono descritti i principi guida e le caratteristiche del sistema di test.
 
-=== Definizione modello dati
+=== Definizione modello dati 
 Il modello dati del sistema di test è composto da due parti: una riadattata dal modello dati del sistema principale, e una dedicata alla gestione della ground truth e del logging, trattata in @caratteristiche-db-test.
 
 Per quanto riguarda la parte riadattata, il sistema di test adotta una versione semplificata del modello dati del sistema principale: la definizione delle entità è la medesima, ma vengono meno i dettagli legati alla configurabilità, quali le configurazioni di ricerca e i vincoli relazionali. Anche la struttura delle ricerche è la stessa di quella descritta per il sistema principale, rimangono solo le parte ritenute utili per la finalità di allineamento all'ambiente di test.

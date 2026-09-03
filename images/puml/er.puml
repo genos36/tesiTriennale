@@ -1,0 +1,193 @@
+@startuml schema_er_progetto
+
+' title Schema entità-relazione concreto del progetto (dominio service desk HDA)
+
+entity "language" as language {
+  * code : char(2) <<PK>>
+  --
+  name : text
+}
+
+' ============================
+' TICKET
+' ============================
+entity "e_ticket" as e_ticket {
+  * f_id : varchar(32) <<PK>>
+  --
+  f_entity_id : varchar(32)
+  f_code : varchar(32)
+  f_service_id : varchar(32)
+  f_object_type_id : varchar(32)
+  f_account_id : varchar(32)
+  f_contact_id : varchar(32)
+  f_assigned_user_id : varchar(32)
+  f_owner_user_id : varchar(32)
+  f_closure_date : timestamptz
+  f_last_change : timestamptz
+  f_entity : varchar(32)
+  f_creation_date : timestamptz
+  f_ticket_status_id : varchar(32)
+  f_ticket_status_type : bigint
+  f_urgency_id : varchar(32)
+  f_impact_id : varchar(32)
+  f_ticket_priority_id : varchar(32)
+  f_ticket_source_id : varchar(32)
+  f_assigned_user_group_id : varchar(32)
+  f_assigned_user_or_group_id : varchar(32)
+  f_owner_user_group_id : varchar(32)
+}
+
+entity "e_ticket_field" as e_ticket_field {
+  * field_name : text <<PK>>
+  --
+  ' f_problem, f_solution, f_subject
+  logical_name : text
+}
+
+entity "e_ticket_chunk" as e_ticket_chunk {
+  * f_id : varchar(32) <<PK, FK>>
+  * field_name : text <<PK, FK>>
+  * chunk_counter : int <<PK>>
+  --
+  chunk_text : text
+  chunk_language : char(2) <<FK>>
+  embedding : vector(128)
+  tsv_simple : tsvector
+  tsv_lang : tsvector
+  ' campi filterable denormalizzati
+  f_last_change : timestamptz
+  f_closure_date : timestamptz
+}
+
+e_ticket ||--o{ e_ticket_chunk : "f_id"
+e_ticket_field ||--o{ e_ticket_chunk : "field_name"
+language ||--o{ e_ticket_chunk : "code = chunk_language"
+
+' ============================
+' CONVERSATION_ITEM
+' ============================
+entity "e_conversation_item" as e_conversation_item {
+  * f_id : varchar(32) <<PK>>
+  --
+  f_entity_id : varchar(32)
+  f_account_id : varchar(32)
+  f_contact_id : varchar(32)
+  f_ticket_id : varchar(32) <<FK>>
+  f_site_visible : boolean
+  f_entity : varchar(32)
+  f_user_id : varchar(32)
+}
+
+entity "e_conversation_item_field" as e_conversation_item_field {
+  * field_name : text <<PK>>
+  --
+  ' f_message
+  logical_name : text
+}
+
+entity "e_conversation_item_chunk" as e_conversation_item_chunk {
+  * f_id : varchar(32) <<PK, FK>>
+  * field_name : text <<PK, FK>>
+  * chunk_counter : int <<PK>>
+  --
+  chunk_text : text
+  chunk_language : char(2) <<FK>>
+  embedding : vector(128)
+  tsv_simple : tsvector
+  tsv_lang : tsvector
+  ' campo filterable denormalizzato
+  f_account_id : varchar(32)
+}
+
+e_conversation_item ||--o{ e_conversation_item_chunk : "f_id"
+e_conversation_item_field ||--o{ e_conversation_item_chunk : "field_name"
+language ||--o{ e_conversation_item_chunk : "code = chunk_language"
+e_ticket ||--o{ e_conversation_item : "f_id = f_ticket_id"
+
+' ============================
+' ATTACHMENTS
+' ============================
+entity "e_attachments" as e_attachments {
+  * f_id : varchar(32) <<PK>>
+  --
+  f_ticket_id : varchar(32) <<FK>>
+  f_conversation_item_id : varchar(32) <<FK>>
+}
+
+entity "e_attachments_field" as e_attachments_field {
+  * field_name : text <<PK>>
+  --
+  ' f_content
+  logical_name : text
+}
+
+entity "e_attachments_chunk" as e_attachments_chunk {
+  * f_id : varchar(32) <<PK, FK>>
+  * field_name : text <<PK, FK>>
+  * chunk_counter : int <<PK>>
+  --
+  chunk_text : text
+  chunk_language : char(2) <<FK>>
+  embedding : vector(128)
+  tsv_simple : tsvector
+  tsv_lang : tsvector
+  ' campo filterable denormalizzato
+  f_ticket_id : varchar(32)
+}
+
+e_attachments ||--o{ e_attachments_chunk : "f_id"
+e_attachments_field ||--o{ e_attachments_chunk : "field_name"
+language ||--o{ e_attachments_chunk : "code = chunk_language"
+e_ticket ||--o{ e_attachments : "f_id = f_ticket_id"
+e_conversation_item ||--o{ e_attachments : "f_id = f_conversation_item_id"
+
+' ============================
+' INGESTION TRACKING
+' ============================
+entity "ingestion_sessions" as ingestion_sessions {
+  * id : uuid <<PK>>
+  --
+  status : text
+  created_at : timestamptz
+}
+
+entity "ingestion_streams" as ingestion_streams {
+  * id : uuid <<PK>>
+  --
+  session_id : uuid <<FK>>
+  status : text
+  created_at : timestamptz
+}
+
+ingestion_sessions ||--o{ ingestion_streams : "id = session_id"
+
+' ============================
+' STAGING AREA (rappresentativa, mostrata per ticket)
+' ============================
+entity "e_ticket_staging" as e_ticket_staging {
+  * staging_id : bigint <<PK>>
+  --
+  f_id : varchar(32)
+  ...
+}
+
+entity "e_ticket_chunk_staging" as e_ticket_chunk_staging {
+  * staging_id : bigint <<PK>>
+  --
+  f_id : varchar(32)
+  field_name : text
+  chunk_counter : int
+  chunk_text : text
+  chunk_language : char(2)
+  embedding : real[]
+}
+
+note bottom of e_ticket_chunk_staging
+  Nessuna foreign key dichiarata sulle tabelle di
+  staging (deliberatamente permissive): solo indici
+  sulle colonne identificative e di riferimento.
+  Le tabelle di staging per conversation_item e
+  attachments seguono la stessa struttura.
+end note
+
+@enduml
