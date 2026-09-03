@@ -74,4 +74,16 @@ I rischi emersi durante lo stage sono riportati in @fig:rischi-occorsi.\
   ),
 )<fig:rischi-occorsi>
 #v(1em)
+
+== Valutazione complessiva sulle tecnologie
+
+Dei vari punti che questo progetto si prefiggeva di chiarire segue un resoconto ed un'analisi 
+- Adeguatezza di pgvector alla ricerca semantica: *Confermato*, le query non sono particolarmente complesse, i tempi di risposta sono sufficientemente bassi di media tra i 200-300 millisecondi
+- Fusione di full-text e semantica lato db, confermata, trattando le query sql di semantica e full text come subquery è facilmente implementabile l'rrf
+- linking lato db, confermato, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il look up avviene tramite indice
+- ricerca full-text: non confermata, elastic search senza troppe sorprese è estremamente più veloce di postgres per la ricerca full-text, per quanto l'accuratezza tramite i workaround sia diventata sufficiente lucene rimane comunque molto più veloce di postgres. i meccanismi di ottimizzazione di elastic permettono un ordinamento esatto con scoring accelerato e possibilità di escludere partizioni non rilevanti
+
+
+
+
 == Valutazione personale
