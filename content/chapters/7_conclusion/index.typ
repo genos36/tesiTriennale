@@ -20,43 +20,39 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
 #let ore-attivita=(
   (
     descrizione:"Onboarding del progetto e studio delle tecnologie",
-    ore:40
+    ore:48
     ),
   (
-    descrizione:"Primi prototipi per comprendere le tecnologie",
+    descrizione:"Progettazione della struttura del db e prototipazioni",
+    ore:64
+    ),
+  (
+    descrizione:"Progettazione e codifica della schema configuration",
     ore:20
-    ),
+    ),  
   (
-    descrizione:"Progettazione della struttura del db",
-    ore:40
-    ),
-  (
-    descrizione:"Progettazione della schema configuration",
+    descrizione:"Progettazione e codifica della ricerca semantica",
     ore:24
     ),
   (
-    descrizione:"Progettazione della ricerca semantica",
-    ore:16
+    descrizione:"Progettazione e codifica ricerca full-text",
+    ore:40
     ),
   (
-    descrizione:"Progettazione ricerca full-text",
-    ore:32
-    ),
-  (
-    descrizione:"Progettazione ricerca ibrida",
+    descrizione:"Progettazione e codifica ricerca ibrida",
     ore:8
     ),
   (
-    descrizione:"Progettazione ricerca linked",
+    descrizione:"Progettazione e codifica ricerca linked",
     ore:12
     ),
   (
-    descrizione:"",
-    ore:20
+    descrizione:"Progettazione e codifica del sistema di ingestion",
+    ore:32
     ),
   (
-    descrizione:"",
-    ore:20
+    descrizione:"Progettazione e codifica del sistema di test e observability",
+    ore:68
     ),
 )
 
@@ -68,7 +64,7 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
     table.header([*Fase*], [*Ore*]),
     ..(ore-attivita.map(it=>{(it.descrizione,str(it.ore))}).flatten()),
 
-    [*Totale*], [320],
+    [*Totale*], str(ore-attivita.map((it)=>it.ore).sum()),
   ),
 )<fig:tabella-calcolo-ore>
 #v(1em)
@@ -76,39 +72,45 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
 == Raggiungimento degli obiettivi
 
 == Requisiti soddisfatti
-Arrivato alla fine del progetto ho implementato...
+Tutti i requisiti descritti nella @ sonostati implementati come descritto nel riepilogo della @tab:requisiti-soddisfatti
+  // #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb as f-obb,des as f-des,opz as f-opz 
+  // #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as c-obb,des as c-des,opz as c-opz 
+  // #import "/content/chapters/3_requirements/requirement/requisiti-qualita/index.typ":obb as q-obb,des as q-des,opz as q-opz 
+
+#[
+
 #v(1em)
-// #figure(
-//   table(
-//     columns: (auto, 1fr, 1fr, auto, auto),
-//     table.header([*Tipo*], [*Mandatory*], [*Desirable*], [*Optional*], [*Somma*]),
-//     [Functional],
-//     [0/#getFR(getLen: true).at(0)],
-//     [0/#getFR(getLen: true).at(1)],
-//     [0/#getFR(getLen: true).at(2)],
-//     [0/#getFR(getLen: true).sum()],
-
-//     [Qualitative],
-//     [0/#getQR(getLen: true).at(0)],
-//     [0/#getQR(getLen: true).at(1)],
-//     [0/#getQR(getLen: true).at(2)],
-//     [0/#getQR(getLen: true).sum()],
-
-//     [Constraint],
-//     [0/#getCR(getLen: true).at(0)],
-//     [0/#getCR(getLen: true).at(1)],
-//     [0/#getCR(getLen: true).at(2)],
-//     [0/#getCR(getLen: true).sum()],
-
-//     [*Totale*],
-//     [*0/#{ getFR(getLen: true).at(0) + getQR(getLen: true).at(0) + getCR(getLen: true).at(0) }*],
-//     [*0/#{ getFR(getLen: true).at(1) + getQR(getLen: true).at(1) + getCR(getLen: true).at(1) }*],
-//     [*0/#{ getFR(getLen: true).at(2) + getQR(getLen: true).at(2) + getCR(getLen: true).at(2) }*],
-//     [*0/#{ getFR(getLen: true).sum() + getQR(getLen: true).sum() + getCR(getLen: true).sum() }*],
-
-//     align: (center + horizon),
-//   ),
-//   caption: "Riepilogo dei requisiti soddisfatti.",
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, auto, auto),
+    table.header([*Tipo*], [*Mandatory*], [*Desirable*], [*Optional*], [*Somma*]),
+    [Functional],
+    [],
+    [],
+    [],
+    [],
+// 
+    [Qualitative],
+    [],
+    [],
+    [],
+    [],
+// 
+    [Constraint],
+    [],
+    [],
+    [],
+    [],
+// 
+    [*Totale*],
+    [],
+    [],
+    [],
+    [],
+// 
+    align: (center + horizon),
+  ),
+  caption: "Riepilogo dei requisiti soddisfatti.",
 )<tab:requisiti-soddisfatti>
 == Rischi occorsi e mitigati
 I rischi emersi durante lo stage sono riportati in @fig:rischi-occorsi.\
