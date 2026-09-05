@@ -10,13 +10,13 @@
 Il progetto ha una finalità esplorativa: valuta quanti e quali workaround siano necessari affinché un sistema basato su Postgres realizzi funzionalità di information retrieval pari all'attuale sistema aziendale, basato su Elasticsearch. Non si tratta di un confronto assoluto tra le due tecnologie, ma di una valutazione mirata ai casi d'uso specifici di questo progetto.
 Elasticsearch nasce come motore di ricerca dedicato, mentre Postgres è un database relazionale a cui sono state aggiunte funzionalità di retrieval.
 
-È prassi comune rivalutare periodicamente le tecnologie che compongono uno stack software, specialmente quando un'alternativa promette di semplificare l'architettura complessiva. I criteri tipici di una simile valutazione includono la complessità di utilizzo e manutenzione del sistema, le prestazioni, e il rispetto di proprietà come l'atomicità e la consistenza delle transazioni. 
+È prassi comune rivalutare periodicamente le tecnologie che compongono uno stack software, specialmente quando un'alternativa promette di semplificare l'architettura complessiva. I criteri tipici di una simile valutazione includono la complessità di utilizzo e manutenzione del sistema, le prestazioni, e il rispetto di proprietà come l'atomicità e la consistenza delle transazioni.
 Il presente progetto si colloca in questo tipo di valutazione: verifica se Postgres, unificando ricerca full-text e semantica in un unico sistema relazionale, possa rappresentare un'alternativa valida a un'architettura che oggi si appoggia a un motore di ricerca dedicato ma disaccoppiato dal database relazionale primario, con i relativi costi di sincronizzazione tra i due sistemi.
 
 L'adeguatezza di Postgres in questo contesto è valutata secondo i seguenti criteri:
 - la complessità del database e delle funzioni di ricerca;
 - i tempi di risposta;
-- la qualità del retrieval, misurata tramite metriche di hit rate a diversi livelli di granularità. La definizione completa delle metriche è riportata nel caso d'uso #uc-link-extended("Visualizza metriche di performance", separator: "-"). 
+- la qualità del retrieval, misurata tramite metriche di hit rate a diversi livelli di granularità. La definizione completa delle metriche è riportata nel caso d'uso #uc-link-extended("Visualizza metriche di performance", separator: "-").
 
 La ground truth viene definita dall'attuale sistema di ricerca basato su Elasticsearch, in quanto rappresenta il comportamento di riferimento attualmente accettato e in uso in azienda.
 
@@ -43,14 +43,14 @@ La ricerca per similarità viene eseguita in due modalità: su singola entità e
 La ricerca su singola entità esegue la ricerca solo su una delle entità del modello dati, mentre la ricerca linked cerca su tutte le entità del modello e ricostruisce per ogni entità cercata una visione globale del risultato tramite join, per poi unire i dati ottenuti in un unico risultato. Il funzionamento dettagliato è descritto in @cap:analisi-iniziale.
 
 === Caratteristiche di Elasticsearch <analisi-elasticsearch>
-Elasticsearch è un motore di ricerca nato per l'indicizzazione e l'interrogazione di documenti, e offre nativamente funzionalità avanzate di information retrieval. Tra i suoi punti di forza rilevanti per questo confronto vi sono la flessibilità nell'uso di tokenizer linguistici, la granularità dei filtri disponibili per la ricerca full-text, e una maggiore manipolabilità dei dati indicizzati. 
+Elasticsearch è un motore di ricerca nato per l'indicizzazione e l'interrogazione di documenti, e offre nativamente funzionalità avanzate di information retrieval. Tra i suoi punti di forza rilevanti per questo confronto vi sono la flessibilità nell'uso di tokenizer linguistici, la granularità dei filtri disponibili per la ricerca full-text, e una maggiore manipolabilità dei dati indicizzati.
 Elasticsearch offre inoltre sharding nativo, ma tale funzionalità non è necessaria ai fini di questo progetto.
 
-In quanto sistema orientato ai documenti, Elasticsearch non è pensato per eseguire join tra entità distinte: i dati vengono tipicamente denormalizzati in fase di ingestion, così da rendere ogni documento autosufficiente rispetto alle query previste. 
+In quanto sistema orientato ai documenti, Elasticsearch non è pensato per eseguire join tra entità distinte: i dati vengono tipicamente denormalizzati in fase di ingestion, così da rendere ogni documento autosufficiente rispetto alle query previste.
 Questo è un trade-off intrinseco al suo modello di dati, non un limite implementativo: è la stessa ragione per cui, all'opposto, un database relazionale come Postgres richiede una fase di normalizzazione dei dati e l'esecuzione di join per ricostruire una visione completa delle informazioni. Nel contesto di questo progetto, tale caratteristica rende Elasticsearch meno adatto a gestire nativamente la ricerca linked, che richiede di correlare più entità del modello dati.
 
 === Caratteristiche di Postgres <analisi-postgres>
-Postgres è un database relazionale, e supporta quindi nativamente i join necessari alla ricerca linked. 
+Postgres è un database relazionale, e supporta quindi nativamente i join necessari alla ricerca linked.
 Attraverso tsvector, tsquery e pgvector, discusse nel dettaglio in @tec:main-system, è inoltre possibile realizzare ricerca full-text e semantica all'interno dello stesso sistema, riducendo la complessità architetturale rispetto all'uso di un motore di ricerca dedicato.
 
 A differenza di Elasticsearch, le funzionalità di ricerca per similarità di Postgres non sono centrali, poiché il database è pensato principalmente per carichi di lavoro transazionali. Questo comporta che, per raggiungere un livello di funzionalità equivalente a quello offerto nativamente da Elasticsearch, siano necessari in alcuni casi workaround applicativi o strutturali, discussi in @limiti-postgres.
@@ -76,5 +76,5 @@ Un'ulteriore limitazione riguarda il filtraggio: Postgres non offre nativamente 
 
 Un limite più generale riguarda la ricerca ibrida: Elasticsearch espone nativamente un'unica interfaccia in grado di combinare ricerca full-text e vettoriale all'interno della stessa richiesta, applicando internamente algoritmi di fusione come RRF. Postgres non offre un operatore equivalente: la fusione dei risultati deve essere implementata esplicitamente, ad esempio tramite Common Table Expression, spostando sullo sviluppatore la responsabilità di una logica che in Elasticsearch è gestita dal motore stesso.
 
-Anche la combinazione tra ricerca vettoriale e filtri relazionali presenta un limite condiviso da entrambe le tecnologie, seppur gestito con un diverso grado di automazione. Negli indici approssimati basati su grafo, applicare un filtro dopo la ricerca può restituire un numero di risultati inferiore a quello richiesto, anche quando esistono abbastanza documenti che soddisfano il filtro: questo vale sia per pgvector sia per Elasticsearch. Entrambi i sistemi offrono meccanismi di mitigazione a runtime. 
+Anche la combinazione tra ricerca vettoriale e filtri relazionali presenta un limite condiviso da entrambe le tecnologie, seppur gestito con un diverso grado di automazione. Negli indici approssimati basati su grafo, applicare un filtro dopo la ricerca può restituire un numero di risultati inferiore a quello richiesto, anche quando esistono abbastanza documenti che soddisfano il filtro: questo vale sia per pgvector sia per Elasticsearch. Entrambi i sistemi offrono meccanismi di mitigazione a runtime.
 Il pre-filtering nativo in Elasticsearch e le iterative scan in pgvector oltre a soluzioni strutturali come indici parziali o partizionamento. La differenza principale tra le due tecnologie risiede nel grado di automazione: in Elasticsearch il passaggio tra le diverse strategie di filtraggio è deciso automaticamente dal motore in base alla selettività del filtro, mentre in Postgres le iterative scan devono essere abilitate esplicitamente dallo sviluppatore e configurate.

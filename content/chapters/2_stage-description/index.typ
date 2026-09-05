@@ -21,7 +21,7 @@ Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e appro
 - Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
 - Testing delle performance: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
 == Vincoli
-Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca. 
+Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca.
 
 I vincoli principali sono i seguenti:
 - Utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
@@ -45,15 +45,15 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 + Quarta settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale e ottimizzazione tramite indici;
 
 + Quinta settimana - Progettazione di alto livello del sistema e inizio della codifica del modulo di ingestion;
-+ Sesta settimana - Completamento della codifica del modulo di ingestion e dei moduli di ricerca, completa delle relative interfacce; 
-+ Settima settimana - Progettazione e implementazione del sistema di test partendo da dei dati locali fittizi; 
++ Sesta settimana - Completamento della codifica del modulo di ingestion e dei moduli di ricerca, completa delle relative interfacce;
++ Settima settimana - Progettazione e implementazione del sistema di test partendo da dei dati locali fittizi;
 + Ottava settimana - Benchmarking, realizzazione della dashboard e deployment.
 
 
 
 
 
-== Analisi dei rischi
+== Analisi dei rischi <analisi-rischi>
 
 I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01, e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
 
@@ -185,7 +185,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     name: "Bias tecnologico e deriva dei requisiti",
                     description: [
                       Esiste il rischio di adattare inconsciamente l'implementazione per favorire le peculiarità di Postgres, introducendo logiche non necessarie o deviazioni dai requisiti originali solo per giustificare l'adozione della nuova tecnologia.
-                     
+
                     ],
                     mitigation: [
                       Adozione  dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema.

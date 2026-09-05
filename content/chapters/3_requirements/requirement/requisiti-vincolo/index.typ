@@ -10,3 +10,7 @@
 #figure(caption:"Requisiti di vincolo")[
 #req-table(constr-req, columns: (auto,2fr,1fr))
 ]<tab:requisiti-vincolo>
+
+#let obb-len=obb.len()
+#let des-len=des.len()
+#let opz-len=opz.len()

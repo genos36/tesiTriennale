@@ -11,10 +11,10 @@
     ],
 
   descrizione:[
-    Il sistema deve superare i benchmark previsti sul seguente volume di dati di  1 000 000 ticket
+    Il sistema deve verificare i benchmark previsti sul seguente volume di dati di  1 000 000 ticket
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[colloquio con il tutor]
+  fonti:[Colloquio con il tutor]
 )

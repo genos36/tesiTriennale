@@ -10,3 +10,7 @@
 #figure(caption:"Requisiti di qualità")[
 #req-table(qual-req, columns: (auto,2fr,1fr))
 ]<tab:requisiti-qualità>
+
+#let obb-len=obb.len()
+#let des-len=des.len()
+#let opz-len=opz.len()

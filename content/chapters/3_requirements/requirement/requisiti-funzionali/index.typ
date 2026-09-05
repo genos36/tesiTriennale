@@ -21,3 +21,8 @@
 // #req-table(opz)
 // ]
 // #obb
+
+
+#let obb-len=obb.len()
+#let des-len=des.len()
+#let opz-len=opz.len()

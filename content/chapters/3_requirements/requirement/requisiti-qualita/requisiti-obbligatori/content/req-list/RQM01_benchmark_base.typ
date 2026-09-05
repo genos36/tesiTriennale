@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema deve superare i benchmark previsti sul seguente volume di dati di  10 000 ticket
+    Il sistema deve verificare i benchmark previsti sul seguente volume di dati di  10 000 ticket
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

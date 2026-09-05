@@ -18,7 +18,7 @@
 
 
 
-== Tracciamento dei requisiti
+== Tracciamento dei requisiti <tracciamento-requisiti>
 Ad ogni requisito è associato un codice costruito in base alle sue caratteristiche:
 #v(1em)
 #align(center)[*R(F/Q/C)(M/D/O)*]
@@ -46,9 +46,9 @@ In @tab:requisiti-funzionali, @tab:requisiti-qualità e @tab:requisiti-vincolo s
   #v(1em)
   #show figure: set block(breakable: false)
 
-  #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb as f-obb,des as f-des,opz as f-opz 
-  #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as c-obb,des as c-des,opz as c-opz 
-  #import "/content/chapters/3_requirements/requirement/requisiti-qualita/index.typ":obb as q-obb,des as q-des,opz as q-opz 
+  #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb as f-obb,des as f-des,opz as f-opz
+  #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb as c-obb,des as c-des,opz as c-opz
+  #import "/content/chapters/3_requirements/requirement/requisiti-qualita/index.typ":obb as q-obb,des as q-des,opz as q-opz
 
   #let functional-count=(
     f-obb.len(),
@@ -104,5 +104,3 @@ In @tab:requisiti-funzionali, @tab:requisiti-qualità e @tab:requisiti-vincolo s
     ),
     caption: "Riepilogo dei requisiti.",
   )<tab:riepilogo-requisiti>
-
-
