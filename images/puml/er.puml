@@ -144,50 +144,7 @@ e_conversation_item ||--o{ e_attachments : "f_id = f_conversation_item_id"
 ' ============================
 ' INGESTION TRACKING
 ' ============================
-entity "ingestion_sessions" as ingestion_sessions {
-  * id : uuid <<PK>>
-  --
-  status : text
-  created_at : timestamptz
-}
 
-entity "ingestion_streams" as ingestion_streams {
-  * id : uuid <<PK>>
-  --
-  session_id : uuid <<FK>>
-  status : text
-  created_at : timestamptz
-}
 
-ingestion_sessions ||--o{ ingestion_streams : "id = session_id"
-
-' ============================
-' STAGING AREA (rappresentativa, mostrata per ticket)
-' ============================
-entity "e_ticket_staging" as e_ticket_staging {
-  * staging_id : bigint <<PK>>
-  --
-  f_id : varchar(32)
-  ...
-}
-
-entity "e_ticket_chunk_staging" as e_ticket_chunk_staging {
-  * staging_id : bigint <<PK>>
-  --
-  f_id : varchar(32)
-  field_name : text
-  chunk_counter : int
-  chunk_text : text
-  chunk_language : char(2)
-  embedding : real[]
-}
-
-note bottom of e_ticket_chunk_staging
-  Nessuna foreign key dichiarata sulle tabelle di
-  staging (deliberatamente permissive): solo indici
-  sulle colonne identificative e di riferimento.
-  Le tabelle di staging per conversation_item e
-  attachments seguono la stessa struttura.
-end note
 
 @enduml

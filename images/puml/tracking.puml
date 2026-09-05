@@ -1,0 +1,22 @@
+@startuml
+
+
+entity "ingestion_sessions" as ingestion_sessions {
+  * id : uuid <<PK>>
+  --
+  status : text
+  created_at : timestamptz
+}
+
+entity "ingestion_streams" as ingestion_streams {
+  * id : uuid <<PK>>
+  --
+  session_id : uuid <<FK>>
+  status : text
+  created_at : timestamptz
+}
+
+
+ingestion_sessions ||--o{ ingestion_streams : "id = session_id"
+
+@enduml

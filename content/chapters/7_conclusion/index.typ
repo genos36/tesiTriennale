@@ -6,20 +6,68 @@
   In questo capitolo traggo le conclusioni sul progetto.
 ])
 #v(1em)
+
+
+
+
 == Consuntivo finale
 Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fig:tabella-calcolo-ore che suddivide in maniera approssimata le ore dedicate alle varie fasi.
 #v(1em)
 #set table(
   align: (center + horizon, center + horizon),
 )
+
+#let ore-attivita=(
+  (
+    descrizione:"Onboarding del progetto e studio delle tecnologie",
+    ore:40
+    ),
+  (
+    descrizione:"Primi prototipi per comprendere le tecnologie",
+    ore:20
+    ),
+  (
+    descrizione:"Progettazione della struttura del db",
+    ore:40
+    ),
+  (
+    descrizione:"Progettazione della schema configuration",
+    ore:24
+    ),
+  (
+    descrizione:"Progettazione della ricerca semantica",
+    ore:16
+    ),
+  (
+    descrizione:"Progettazione ricerca full-text",
+    ore:32
+    ),
+  (
+    descrizione:"Progettazione ricerca ibrida",
+    ore:8
+    ),
+  (
+    descrizione:"Progettazione ricerca linked",
+    ore:12
+    ),
+  (
+    descrizione:"",
+    ore:20
+    ),
+  (
+    descrizione:"",
+    ore:20
+    ),
+)
+
+
 #figure(
   caption: [Consuntivo orario finale.],
   table(
     columns: 2,
     table.header([*Fase*], [*Ore*]),
-    [_Onboarding_ del progetto], [5],
-    [Analisi dei requisiti], [30],
-    [...], [...],
+    ..(ore-attivita.map(it=>{(it.descrizione,str(it.ore))}).flatten()),
+
     [*Totale*], [320],
   ),
 )<fig:tabella-calcolo-ore>

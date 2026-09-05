@@ -1,0 +1,31 @@
+@startuml staging_area
+' ============================
+' STAGING AREA (rappresentativa, mostrata per ticket)
+' ============================
+entity "e_ticket_staging" as e_ticket_staging {
+  * staging_id : bigint <<PK>>
+  --
+  f_id : varchar(32)
+  ...
+}
+
+entity "e_ticket_chunk_staging" as e_ticket_chunk_staging {
+  * staging_id : bigint <<PK>>
+  --
+  f_id : varchar(32)
+  field_name : text
+  chunk_counter : int
+  chunk_text : text
+  chunk_language : char(2)
+  embedding : real[]
+}
+
+note bottom of e_ticket_chunk_staging
+  Nessuna foreign key dichiarata sulle tabelle di
+  staging (deliberatamente permissive): solo indici
+  sulle colonne identificative e di riferimento.
+  Le tabelle di staging per conversation_item e
+  attachments seguono la stessa struttura.
+end note
+
+@enduml

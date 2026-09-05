@@ -1,4 +1,4 @@
-#import "@preview/grayness:0.1.0": grayscale-image
+// #import "@preview/grayness:0.1.0": grayscale-image
 #import "/plugin/mod.typ": gl, glpl
 #import "/metadata/mod.typ": data
 #import "/template/components/technology-sheet.typ":technology-sheet
