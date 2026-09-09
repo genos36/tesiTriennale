@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-diagram(
-                system-name: "Sistema core",
+                system-name: "Sistema di ricerca",
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (),
@@ -18,7 +18,7 @@
   ),
   extends: (
         // "Inserimento query su singola entità non valida":[Companion inserisce una query non valida],
-        "Errore ricerca su singola entità":[Nel sistema si è verificato un errore durante la ricerca],
+        "Errore ricerca su singola entità":[Nel sistema di ricerca si è verificato un errore durante la ricerca],
         ),
   generalizations: (
         "Ricerca full-text",
@@ -31,9 +31,9 @@
   actor-offset: 4,
   ext-actor-offset: 0.9,
   note-offset: (2, -0.2),
-  
+
   )
-} 
+}
 
 
 #use-case(
@@ -42,7 +42,7 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il sistema è attivo
+                - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
                 - Companion ha ricevuto i risultati della ricerca
@@ -51,8 +51,8 @@
                         ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query su singola entità")
-                + Il sistema valida la query
-                + Il sistema esegue la query
+                + Il sistema di ricerca valida la query
+                + Il sistema di ricerca esegue la query
                 + Companion riceve i risultati #sym.arrow #utils.uc-link("ricezione risultati ricerca singola entità")
         ],
         scenari-alternativi:[

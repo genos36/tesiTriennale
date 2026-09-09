@@ -11,11 +11,11 @@
     ],
 
   descrizione:[
-      Il sistema principale e il suo modello dati devono essere altamente configurabili.
+      Il sistema di ricerca e il suo modello dati devono essere altamente configurabili.
       #set list(marker: sym.bullet)
 
       La richiesta di configurabilità è da intendersi nel seguente modo:
-      - le entità che compongono il sistema devono essere configurabili esternamente,
+      - le entità che compongono il sistema di ricerca devono essere configurabili esternamente,
       - i campi da utilizzare nella ricerca pe similarità devono essere configurabili esternamente,
       - i campi filtrabili devono essere configurabili esternamente,
       - i pesi da usare nella ricerca devono poter subire override nell'ambito di una singola ricerca

@@ -15,7 +15,7 @@
 #include "analisi-terorica/contesto-problema.typ"
 
 
-== Basi teoriche
+== Basi teoriche <analisi-teorica-ricerche>
 L'#gl("information-retrieval",long:true) si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
 
 I risultati restituiti da un sistema di IR non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema
@@ -39,26 +39,28 @@ La ricerca ibrida è la tipologia più rilevante ai fini del progetto. Le altre 
 
 La ricerca ibrida combina i punti di forza della ricerca semantica e di quella full-text. La ricerca semantica non offre buone prestazioni nel keyword matching, punto di forza della ricerca full-text; quest'ultima, di contro, non è in grado di tracciare termini simili ma con forma testuale molto diversa, né di cogliere significati legati al contesto, aspetti in cui la ricerca semantica eccelle.
 
-La combinazione unisce i risultati di entrambe le ricerche, assegnando un punteggio maggiore (boost) a quelli individuati da entrambe, senza scartare i risultati rilevanti prodotti da una sola delle due.
+La combinazione unisce i risultati di entrambe le ricerche, assegnando un punteggio maggiore a quelli individuati da entrambe, senza scartare i risultati rilevanti prodotti da una sola delle due.
 
-Questa fusione avviene principalmente tramite Reciprocal Rank Fusion(casi d'uso #uc-link-extended("Ricerca ibrida con RRF") e #uc-link-extended("Ricerca linked ibrida con RRF")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking")).
+Questa fusione avviene principalmente tramite Reciprocal Rank Fusion(casi d'uso #uc-link-extended("Ricerca ibrida con RRF",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con RRF",separator:" - ")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking",separator:" - ")).
 
 == Architettura del progetto
-Ho scelto di separare il progetto in due sistemi distinti e indipendenti: #link(<teoria:main-system>,"sistema principale") e #link(<teoria:test-system>,"sistema di test").
+Ho scelto di separare il progetto in due sistemi distinti e indipendenti:
+- #link(<teoria:main-system>,"sistema di ricerca"),
+- #link(<teoria:test-system>,"sistema di test").
 
 Tale separazione garantisce lo sviluppo e la manutenzione indipendenti dei due sistemi.
 
-=== Sistema principale <teoria:main-system>
-Il sistema principale è responsabile dell'implementazione del sistema di information retrieval: offre funzionalità di ingestion dei dati e di ricerca secondo le diverse modalità descritte in @teoria:contesto-problema.
+=== Sistema di ricerca <teoria:main-system>
+Il sistema di ricerca è responsabile dell'implementazione del sistema di information retrieval: offre funzionalità di ingestion dei dati e di ricerca secondo le diverse modalità descritte nella @teoria:contesto-problema.
 
 Segue il pattern dell'architettura esagonale per ridurre il rischio che dei bias modellino il sistema in modo da dare un vantaggio ingiusto a Postgres, come indicato dal rischio #link(<r-bias-requisiti>,"R10").
 
 È pensato per l'esecuzione su server.
 
 === Sistema di test <teoria:test-system>
-Il sistema di test ha il ruolo di eseguire i test di performance della ricerca e calcolare le relative metriche. Simula un numero configurabile di utenti paralleli che inviano richieste di ricerca al sistema principale, confronta i risultati ottenuti con la ground truth attesa, e registra query di test, ground truth e risultati su un database dedicato.
+Il sistema di test ha il ruolo di eseguire i test di performance della ricerca e calcolare le relative metriche. Simula un numero configurabile di utenti paralleli che inviano richieste di ricerca al sistema di ricerca, confronta i risultati ottenuti con la ground truth attesa, e registra query di test, ground truth e risultati su un database dedicato.
 
-Segue anch'esso il pattern dell'architettura esagonale, per coerenza con il sistema principale e per facilitarne la manutenzione.
+Segue anch'esso il pattern dell'architettura esagonale, per coerenza con il sistema di ricerca e per facilitarne la manutenzione.
 
 È pensato per l'esecuzione locale, sulla macchina da cui viene avviato il test.
 
@@ -72,13 +74,13 @@ Grafana non fa parte dei sistemi applicativi sviluppati: vengono forniti solamen
 === Relazione tra i sistemi
 I due sistemi non condividono né codice (eccetto un riuso di tipo copia-incolla, per convenienza) né risorse, e sono sviluppati su repository separati.
 
-Il sistema di test comunica con il sistema principale simulando client esterni che inviano richieste di ricerca, mentre Grafana accede direttamente al database del sistema di test, bypassandolo, per leggerne le metriche.
+Il sistema di test comunica con il sistema di ricerca simulando client esterni che inviano richieste di ricerca, mentre Grafana accede direttamente al database del sistema di test, bypassandolo, per leggerne le metriche.
 
 
 
-== Criteri di scelta delle tecnologie 
-I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui vengono approfonditi separatamente nelle sezioni #link(<criteri:main-system>)[sistema principale] e #link(<criteri:test-system>)[sistema di test].
-=== Sistema principale <criteri:main-system>
+== Criteri di scelta delle tecnologie
+I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui vengono approfonditi separatamente nelle sezioni #link(<criteri:main-system>)[sistema di ricerca] e #link(<criteri:test-system>)[sistema di test].
+=== Sistema di ricerca <criteri:main-system>
 La maggior parte delle tecnologie è fissata dai requisiti di vincolo (@tab:requisiti-vincolo). Sono rimaste come scelte libere la libreria di language detection e la scelta del meccanismo di ricerca full-text.
 
 Per la ricerca full-text, oltre alla soluzione nativa di Postgres basata su tsvector e tsquery, sono state valutate alcune estensioni che la implementano tramite l'algoritmo BM25. I criteri richiesti sono: assenza di problemi di licenza compatibili con l'uso in un prodotto commerciale, e un livello di funzionalità sufficientemente avanzato rispetto alle esigenze del progetto.
@@ -88,7 +90,7 @@ Un'altra scelta libera riguarda la libreria utilizzata per il riconoscimento del
 Inoltre si è preferito non adottare librerie di query building, per mantenere il massimo controllo possibile sul codice SQL prodotto e non nasconderne la complessità, coerentemente con il criterio già seguito per l'architettura del sistema (@teoria:main-system).
 
 === Sistema di test <criteri:test-system>
-Non sono stati posti vincoli specifici sulle tecnologie adottate: la scelta è stata guidata dalla loro capacità di soddisfare i requisiti, cercando al contempo di non introdurre tecnologie ulteriori rispetto a quelle già usate nel sistema principale, per non aumentare la curva di apprendimento necessaria allo sviluppo.
+Non sono stati posti vincoli specifici sulle tecnologie adottate: la scelta è stata guidata dalla loro capacità di soddisfare i requisiti, cercando al contempo di non introdurre tecnologie ulteriori rispetto a quelle già usate nel sistema di ricerca, per non aumentare la curva di apprendimento necessaria allo sviluppo.
 
 
 
@@ -102,8 +104,9 @@ Nelle seguenti sezioni viene analizzato l'insieme di tecnologie adottate per la 
 Ogni tecnologia è contrassegnata anche dal relativo numero di versione, in quanto vi potrebbero essere stati aggiornamenti significativi che rendono obsolete considerazioni tecniche presenti in questo documento.
 
 
-Il progetto è composto da 2 sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni 
-#link(<tec:main-system>)[sistema principale] e #link(<tec:test-system>)[sistema di test].
+Il progetto è composto da 2 sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni
+#link(<tec:main-system>)[sistema di ricerca] e #link(<tec:test-system>)[sistema di test].
+// Non vi è alcuna sezione dedicata a tecnologie di frontend, in quanto il progetto di questo tirocinio non richiede un frontend.
 
 Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stack tecnologici, mentre Grafana non fa formalmente parte di nessuno dei 2 sistemi.
 
@@ -117,7 +120,7 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Linguaggio di programmazione ad alto livello che supporta diversi paradigmi di programmazione.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("utilizzo python") 
+    Richiesto dal requisito #rcm-link("utilizzo python")
   ],
   alternative: (),
 )
@@ -131,7 +134,7 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Strumento per la gestione delle dipendenze
   ],
   motivazione: [
-    Scelto perché è uno strumento che ho già usato in passato 
+    Scelto perché è uno strumento che ho già usato in passato
   ],
   alternative: (),
 )
@@ -146,7 +149,7 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Comunemente noto come *Postgres*,  è un database open source che vanta una solida reputazione in termini di affidabilità, flessibilità e supporto degli standard tecnici aperti.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS") 
+    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS")
   ],
   alternative: (),
 )
@@ -159,13 +162,13 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Piattaforma software open source per la visualizzazione, l'analisi e il monitoraggio dei dati.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("utilizzo di grafana") 
+    Richiesto dal requisito #rcm-link("utilizzo di grafana")
   ],
   alternative: (),
 )
 
-=== Sistema principale <tec:main-system>
-Le tecnologie adottate all'interno del sistema principale sono divise come segue.
+=== Sistema di ricerca <tec:main-system>
+Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue.
 ==== Backend
 #technology-sheet(
   nome: "Fastapi",
@@ -173,7 +176,7 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
   logo: "/images/fastapi.svg",
   caption: "Logo Fastapi",
   descrizione: [
-    Framework web veloce e moderno per la costruzione di api con Python. 
+    Framework web veloce e moderno per la costruzione di api con Python.
   ],
   motivazione: [
     Richiesto dal requisito #rcm-link("Utilizzo Fastapi") .
@@ -240,19 +243,21 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
   versione: "17.4.0",
   // logo: "/images/postgres.png",
   descrizione: [
-    Meccanismo di ricerca full-text nativo di Postgres, basato sui 
+    Meccanismo di ricerca full-text nativo di Postgres, basato sui
     tipi di dato tsvector e tsquery e sulla funzione di ranking ts_rank.
   ],
   motivazione: [
-    Nessun problema di licenza legato all'uso in un prodotto commerciale, 
-    e livello di funzionalità sufficientemente avanzato rispetto alle 
-    esigenze del progetto. Vi sono comunque presenti lacune di funzionalità che hanno richiesto dei workaround analizzati nel dettaglio in TODO LINK ALLA SEZIONE LAVORO SVOLTO RICERCA FULL-TEXT.
+    Nessun problema di licenza legato all'uso in un prodotto commerciale,
+    e livello di funzionalità sufficientemente avanzato rispetto alle
+    esigenze del progetto. Vi sono comunque presenti lacune di funzionalità che hanno richiesto dei workaround analizzati nel dettaglio nella @lavoro-svolto-ricerca-full-text.
 
-    Il limite tecnologico principale è dato dalla non implementazione della funzione di ranking bm25, il testo viene valutato solo sulla base del testo della ts_query e del testo del ts_vector, senza utilizzo di un corpus di documenti per ripesare il punteggio del testo.
-    
-    Sebbene questo possa penalizzare la qualità del ranking, garantisce che i punteggi calcolati su entità diverse siano direttamente comparabili.
-    
+    Il limite tecnologico principale è dato dalla non implementazione della funzione di ranking bm25 e di tutte le ottimizzazioni che un motore di ricerca testuale offre, il testo viene valutato solo sulla base del testo della ts_query e del testo del ts_vector, senza utilizzo di un corpus di documenti per ripesare il punteggio del testo.
+
+    La differenza alla base del calcolo dello score può inteaccare la qualità del ranking, ma garantisce che i punteggi calcolati su entità diverse siano direttamente comparabili.
+
     Limite accettato dato che lo scopo del progetto è valutare la qualità della ricerca, con focus principale su pgvector.
+
+    Viene accettato anche il limite sulla non ottimizzazione WAND della ricerca in quanto per il limiti imposti nella scelta della tecnologia non è possibile valutare alternative, inoltre non va in conflitto con la finalità esplorativa, è utile valutare le prestazioni di una funzione nativa invece di aggiungere prematuramente un'ulteriore dipendenza.
   ],
   alternative: (
     (nome: "ParadeDB",versione:"0.25.0", motivo: "licenza incompatibile con i vincoli aziendali sull'uso commerciale"),
@@ -269,7 +274,7 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
     Estensione Postgres che implementa funzionalità di ricerca semantica basate sui vettori
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS") 
+    Richiesto dal requisito #rcm-link("Utilizzo di PostgreS")
   ],
   alternative: (),
 )
@@ -278,7 +283,7 @@ Le tecnologie adottate all'interno del sistema principale sono divise come segue
 
 ==== Deployment
 
-Il sistema principale è progettato per essere containerizzato tramite Docker, requisito necessario per il successivo deployment su Kubernetes nell'infrastruttura aziendale. Il deployment effettivo su Kubernetes, così come le valutazioni condotte sui dati e sui database aziendali reali, non rientrano nel lavoro svolto durante il tirocinio: sono demandati al team aziendale competente, sia per ragioni organizzative sia per assenza delle credenziali necessarie ad accedervi.
+Il sistema di ricerca è progettato per essere containerizzato tramite Docker, requisito necessario per il successivo deployment su Kubernetes nell'infrastruttura aziendale. Il deployment effettivo su Kubernetes, così come le valutazioni condotte sui dati e sui database aziendali reali, non rientrano nel lavoro svolto durante il tirocinio: sono demandati al team aziendale competente, sia per ragioni organizzative sia per assenza delle credenziali necessarie ad accedere all'infrastruttura aziendale interna.
 
 Ai fini dello sviluppo e del test in locale è stato realizzato il Dockerfile per il sistema, insieme a una configurazione Docker Compose completa che include anche i servizi di supporto necessari (ad esempio Postgres). Docker Compose orchestra localmente gli stessi container Docker utilizzati poi in ambiente Kubernetes, garantendo coerenza di comportamento tra ambiente di sviluppo e ambiente di produzione.
 
@@ -287,9 +292,9 @@ Altri strumenti di supporto degni di nota sono *uvicorn*, *pydantic-settings*, *
 
 - Uvicorn è un 	server ASGI, scelta strettamente legata all'uso di Fastapi.
 
-- Pydantic-settings viene usato per avere una gestione più pulita delle variabili d'ambiente, non richiede l'aggiunta di ulteriori dipendenze in quanto Fastapi utilizza Pydantic
+- Pydantic-settings viene usato per avere una gestione più pulita delle variabili d'ambiente, non richiede l'aggiunta di ulteriori dipendenze in quanto Fastapi utilizza già Pydantic.
 
-- Sqlparse è una libreria di parsing e formattazione SQL, usata per migliorare la leggibilità delle query ricostruite durante il debug e il logging
+- Sqlparse è una libreria di parsing e formattazione SQL, usata per migliorare la leggibilità delle query ricostruite durante il debug e il logging.
 
 
 
@@ -349,14 +354,14 @@ Le tecnologie adottate all'interno del sistema di test sono divise come segue.
 Vengono usati 2 storage:
 - un file jsonl per la persistenza delle query da eseguire e la ground truth, scelta dovuta alla semplicità di condivisione e alla mancanza di requisiti di prestazioni di scrittura e di lettura non sequenziale;
 - un database postgres, usato per loggare i risultati dei test, scelto per la facilità di integrazione con Grafana e per la necessità di scritture continue e ricalcolo continuo delle metriche, realizzato con una vista.
-Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgres] 
+Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgres]
 
 
 ==== Deployment
 Anche il sistema di test è containerizzato tramite Docker ed è orchestrato, insieme a database delle metriche e Grafana, tramite un'unica configurazione Docker Compose.
 
-La containerizzazione di Locust non risponde a un'esigenza tecnica stretta: durante lo sviluppo è stato utilizzato esclusivamente in modalità headless, e potrebbe quindi essere eseguito direttamente sulla macchina host. 
-È stata comunque scelta per uniformità con il resto dello stack e per poter avviare l'intero ambiente di test con un unico comando, senza dover gestire manualmente le dipendenze. 
+La containerizzazione di Locust non risponde a un'esigenza tecnica stretta: durante lo sviluppo è stato utilizzato esclusivamente in modalità headless, e potrebbe quindi essere eseguito direttamente sulla macchina host.
+È stata comunque scelta per uniformità con il resto dello stack e per poter avviare l'intero ambiente di test con un unico comando, senza dover gestire manualmente le dipendenze.
 
 Vi è inoltre il vantaggio di un'evoluzione più semplice qualora in futuro si volesse utilizzare l'interfaccia UI offerta da Locust.
 

@@ -11,9 +11,9 @@
     ],
 
   descrizione:[
-    Il sistema principale deve rispettare il seguente comportamento per le ricerche full-text.
+    Il sistema di ricerca deve rispettare il seguente comportamento per le ricerche full-text.
 
-    Se la query di ricerca contiene l'informazione di lingua il sistema limita il pool di candidati solo ai chunk della medesima lingua e utilizza solo la configurazione linguistica assegnata a tale lingua.
+    Se la query di ricerca contiene l'informazione di lingua il sistema di ricerca limita il pool di candidati solo ai chunk della medesima lingua e utilizza solo la configurazione linguistica assegnata a tale lingua.
 
     Altrimenti tutti i chunk vengono valutati sia usando una configurazione di testo agnostica rispetto alla lingua sia usando la configurazione di testo per la lingua assegnata
   ],

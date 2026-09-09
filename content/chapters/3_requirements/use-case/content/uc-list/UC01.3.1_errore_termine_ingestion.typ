@@ -10,17 +10,17 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è attiva una sessione di ingestion
-                - Nel sistema i dati inseriti sono stati resi disponibili per la ricerca
+                - Nel sistema di ricerca è attiva una sessione di ingestion
+                - Nel sistema di ricerca i dati inseriti sono stati resi disponibili per la ricerca
 
         ],
         post-condizioni: [
-                - Nel sistema rimane attiva la sessione di ingestion
+                - Nel sistema di ricerca rimane attiva la sessione di ingestion
                 - Companion viene notificato dell'errore
                         ],
         scenario-principale:[
                 + Companion chiede il termine della sessione di ingestion
-                + Il sistema rileva che è ancora in corso l'elaborazione dei dati
+                + Il sistema di ricerca rileva che è ancora in corso l'elaborazione dei dati
                 + Companion riceve una notifica dell'errore
         ],
         scenari-alternativi:none,

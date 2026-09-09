@@ -9,18 +9,21 @@
 #text(24pt, weight: "semibold", data.abstract)
 
 #v(1em)
-Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare, della durata di circa trecentoventi ore, dal laureando #data.myName presso l'azienda #data.myCompany. Lo stage è stato condotto sotto la supervisione del tutor aziendale #data.myTutor, mentre il prof. #data.myProf ha ricoperto il ruolo di tutor accademico.
+Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare, della durata di circa trecentosedici ore, dal laureando #data.myName presso l'azienda #data.myCompany. Lo stage è stato condotto sotto la supervisione del tutor aziendale #data.myTutor, mentre il prof. #data.myProf ha ricoperto il ruolo di tutor accademico.
 
 \ \
   Al centro di questo elaborato vi è la progettazione e lo sviluppo del modulo di information retrieval basato su ricerca semantica, ricerca full-text e ricerca ibrida.
+  Tale modulo è concettualmente destinato a essere utilizzato in un contesto RAG.
 \ \
 Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate, in particolare si valuterà una modalità di ricerca detta linked che permette di cercare un'informazione all'interno dell'intero database e di ricostruirne il contesto.
 \ \
-Per convalidare questa ipotesi e fornire una misura rigorosa della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test comparativi contro un sistema basato su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
+Per convalidare questa ipotesi e fornire una misura della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test di valutazione ed eventualmente test comparativi contro un sistema basato su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
 
-I 2 sistemi potrebbero non adottare approcci equivalenti qualora pgvector e Postgres permettano di implementare funzionalità utili non attualmente utilizzate sul sistema basato su elasticsearch. 
+I 2 sistemi potrebbero non adottare approcci equivalenti qualora pgvector e Postgres permettano di implementare funzionalità utili non attualmente utilizzate sul sistema basato su elasticsearch.
 \ \
-L'utilità e il valore aggiunto di questa ricerca risiedono nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di eliminare i workaround che implementano concetti relazionali, di eliminare la necessità di 2 sistemi di persistenza dei dati che utilizzano linguaggi diversi.
+Tale progetto è da intendersi come proof of concept dalla finalità puramente esplorativa, mira a verificare il reale rapporto costi benefici di un cambiamento dello stack tecnologico.
+
+L'utilità e il valore aggiunto che questa ricerca vuole verificare stanno nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di eliminare i workaround che implementano concetti relazionali, di eliminare la necessità di 2 sistemi di persistenza dei dati che utilizzano linguaggi diversi.
 
 Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
 
@@ -46,7 +49,7 @@ Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, 
   )[Il quinto capitolo]: descrive le fasi iniziali di ricerca, le informazioni così ricavate e come queste hanno influenzato lo sviluppo;
 / #link(
     <cap:lavoro-svolto>,
-  )[Il sesto capitolo]: descrive nel dettaglio le problematiche sorte nel concreto durante lo svolgimento del progetto;
+  )[Il sesto capitolo]: descrive nel dettaglio l'implementazione concreta del progetto e le problematiche sorte nel concreto durante lo svolgimento del progetto;
 / #link(
     <cap:conclusioni>,
   )[Il settimo capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.

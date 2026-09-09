@@ -19,19 +19,19 @@ class Colors:
 
 def get_safe_variable_name(filepath):
     """
-    Estrae il nome del file dal percorso e lo pulisce per renderlo 
+    Estrae il nome del file dal percorso e lo pulisce per renderlo
     un nome di variabile Typst valido (senza estensioni, punti o trattini).
     Es: 'cartella/01.1-login.typ' -> '01_1_login'
     """
     # 1. Isola il nome del file
     base_name = os.path.basename(filepath)
-    
+
     # 2. Rimuove l'estensione
     name_no_ext = os.path.splitext(base_name)[0]
-    
+
     # 3. Pulisce i caratteri non ammessi nelle variabili
     safe_name = name_no_ext.replace('.', '_').replace('-', '_')
-    
+
     return safe_name
 
 # --- FUNZIONI DI UTILITÀ ---
@@ -40,21 +40,21 @@ def create_file_from_template(target_path, title, level, settings):
     Legge il template, sostituisce i segnaposto e scrive il nuovo file.
     """
     template_path = settings.get('template_path')
-    
+
     # Contenuto di default se manca il template
     content = f"== {title}\n\n// TODO: Compilare Use Case\n"
-    
+
     if template_path and os.path.exists(template_path):
         with open(template_path, 'r', encoding='utf-8') as t:
             template_content = t.read()
-            
+
         # --- LA LOGICA DI RIMPIAZZO ---
         # 1. Sostituisce {{TITOLO}}
         content = template_content.replace("{{TITOLO}}", title)
-        
+
         # 2. Sostituisce {{LIVELLO}} (convertendo l'int in stringa)
         content = content.replace("{{LIVELLO}}", str(level))
-        
+
     else:
         print(f"{Colors.YELLOW}⚠️  Template non trovato in '{template_path}', uso contenuto base.")
 
@@ -67,10 +67,10 @@ def load_config(path):
     if not os.path.exists(path):
         print(f"{Colors.RED}❌ Errore: Config file '{path}' non trovato.{Colors.RESET}")
         return None
-    
+
     with open(path, 'r') as f:
         config = yaml.safe_load(f)
-    
+
     # Default settings per evitare crash se mancano chiavi
     defaults = {
         'prefix':"",
@@ -85,7 +85,7 @@ def load_config(path):
         },
         'template_path': None
     }
-    
+
     # Merge dei dizionari (config sovrascrive defaults)
     settings = defaults.copy()
     if 'settings' in config:
@@ -93,7 +93,7 @@ def load_config(path):
         # Merge specifico per il dizionario annidato 'formatting'
         if 'formatting' in config['settings']:
             settings['formatting'] = {**defaults['formatting'], **config['settings']['formatting']}
-            
+
     return {'settings': settings, 'structure': config.get('structure', [])}
 
 def format_filename(code_parts, title, settings):
@@ -104,21 +104,21 @@ def format_filename(code_parts, title, settings):
     """
     fmt = settings['formatting']
     prefix = settings['prefix']
-    
+
     # 1. Padding sul primo numero (es. 1 -> "01")
     first_num = str(code_parts[0]).zfill(fmt['padding'])
-    
+
     # 2. Unione dei numeri con il separatore (es. "01" + "." + "2")
     rest_nums = [str(n) for n in code_parts[1:]]
     code_str = fmt['separator'].join([first_num] + rest_nums)
-    
+
     # 3. Formattazione del titolo (snake_case o kebab_case)
     clean_title = title.lower().replace(' ', '_') # Base cleaning
     if fmt['filename_style'] == 'kebab_case':
         clean_title = clean_title.replace('_', '-')
     else:
         clean_title = clean_title.replace('-', '_')
-        
+
     # 4. Assemblaggio finale
     filename = f"{prefix}{code_str}{fmt['title_separator']}{clean_title}{settings['extension']}"
     return filename
@@ -133,7 +133,7 @@ def flatten_structure(items, parent_code=[]):
 
     for i, item in enumerate(items, start=1):
         current_code = parent_code + [i]
-        
+
         if isinstance(item, str):
             flat_list.append({'code_parts': current_code, 'name': item})
         elif isinstance(item, dict):
@@ -173,14 +173,14 @@ def generate_index_file(file_list, settings, dry_run):
 
     for i, filename in enumerate(file_list):
         # Es: da "01_auth/01.1_login.typ" a "01_1_login"
-        clean_name = get_safe_variable_name(filename)        
+        clean_name = get_safe_variable_name(filename)
         # Sostituzioni sulla singola riga
         row = row_template.replace("{{FILE_PATH}}", filename)
         row = row.replace("{{FILE_NAME_CLEAN}}", clean_name)
         row = row.replace("{{INDEX}}", str(i))
-        
+
         content += row + "\n" # Aggiungiamo un a capo per sicurezza
-        
+
         array_items_str += f"  item_{i},\n"
 
     # Sostituzioni sul footer
@@ -199,11 +199,11 @@ def sync_files(config, dry_run):
     settings = config['settings']
     structure = config['structure']
     out_dir = settings['output_dir']
-    
+
     # 1. Prepara la lista desiderata
     desired_items = flatten_structure(structure)
     final_file_list = [] # Terrà traccia dei nomi file finali per l'indice
-    
+
     # Creazione cartella output se non esiste
     if not os.path.exists(out_dir) and not dry_run:
         os.makedirs(out_dir)
@@ -211,7 +211,7 @@ def sync_files(config, dry_run):
     # 2. Mappa i file esistenti (ignorando il prefisso numerico per trovare i match)
     # Cerchiamo file che finiscono con _nome.typ (o -nome.typ)
     existing_files = {} # { "autenticazione": "01_autenticazione.typ" }
-    
+
     if os.path.exists(out_dir):
         for f in os.listdir(out_dir):
             if f.endswith(settings['extension']) and f != settings['index_file']:
@@ -224,23 +224,23 @@ def sync_files(config, dry_run):
                     # Normalizziamo il nome part (se passiamo da snake a kebab)
                     # Per semplicità, usiamo il nome raw trovato nel file system come chiave se combacia
                     existing_files[name_part] = f
-                    # Nota: una logica di matching più robusta richiederebbe pulizia stringhe, 
+                    # Nota: una logica di matching più robusta richiederebbe pulizia stringhe,
                     # ma per ora assumiamo che l'utente non cambi stile (snake/kebab) ogni giorno.
 
     # 3. Iterazione e Sincronizzazione
     print(f"{Colors.GREEN}--- Sincronizzazione in corso (Dry Run: {dry_run}) ---")
-    
+
     for item in desired_items:
         # Calcola il nome file IDEALE
         target_filename = format_filename(item['code_parts'], item['name'], settings)
         target_path = os.path.join(out_dir, target_filename)
         final_file_list.append(target_filename)
-        
+
         # Pulizia nome per matching (rimuove stile snake/kebab per confronto logico)
         # Questo è un punto delicato: cerchiamo di matchare il nome nello YAML con quello su disco
         name_key_snake = item['name'].lower().replace(' ', '_').replace('-', '_')
         name_key_kebab = item['name'].lower().replace(' ', '-').replace('_', '-')
-        
+
         current_filename = None
         if name_key_snake in existing_files: current_filename = existing_files[name_key_snake]
         elif name_key_kebab in existing_files: current_filename = existing_files[name_key_kebab]
@@ -265,7 +265,7 @@ def sync_files(config, dry_run):
             # NUOVO FILE
             action = "✨ [SIM] Creo" if dry_run else "✨ Creo"
             print(f"{Colors.CYAN}{action}: {target_filename}")
-            
+
             if not dry_run:
                 # Calcoliamo titolo "bello" e livello
                 pretty_title = item['name'].replace('_', ' ').replace('-', ' ').capitalize() # O .title()

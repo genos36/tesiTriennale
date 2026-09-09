@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core",
+                system-name:"Sistema di ricerca",
   parent-uc: "Ingestione lista attachments",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
@@ -26,7 +26,7 @@
   ext-actor-offset: 0,
   note-offset: (1, 0.6),
   tab-offset: (-25pt, -25pt),
-  top-padding: 0.1,   
+  top-padding: 0.1,
         )
 }
 #use-case(
@@ -45,20 +45,20 @@
                 // - I ticket contengono i campi testuali divisi in chunk.
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni relative al blocco di ticket  
-                - Il sistema ha salvato gli embedding relativi al blocco di ticket
-                - Il sistema ha salvato le informazioni di lingua relative al blocco di ticket
+                - Il sistema di ricerca ha salvato le informazioni relative al blocco di ticket
+                - Il sistema di ricerca ha salvato gli embedding relativi al blocco di ticket
+                - Il sistema di ricerca ha salvato le informazioni di lingua relative al blocco di ticket
                         ],
         scenario-principale:[
                 + Companion carica un blocco di ticket
-                + Il sistema salva i dati dei ticket
-                + Il sistema calcola l'embedding da associare ai chunk usando il modello di embedding
-                + Il sistema rileva le informazioni di lingua da applicare ai chunk
-                        + Il sistema può usare l'informazione linguistica presente nei dati caricati
-                        + Il sistema può usare un modello language detection
-                + Il sistema associa gli embedding al relativo frammento di testo
-                + Il sistema associa la lingua al relativo frammento di testo
-                + Il sistema salva il blocco di ticket
+                + Il sistema di ricerca salva i dati dei ticket
+                + Il sistema di ricerca calcola l'embedding da associare ai chunk usando il modello di embedding
+                + Il sistema di ricerca rileva le informazioni di lingua da applicare ai chunk
+                        + Il sistema di ricerca può usare l'informazione linguistica presente nei dati caricati
+                        + Il sistema di ricerca può usare un modello language detection
+                + Il sistema di ricerca associa gli embedding al relativo frammento di testo
+                + Il sistema di ricerca associa la lingua al relativo frammento di testo
+                + Il sistema di ricerca salva il blocco di ticket
         ],
         scenari-alternativi:none,
         trigger: none,

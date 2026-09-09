@@ -18,7 +18,7 @@ promuovendo inoltre la collaborazione con i tutor.
 
 Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e approfondire le seguenti tematiche:
 - Database avanzati: Padronanza nell'utilizzo di Postgres non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
-- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale altrettanto evolute.
+- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale più avanzate.
 - Testing delle performance: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
 == Vincoli
 Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca.
@@ -32,7 +32,7 @@ Estensioni più evolute come ParadeDB, pur essendo state valutate in quanto si p
 == Pianificazione <pianificazione-settimane>
 
 
-Lo stage si articola in 320 ore distribuite su otto settimane da 40 ore.
+Lo stage si articola in 16 ore distribuite su sette settimane da 40 ore e una da 36.
 
 La pianificazione, derivata dal piano di lavoro, è la seguente:
 
@@ -44,7 +44,7 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 
 + Quarta settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale e ottimizzazione tramite indici;
 
-+ Quinta settimana - Progettazione di alto livello del sistema e inizio della codifica del modulo di ingestion;
++ Quinta settimana - Progettazione di alto livello del sistema di ricerca e inizio della codifica del modulo di ingestion;
 + Sesta settimana - Completamento della codifica del modulo di ingestion e dei moduli di ricerca, completa delle relative interfacce;
 + Settima settimana - Progettazione e implementazione del sistema di test partendo da dei dati locali fittizi;
 + Ottava settimana - Benchmarking, realizzazione della dashboard e deployment.
@@ -57,7 +57,7 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 
 I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01, e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
 
-Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di paragone Elastic, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
+Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elastic, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
 
 
 #risc-list(
@@ -112,12 +112,12 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               r-label:"r-apprendimento"
             ),
             (
-              name: "Incompatibilità o difficoltà di integrazione con il sistema legacy",
+              name: "Discostamento dal sistema legacy",
               description: [
-                Il modulo realizzato dovrà essere testato in un ambiente paragonabile a quello di produzione; potrebbero emergere attriti o incompatibilità nell'interfacciamento con il sistema esistente.
+                Il modulo realizzato dovrà essere paragonabile a quello di produzione; potrebbero emergere attriti o altre differenze significative sia a livello di comportamento interno che a livello di interazione con l'esterno.
               ],
               mitigation: [
-                Confronto continuo con il team di sviluppo per comprendere a fondo le funzionalità da implementare. Adozione del design pattern "Adapter" fin dalle prime fasi di progettazione per disaccoppiare la forma dei dati accettata dal sistema con la forma dei dati che deve essere accettata dall'esterno.
+                Confronto continuo con il team di sviluppo per comprendere a fondo le funzionalità da implementare. Adozione del design pattern "Adapter" fin dalle prime fasi di progettazione per disaccoppiare la forma dei dati accettata dal sistema di ricerca con la forma dei dati che deve essere accettata dall'esterno.
               ],
               probability: "Media",
               consequences: [Medio],
@@ -133,7 +133,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
 
                   Verrà implementato un monitoraggio attivo delle risorse tramite il framework di observability per individuare eventuali memory leak o configurazioni sub-ottimali degli indici vettoriali prima dei test massivi.
 
-                  Inoltre è previsto l deployment del sistema di information retrieval su server remoto.
+                  Inoltre è previsto il deployment del sistema di ricerca su server remoto.
                 ],
                 probability: "Media",
                 consequences: [Alto],
@@ -142,26 +142,28 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               (
                   name: "Rappresentatività dei dati di test e accesso limitato alla produzione",
                   description: [
-                    L'utilizzo di dati generati appositamente per le fasi di test locali, reso necessario dai vincoli di privacy aziendale, potrebbe non riflettere a pieno la reale complessità e varianza del dominio. Questa discrepanza rischia di alterare la valutazione dell'accuratezza degli embedding e di non far emergere casistiche limite verosimili, portando a possibili divergenze di performance tra l'ambiente di sviluppo e le aspettative finali.
+                    L'utilizzo di dati generati appositamente per le fasi di test locali, reso necessario dai vincoli di privacy aziendale, potrebbe non riflettere a pieno la reale complessità e varianza del dominio. Questa discrepanza rischia di alterare la valutazione dell'accuratezza della ricerca e di non far emergere casistiche limite verosimili, portando a possibili divergenze di performance tra l'ambiente di sviluppo e le aspettative finali.
                   ],
                   mitigation: [
                     La validazione seguirà un approccio a due fasi: l'architettura dovrà innanzitutto superare i benchmark di riferimento in ambiente locale utilizzando dei dati di test.
 
-                    A valle di questo consolidamento, le misurazioni definitive verranno eseguite sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza.
+                    Ulteriori misurazioni con dati reali saranno effettuate successivamente, le misurazioni definitive non verranno trattate in questo progetto ma verranno effettuate dall'azienda sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza e privacy. Utilizzando i risultati del sistema di ricerca attuale come punto di riferimento.
+
+                   Si è comunque consapevoli che il contributo principale all'accuratezza deriva da parametri esterni o configurabili, come i modelli di embedding utilizzati, i tipi di vettore e distanza utilizzata per il calcolo, le configurazioni testuali applicate e la struttura della fuznione di ranking.
                   ],
                   probability: "Alta",
-                  consequences: [Medio],
+                  consequences: [Basso],
                   r-label:"r-rappresentatività",
                 ),
                 (
                     name: "Difficoltà nella valutazione oggettiva dei risultati di Retrieval",
                     description: [
-                      L'assenza di metriche standardizzate o un'errata interpretazione dei risultati potrebbe portare a conclusioni soggettive, rendendo impossibile valutare se il nuovo sistema eguaglia o supera la soluzione precedente.
+                      L'assenza di metriche standardizzate o un'errata interpretazione dei risultati potrebbe portare a conclusioni soggettive, rendendo impossibile valutare se il nuovo sistema di ricerca eguaglia o meno la soluzione precedente.
                     ],
                     mitigation: [
-                      Le metriche di valutazione quantitativa verranno definite esplicitamente nella fase di analisi dei requisiti.
+                      Le metriche di valutazione verranno definite esplicitamente nella fase di analisi dei requisiti.
 
-                      Queste corrispondono alle metriche attualmente usate per la valutazione del sistema attuale
+                      Queste corrispondono alle metriche attualmente usate per la valutazione del sistema di ricerca attuale
 
                       È inoltre previsto un caso d'uso specifico per la produzione di una dashboard di monitoraggio, con criteri di accettazione e soglie minime di qualità chiaramente prestabiliti.
                     ],
@@ -175,7 +177,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       Essendo Postgres nato come RDBMS ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
                     ],
                     mitigation: [
-                      Il set di query e il benchmark verranno definiti e "congelati" a priori, in stretta parità di funzionalità con l'attuale utilizzo in produzione, evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma, cercheranno solo di rappresentare lo scenario reale.
+                      Il set di query e il benchmark verranno definiti e "congelati" a priori mirando solo a realizzare l'effettivo utilizzo, evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma, cercando solo di rappresentare lo scenario reale.
                     ],
                     probability: "Alta",
                     consequences: [Alto],
@@ -188,7 +190,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
 
                     ],
                     mitigation: [
-                      Adozione  dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema.
+                      Adozione dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema di ricerca.
                     ],
                     probability: "Media",
                     consequences: [Alto],
@@ -213,7 +215,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     name: "Sovrapposizione tra le performance di Retrieval e Generation",
                     description: [
                       L'architettura RAG si compone di due fasi: la fase di retrieval che si occupa del recupero di informazioni e la generazione della risposta.
-                      Nel sistema attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema sono gestite in Python puro.
+                      Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
                     ],
                     mitigation: [
                       Vengono posti dei rigidi confini sul sistema da implementare.

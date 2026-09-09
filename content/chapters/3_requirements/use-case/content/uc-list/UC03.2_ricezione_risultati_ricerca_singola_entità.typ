@@ -10,14 +10,14 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è in corso una ricerca su singola entità
-                - Il sistema ha eseguito la query
+                - Nel sistema di ricerca è in corso una ricerca su singola entità
+                - Il sistema di ricerca ha eseguito la query
         ],
         post-condizioni: [
                 - Companion ha ricevuto i risultati della ricerca
                         ],
         scenario-principale:[
-                + Il sistema ritorna la lista dei risultati prodotti dalla ricerca
+                + Il sistema di ricerca ritorna la lista dei risultati prodotti dalla ricerca
                 + Companion riceve i risultati della ricerca
         ],
         scenari-alternativi:none,

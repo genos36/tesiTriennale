@@ -37,25 +37,25 @@ structure:
     - Ricerca su singola entità:
       - Inserimento query su singola entità
       - Ricezione risultati ricerca singola entità
-      - Ricerca full-text
-      - Ricerca semantica
-      - Ricerca ibrida:
-        - Aggiunta pesi di fusione ricerca singola entità
-        - Ricerca ibrida con RRF
-        - Ricerca ibrida con modello di re-ranking
+    - Ricerca full-text
+    - Ricerca semantica
+    - Ricerca ibrida:
+              - Aggiunta pesi di fusione ricerca singola entità
+    - Ricerca ibrida con RRF
+    - Ricerca ibrida con modello di re-ranking
     - Inserimento query su singola entità non valida
-    - Errore ricerca su singola entità 
+    - Errore ricerca su singola entità
     - Ricerca linked:
       - Inserimento query linked
       - Ricezione risultati ricerca linked
-      - Ricerca linked full-text
-      - Ricerca linked semantica
-      - Ricerca linked ibrida:
+    - Ricerca linked full-text
+    - Ricerca linked semantica
+    - Ricerca linked ibrida:
         - Aggiunta pesi di fusione ricerca linked
-        - Ricerca linked ibrida con RRF
-        - Ricerca linked ibrida con modello di re-ranking
+    - Ricerca linked ibrida con RRF
+    - Ricerca linked ibrida con modello di re-ranking
     - Inserimento query linked non valida
-    - Errore ricerca linked 
+    - Errore ricerca linked
     - Avvia test
     - Visualizza dashboard performance:
 

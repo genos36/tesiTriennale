@@ -4,10 +4,11 @@
 #import "@preview/codly-languages:0.1.10": codly-languages
 
 
-#let code-snippet(caption: none, source, block-set: true) = {
+#let code-snippet(caption: none, source, block-set: true,code-label:none) = {
   show raw: set text(size: 0.85em)
   set raw(block: block-set)
-  figure(
+[
+#figure(
     kind: raw,
     caption: caption,
 
@@ -15,5 +16,8 @@
     // ma essendo dentro una figure nativa Typst gestirà meglio la didascalia
 
     block(breakable: true, width: 100%, source),
-  )
+    )#if code-label != none {label(code-label)}
+
+]
+
 }

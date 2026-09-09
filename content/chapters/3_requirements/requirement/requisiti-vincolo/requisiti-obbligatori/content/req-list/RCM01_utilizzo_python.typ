@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema principale e il sistema di test devono essere realizzati con python
+    Il sistema di ricerca e il sistema di test devono essere realizzati con python
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

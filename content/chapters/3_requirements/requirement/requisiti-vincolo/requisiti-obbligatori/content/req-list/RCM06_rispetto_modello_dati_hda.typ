@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-        Il sistema principale deve realizzare \ l'indicizzazione testuale e vettoriale per il modello dati del service desk HDA.
+        Il sistema di ricerca deve realizzare \ l'indicizzazione testuale e vettoriale per il modello dati del service desk HDA.
         #set list(marker: sym.bullet)
         Il modello è costituito dalle seguenti entità:
           - ticket

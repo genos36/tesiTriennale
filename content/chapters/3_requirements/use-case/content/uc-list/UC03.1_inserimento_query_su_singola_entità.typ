@@ -7,8 +7,9 @@
 
 
 #if utils.debug == true{
-        diagram=utils.draw-uc-diagram(
-                system-name: "Sistema core",
+        diagram=utils.draw-uc-expansion(
+parent-uc:"Ricerca su singola entità",
+                system-name: "Sistema di ricerca",
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (),
@@ -17,25 +18,25 @@
         "Inserimento query su singola entità non valida":[Companion inserisce una query non valida],
         ),
   generalizations: (),
-  spacing: (0.5cm, 3cm),
+  spacing: (0.5cm,1cm),
   width: 100%,
   max-height: none,
   actor-offset: 4,
   ext-actor-offset: 0.9,
-  note-offset: (2, -0.2),
-  
+  note-offset: (2, 0.5),
+top-padding: 0.2 ,
   )
-} 
+}
 #use-case(
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è in corso una ricerca su una singola entità
+                - Nel sistema di ricerca è in corso una ricerca su una singola entità
         ],
         post-condizioni: [
-                - Il sistema ha elaborato la query
+                - Il sistema di ricerca ha elaborato la query
                         ],
         scenario-principale:[
                 + Companion inserisce la query di ricerca

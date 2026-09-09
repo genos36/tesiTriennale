@@ -10,16 +10,16 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il sistema è attivo
-                - Nel sistema non ci sono sessioni di ingestion di documenti attive
+                - Il sistema di ricerca è attivo
+                - Nel sistema di ricerca non ci sono sessioni di ingestion di documenti attive
         ],
         post-condizioni: [
-                - Nel sistema è attiva una sessione di ingestion di documenti
+                - Nel sistema di ricerca è attiva una sessione di ingestion di documenti
                         ],
         scenario-principale:[
                 + Companion chiede di avviare una sessione di ingestion
-                + Il sistema avvia la sessione di ingestion
-                + Companion viene notificato della corretta apertura del sistema
+                + Il sistema di ricerca avvia la sessione di ingestion
+                + Companion viene notificato della corretta apertura del sistema di ricerca
         ],
         scenari-alternativi:none,
         trigger: none,

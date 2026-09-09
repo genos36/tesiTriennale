@@ -12,7 +12,7 @@
 
   descrizione:[
     #set list(marker:sym.bullet)
-    Il sistema principale deve deve implementare per ogni tipo di ricerca di similarità su singola entità anche la rispettiva versione linked.
+    Il sistema di ricerca deve implementare per ogni tipo di ricerca di similarità su singola entità anche la rispettiva versione linked.
 
     Le sequenze di linking sono le seguenti
     - Conversation item #sym.arrow Ticket

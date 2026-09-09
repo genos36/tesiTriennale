@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema principale deve utilizzare un database relazionale Postgres.
+    Il sistema di ricerca deve utilizzare un database relazionale Postgres.
 
     La ricerca semantica va realizzata sfruttando l'estensione pgvector.
 

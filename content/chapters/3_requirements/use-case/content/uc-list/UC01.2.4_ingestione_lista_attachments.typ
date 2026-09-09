@@ -8,7 +8,7 @@
 
 // #if utils.debug == true{
 //         diagram=utils.draw-uc-expansion(
-//                 system-name: "Sistema core"
+//                 system-name: "Sistema di ricerca"
 // ,  parent-uc: "Ingestion di documenti",             // Nome mostrato sulla linguetta; default = target-uc
 //   target-uc: use-case-nome,
 //   actors: ("Companion",),
@@ -23,9 +23,9 @@
 //   ext-actor-offset: 0.9,
 //   note-offset: (1, 0.6),
 //   tab-offset: (-25pt, -25pt),
-//   top-padding: 0.1,   
+//   top-padding: 0.1,
 //         )
-// } 
+// }
 
 
 #use-case(
@@ -34,12 +34,12 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è attiva una sessione di ingestion
+                - Nel sistema di ricerca è attiva una sessione di ingestion
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni relative alla lista di attachment  
-                - Il sistema ha salvato gli embedding relativi alla lista di attachment 
-                - Il sistema ha salvato le informazioni di lingua relative alla lista di attachment 
+                - Il sistema di ricerca ha salvato le informazioni relative alla lista di attachment
+                - Il sistema di ricerca ha salvato gli embedding relativi alla lista di attachment
+                - Il sistema di ricerca ha salvato le informazioni di lingua relative alla lista di attachment
                         ],
         scenario-principale:[
                 + Companion carica la lista dei attachment
@@ -47,9 +47,9 @@
         ],
         scenari-alternativi:none,
         trigger: none,
-        inclusioni: [
+        // inclusioni: [
                 // - #utils.uc-link("Carica blocco attachment")
-        ],
+        // ],
         estensioni: none,
         specializzazioni: none,
         // immagine: [

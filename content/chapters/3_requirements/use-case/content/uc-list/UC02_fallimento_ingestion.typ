@@ -13,12 +13,12 @@
                 - Il processo di caricamento lista di entità è in corso
         ],
         post-condizioni: [
-                - Il sistema non ha salvato i record non validi
+                - Il sistema di ricerca non ha salvato i record non validi
                 - Companion riceve un messaggio di errore esplicativo
                         ],
         scenario-principale:[
                 + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco       
+                + Rileva degli errori relativi a uno o più record del blocco
                 + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
                 ],
         scenari-alternativi:none,

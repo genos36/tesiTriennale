@@ -45,7 +45,7 @@
     // long: [Large Language Model],
     description: [
         Modalità di ricerca che analizza ogni entità del database, con la possibilità di applicare un filtro,
-        e combina i risultati secondo una configurazione che specifica come eseguire i join, 
+        e combina i risultati secondo una configurazione che specifica come eseguire i join,
         vi è anche la possibilità di applicare un filtro al termine del join
     ],
   ),
@@ -70,7 +70,7 @@
     // short: [IR],
     long: [Ranking],
     description: [
-        Processo algoritmico con cui un sistema assegna un punteggio di rilevanza a un insieme di documenti rispetto a una query, ordinandoli in una lista decrescente.
+        Processo algoritmico con cui si assegna un punteggio di rilevanza a un insieme di documenti rispetto a una query, ordinandoli in una lista decrescente.
     ],
   ),
   (

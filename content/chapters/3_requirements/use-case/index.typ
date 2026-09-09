@@ -1,5 +1,5 @@
 == Casi d'uso <cap:user-stories>
-In questa sezione vengono definiti i casi d'uso del sistema. Ogni caso d'uso è univocamente identificato da una sigla progressiva (es. *UC-X*) ed è corredato da una scheda descrittiva analitica. Gli attori menzionati fanno diretto riferimento alle definizioni riportate nella sezione @cap:actor-analisys.
+In questa sezione vengono definiti i casi d'uso del sistema. Ogni caso d'uso è univocamente identificato da una sigla progressiva (es. *UCXX*) ed è corredato da una scheda descrittiva analitica. Gli attori menzionati fanno diretto riferimento alle definizioni riportate nella sezione @cap:actor-analisys.
 
 === Struttura della scheda descrittiva
 Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabella seguente. Al fine di mantenere la documentazione concisa, i campi non rilevanti o non applicabili a uno specifico scenario verranno omessi.
@@ -36,4 +36,3 @@ Ciascun caso d'uso è documentato attraverso le informazioni elencate nella tabe
 )
 === Lista dei casi d'Uso
  #include "/content/chapters/3_requirements/use-case/content/uc-list/uc-list.typ"
-

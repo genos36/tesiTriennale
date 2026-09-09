@@ -12,7 +12,7 @@
 
   descrizione:[
     #set list(marker:sym.bullet)
-      Il sistema principale deve implementare i seguenti tipi di ricerche di similarità sulle singole entità:
+      Il sistema di ricerca deve implementare i seguenti tipi di ricerche di similarità sulle singole entità:
       - Semantica
       - Full-text
       - Ibrida

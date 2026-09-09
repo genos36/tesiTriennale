@@ -9,7 +9,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-diagram(
-        system-name: "Sistema core", // Nome nell'angolo del recinto
+        system-name: "Sistema di ricerca", // Nome nell'angolo del recinto
         target-uc: use-case-nome,
         actors: ("Companion",),        // Attori primari, a sinistra
         ext-actors: (),              // Attori esterni/secondari, sul lato opposto
@@ -20,11 +20,11 @@
                 ),
         extends: (:),
         generalizations: (),
-        spacing: (3cm, 2cm),
+        spacing: (3.5cm, 2cm),
         width: 100%,                 // Come width per le immagini: si adatta al contenitore
         max-height: none,            // Limite opzionale, utile per non sforare la pagina
-        actor-offset: 1.05,
-        ext-actor-offset: 5,
+        actor-offset: -0.1,
+        ext-actor-offset: 1,
         note-offset: (-0.8, 0.5),
         )
 }
@@ -35,15 +35,15 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Il sistema è attivo
-                - Nel sistema non ci sono sessioni di ingestion di documenti attive
+                - Il sistema di ricerca è attivo
+                - Nel sistema di ricerca non ci sono sessioni di ingestion di documenti attive
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni ricevute
-                - Il sistema ha salvato gli embedding relativi ai dati
-                - Il sistema ha salvato le informazioni di lingua relative ai dati
-                - Il sistema ha reso le informazioni disponibili per la ricerca
-                // - Il sistema ha risolto conflitti di inserimento con l'aggiornamento
+                - Il sistema di ricerca ha salvato le informazioni ricevute
+                - Il sistema di ricerca ha salvato gli embedding relativi ai dati
+                - Il sistema di ricerca ha salvato le informazioni di lingua relative ai dati
+                - Il sistema di ricerca ha reso le informazioni disponibili per la ricerca
+                // - Il sistema di ricerca ha risolto conflitti di inserimento con l'aggiornamento
                         ],
         scenario-principale:[
                 + Companion avvia il processo di ingestion dei dati #sym.arrow #utils.uc-link("Avvia ingestion")
@@ -53,7 +53,7 @@
 
         ],
         scenari-alternativi:none,
-        trigger: [Companion vuole caricare dei documenti sul sistema],
+        trigger: [Companion vuole caricare dei documenti sul sistema di ricerca],
         inclusioni: [
                 - #utils.uc-link("Avvia ingestion")
                 - #utils.uc-link("ingestion liste entità")

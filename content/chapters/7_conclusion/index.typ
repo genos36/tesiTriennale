@@ -116,12 +116,13 @@ I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportat
   table(
     columns: 2,
     table.header([*Descrizione*], [*Mitigazione*]),
-    [*R1*: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale, la mitigazione è stata il confronto con il tutor per colmare le lacune dei requisiti.],
+    [*R1*: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale, la mitigazione è stata il confronto con il tutor per colmare le lacune e definire chiaramente i requisiti.],
+    [*R2*: Sovradimensionamento del progetto rispetto alle tempistiche], [Il rischio è stato incontrato tra la fase intermedia e finale del progetto, implementare un sistema di test che permettesse di esaminare tutti i tipi di ricerca richiedeva diverse considerazioni non banali in fasi di progettazione e una discreta quantità di tempo, si è perciò limitato lo scope del test alla ricerca più importante.],
     [*R07*: Rappresentatività dei dati di test e accesso limitato alla produzione],[
             Il rischio è stato incontrato durante la preparazione dei dati di test, non avendo accesso a dati veri di produzione si è optato per usare dati fittizzi generati a partire da dataset in lingua italiana e inglese.
     ],
     [*R08*: Difficoltà nella valutazione oggettiva dei risultati di retrieval],[
-            Il rischio è stato incontrato durante la progettazione del sistema di test, mitigato tramite confronto con il tutor.
+            Il rischio è stato incontrato durante la progettazione del sistema di test, mitigato tramite confronto con il tutor in cui sono state fissate le metriche di interesse.
     ],
     [*R10*:Bias tecnologico e deriva dei requisiti],[
             Il rischio è stato incontrato nelle fasi iniziali dell'analisi delle funzionalità da realizzare, mitigato dando priorità alle caratteristiche del problema.
@@ -132,14 +133,14 @@ I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportat
 
 == Valutazione complessiva sulle tecnologie
 
-Dei vari punti che questo progetto si prefiggeva di chiarire segue un resoconto ed un'analisi
+Dei vari punti che questo progetto si prefiggeva di chiarire segue un resoconto ed un'analisi.
 - Adeguatezza di pgvector alla ricerca semantica: *Confermato*, le query non sono particolarmente complesse, i tempi di risposta sono sufficientemente bassi di media tra i 200-300 millisecondi;
 - Fusione di full-text e semantica lato db: *Confermata*, trattando le query sql di semantica e full text come subquery è facile implementare l'rrf;
 - linking lato db: *Confermato*, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il look up avviene tramite indice;
 - ricerca full-text: *Non confermata*, ElasticSearch senza troppe sorprese è estremamente più veloce di postgres per la ricerca full-text, per quanto l'accuratezza tramite i workaround sia diventata sufficiente. ElasticSearch rimane comunque molto più veloce di postgres. Il tempo medio di una ricerca full-text non ottimizzata per lingua va dai 5 ai 10 secondi, circa 3 secondi per le ricerche ottimizzate per lingua. Tale risultato è coerente con quanto visto nella @analisi-elasticsearch
 
 
-L'accuratezza generale viene considerata buona per tutti i vari tipi di ricerca, il retrieval rate è stato sempre del 100%, ma questo è dovuto al dataset di test, essendo generato automaticamente. In uno scenario realistico è probabile che sarà più bassa, 90%.
+L'accuratezza generale viene considerata buona per tutti i vari tipi di ricerca, il retrieval rate è stato sempre del 100%, ma questo è dovuto al dataset di test, essendo generato automaticamente. In uno scenario realistico è probabile che sarà più bassa, circa 80%.
 
 All'accuratezza corrispondono inoltre diversi fattori esterni al sistema o elementi da gestire tramite configurazione:
 - modello di embedding utilizzato,

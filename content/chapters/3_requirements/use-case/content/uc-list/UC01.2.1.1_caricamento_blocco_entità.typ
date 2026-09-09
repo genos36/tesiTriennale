@@ -8,7 +8,7 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core",
+                system-name:"Sistema di ricerca",
   parent-uc: "Ingestion lista entità",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
@@ -25,7 +25,7 @@
   ext-actor-offset: 0,
   note-offset: (-1, 0.6),
   tab-offset: (-25pt, -25pt),
-  top-padding: 0.1,   
+  top-padding: 0.1,
         )
 }
 #use-case(
@@ -35,26 +35,26 @@
         attore-secondario: [Modello di embedding],
         pre-condizioni:[
                 - Il processo di caricamento lista di entità è in corso
-                // - N è una costante nota al sistema
+                // - N è una costante nota al sistema  di ricerca
                 // - Il blocco da salvare contiene massimo N entità
                 // - I entità contengono i loro metadati
                 // - I entità contengono i campi testuali divisi in chunk.
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni relative al blocco di entità  
-                - Il sistema ha salvato gli embedding relativi al blocco di entità
-                - Il sistema ha salvato le informazioni di lingua relative al blocco di entità
+                - Il sistema di ricerca ha salvato le informazioni relative al blocco di entità
+                - Il sistema di ricerca ha salvato gli embedding relativi al blocco di entità
+                - Il sistema di ricerca ha salvato le informazioni di lingua relative al blocco di entità
                         ],
         scenario-principale:[
                 + Companion carica un blocco di entità
-                + Il sistema salva i dati dei entità
-                + Il sistema calcola l'embedding da associare ai chunk di testo usando il modello di embedding
-                + Il sistema rileva le informazioni di lingua da applicare ai chunk
-                        + Il sistema può usare l'informazione linguistica presente nei dati caricati
-                        + Il sistema può usare rileva la lingua del testo
-                + Il sistema associa gli embedding al relativo frammento di testo
-                + Il sistema associa la lingua al relativo frammento di testo
-                + Il sistema salva il blocco di entità
+                + Il sistema di ricerca salva i dati dei entità
+                + Il sistema di ricerca calcola l'embedding da associare ai chunk di testo usando il modello di embedding
+                + Il sistema di ricerca rileva le informazioni di lingua da applicare ai chunk
+                        + Il sistema di ricerca può usare l'informazione linguistica presente nei dati caricati
+                        + Il sistema di ricerca può rilevare la lingua del testo
+                + Il sistema di ricerca associa gli embedding al relativo frammento di testo
+                + Il sistema di ricerca associa la lingua al relativo frammento di testo
+                + Il sistema di ricerca salva il blocco di entità
         ],
         scenari-alternativi:[
                 - Uno o più record del blocco non sono validi #sym.arrow #utils.uc-link("Fallimento ingestion")

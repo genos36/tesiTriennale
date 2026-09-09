@@ -18,12 +18,14 @@
   caption: none,
   padding-interno:cont=>{
           pad(left: 1em, top: 0em)[#cont]
-  }
+  },
+  block-break:false
 ) = {
 
   // 1. Intestazione
   // heading(level: livello-intestazione)[#codice: #nome]
-block(breakable: false)[  
+block(breakable: block-break)[
+#block(breakable: false)[
   #{v(1em)+strong[#codice: #nome #label(slugify(nome))]
   // 2. Gestione Immagine
   if immagine != none {
@@ -48,7 +50,7 @@ block(breakable: false)[
   }}
 ]
   // 3. Costruzione degli elementi opzionali
-  let elementi-lista-opzionali = (
+  #let elementi-lista-opzionali = (
 
           [*Attore principale*: #attore-principale],
     if attore-secondario != none {
@@ -107,8 +109,9 @@ block(breakable: false)[
   ).filter(item => item != none).map(it=>block(breakable: false,it))
 
   // 4. Rendering della lista finale
-  list(
+  #list(
 
     ..elementi-lista-opzionali
   )
+]
 }

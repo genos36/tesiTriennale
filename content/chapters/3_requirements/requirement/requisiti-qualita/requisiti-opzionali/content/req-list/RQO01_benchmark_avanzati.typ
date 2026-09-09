@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema deve verificare i benchmark previsti sul seguente volume di dati di  1 000 000 ticket
+    Vanno verificati i benchmark previsti sul seguente volume di dati di 1.000.000 ticket, 5.000.000 conversation item e 6.000.000 attachemnt
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

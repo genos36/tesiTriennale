@@ -18,7 +18,7 @@
 )<fig:logo>
 
 == Il progetto
-Il progetto ha come obiettivo principale la riprogettazione e la sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
+Il progetto ha come obiettivo principale la realizzazione di un proof of concept valutativo della riprogettazione e la sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
 
 Attualmente, l'impresa adotta una soluzione basata sul paradigma della persistenza poliglotta.
 
@@ -38,7 +38,7 @@ comporta diverse limitazioni architettoniche e operative:
     Overhead di sincronizzazione:
     il mantenimento della coerenza tra il database primario Postgres e il motore di ricerca Elasticsearch
     richiede complesse pipeline di allineamento,
-    esponendo il sistema a ritardi di sincronizzazione o disallineamenti.
+    esponendo il sistema di ricerca a ritardi di sincronizzazione o disallineamenti.
 
   ],
   [
@@ -55,7 +55,7 @@ L'obiettivo è accentrare l'intero carico di lavoro su Postgres sfruttando pgvec
 un'estensione open-source che introduce il supporto nativo alla persistenza dei vettori di embedding
 e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema relazionale.
 
-Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti implementativi:
+Nello specifico, il nuovo sistema di ricerca dovrà soddisfare i seguenti requisiti implementativi:
 #list(
   [
     Ingestion:
@@ -73,7 +73,7 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
   [
     Integrazione relazionale:
     utilizzo di costrutti SQL per correlare dinamicamente i documenti e
-    i vettori tra le varie entità del sistema.
+    i vettori tra le varie entità del sistema di ricerca.
 
   ],
   [
@@ -86,12 +86,12 @@ Nello specifico, il nuovo sistema dovrà soddisfare i seguenti requisiti impleme
   [
     Ricerca Linked:
     modalità di ricerca che permette di eseguire in modo automatico una ricerca
-    che analizza ogni entità del sistema e ricostruisce un quadro complessivo dell'informazione
+    che analizza ogni entità del sistema di ricerca e ricostruisce un quadro complessivo dell'informazione
     tramite join.
 
   ],
 )
-Al fine di validare rigorosamente l'efficacia di questa nuova architettura unificata, il sistema verrà sottoposto a una fase di benchmarking contro la soluzione attualmente in uso.
+Al fine di validare rigorosamente l'efficacia di questa nuova architettura unificata, il sistema di ricerca verrà sottoposto a una fase di benchmarking contro la soluzione attualmente in uso.
 
 I test comparativi si concentreranno sulle seguenti metriche chiave:
 #list(
@@ -121,6 +121,6 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 Ho scelto questo progetto per 3 ragioni principali:
 + Rilevanza dell'argomento: alla base dei moderni sistemi di Intelligenza Artificiale, come la #gl("rag"), che utilizzano l'information retrieval per fornire contesto agli #gl("llm").
 
-+ Evoluzione di un sistema reale: permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato.
++ Evoluzione di un sistema di ricerca reale: permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato.
 
 + Stack tecnologico: offre l'opportunità di operare con strumenti e framework moderni.

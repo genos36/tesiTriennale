@@ -8,24 +8,22 @@
 
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
-                system-name:"Sistema core",
+                system-name:"Sistema di ricerca",
   parent-uc: "Ingestion di documenti",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (),
-  includes: ("ingestion lista entità",),
+  includes: ("Ingestion lista entità",),
   extends: (:),
-  generalizations: (
-
-),
-  spacing: (3cm, 3cm),
+  generalizations: (),
+  spacing: (3.5cm, 0.5cm),
   width: 100%,
   max-height: none,
-  actor-offset: 1.5,
+  actor-offset: 0,
   ext-actor-offset: 0,
   note-offset: (-1, 0.6),
   tab-offset: (-25pt, -25pt),
-  top-padding: 1.0,   
+  top-padding: 1.0,
         )
 }
 #use-case(
@@ -34,12 +32,12 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                - Nel sistema è attiva una sessione di ingestion
+                - Nel sistema di ricerca è attiva una sessione di ingestion
         ],
         post-condizioni: [
-                - Il sistema ha salvato le informazioni relative alle liste di entità
-                - Il sistema ha salvato gli embedding relativi alle liste di entità
-                - Il sistema ha salvato le informazioni di lingua relative alle liste di entità
+                - Il sistema di ricerca ha salvato le informazioni relative alle liste di entità
+                - Il sistema di ricerca ha salvato gli embedding relativi alle liste di entità
+                - Il sistema di ricerca ha salvato le informazioni di lingua relative alle liste di entità
                         ],
         scenario-principale:[
                 + Companion carica le liste di entità

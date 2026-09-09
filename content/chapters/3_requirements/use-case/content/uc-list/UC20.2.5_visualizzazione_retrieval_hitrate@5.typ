@@ -1,0 +1,29 @@
+#import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
+
+
+#let use-case-nome="Visualizzazione retrieval hitrate@5"
+// #let depth=
+
+#use-case(
+        codice: get-use-case-code(use-case-nome),
+        nome: use-case-nome,
+        attore-principale:[Supervisore],
+        attore-secondario: none,
+        pre-condizioni:[
+                - Il supervisore sta visualizzando la lista delle metriche
+                - Nel sistema di test sono presenti i dati relativi all'ultimo test svolto o in corso
+        ],
+        post-condizioni: [
+                - Il supervisore ha visualizzato il retrieval hitrate\@5
+                        ],
+        scenario-principale:[
+                - Il supervisore visualizza il retrieval hitrate\@5
+        ],
+        scenari-alternativi:none,
+        trigger: none,
+        inclusioni: none,
+        estensioni: none,
+        specializzazioni: none,
+        immagine: none,
+        caption: none,
+)
