@@ -1,5 +1,5 @@
 = Note sul contesto del progetto
-La configurabilità delle query e dell'ambiente è un punto importante, 
+La configurabilità delle query e dell'ambiente è un punto importante,
 
 = Riunione del 2026/07/10
 
@@ -7,7 +7,7 @@ La configurabilità delle query e dell'ambiente è un punto importante,
 Chiarimento della struttura del DB.
 
 === Relazione allegati-ticket allegati-conv_item
-Formalmente corretto risolvere il legame is-a tra attachment, ticket-attachment e conv_item-attachment con accorpamento delle figlie nel padre 
+Formalmente corretto risolvere il legame is-a tra attachment, ticket-attachment e conv_item-attachment con accorpamento delle figlie nel padre
 
 Tuttavia verranno risolte come relazione per supporto a future evoluzioni del sistema che potrebbero richiedere una relazione molti a molti invece che uno a molti, oppure l'aggiunta di campi esclusivi per una sottoclasse
 
@@ -16,10 +16,10 @@ Tuttavia verranno risolte come relazione per supporto a future evoluzioni del si
 
 === Gestione dei cambi testuali da emddare
 
-Tutti campi testuali potrebbero necessitare di chunking, assumiamo che il sistema riceva già i chunk col testo già diviso e si debba limitare a calcolare gli embedding sui chunk, 
+Tutti campi testuali potrebbero necessitare di chunking, assumiamo che il sistema riceva già i chunk col testo già diviso e si debba limitare a calcolare gli embedding sui chunk,
 
 
-gli allegati non possono essere associati a più entità, 
+gli allegati non possono essere associati a più entità,
 deve essere possibile eliminare gli allegati
 deve essere possibile aggiungere allegati
 non possono essere modificati
@@ -31,7 +31,7 @@ Per la gestione del chunking esistono 3 opzioni principali:
 
 - punti da chiarire, chi aggrega e divide i testi: parser e chunker esterni oppure l'aggregazione e il chunking sono interni
 - pro, peso e complessità contenuti, una sola serie di chunk indipendentemente da quanti campi di embedding ci sono.
-- contro, non permette di ricercare solo alcuni campi specifici, rende più complessa la ricerca ibrida(forse) 
+- contro, non permette di ricercare solo alcuni campi specifici, rende più complessa la ricerca ibrida(forse)
 - Indicizzazione, è sufficiente un singolo indice testuale e un singolo indice vettoriale per l'intera tabella.
 
 
@@ -43,7 +43,7 @@ Per la gestione del chunking esistono 3 opzioni principali:
 
   #table(
     columns: ((1fr,)*3),
-    
+
     [PK],[ticket_chunk_id],[VARCHAR(32)],
     [],[chunk_page],[INT],
     [FK],[field_name],[VARCHAR(32)],
@@ -52,7 +52,7 @@ Per la gestione del chunking esistono 3 opzioni principali:
     [],[chunk_embedding],[vector(n)],
     table.cell(colspan: 3,[UNIQUE(chunk_page, field_name, ticket_id)])
   )
-  
+
   - pro: ogni campo è ricercabile separatamente in modalità ibrida,
   - contro: maggiore occupazione della memoria (probable ma non sono sicuro), i vettori di embedding scalano linearmente con con il numero di campi da ricercare separatamente.
 
@@ -82,7 +82,7 @@ causa esplosione delle tabelle, permetterebbe maggiore flessibilità di indicizz
 
 
 === Gestione della configurabilità
-Parlando con pippo e franco, mi è stato spiegato un po più nel dettaglio come funziona la configurabilità di un indice di elastic con la presenza dei seguenti parametri in fase di costruzione degli indici.
+Parlando con pippo e franco, mi è stato spiegato un po più nel dettaglio come funziona la configurabilità di un indice di Elasticsearch con la presenza dei seguenti parametri in fase di costruzione degli indici.
 
 
 #terms(
@@ -110,7 +110,7 @@ Parlando con pippo e franco, mi è stato spiegato un po più nel dettaglio come 
   terms.item([Dates],[
     quali campi impostare come data.
   ]),
-  terms.item([Language detections],[ 
+  terms.item([Language detections],[
     Campo su cui fare la language detection per uno specifico ticket
     ]),
   terms.item([id_primary ],[cosa usare come primary key dell'indice elastic]),
@@ -125,14 +125,10 @@ Parlando con pippo e franco, mi è stato spiegato un po più nel dettaglio come 
   ]),
 )
 
-Devo implementare questa configurabilità ? 
+Devo implementare questa configurabilità ?
 
 Che in realtà è più una questione di implementarla in modo automatico piuttosto che manuale.
 
 == Analisi pratica
 
 In questa sezione esamino in modo più pratico come verrà implementato il tutto
-
-
-
-

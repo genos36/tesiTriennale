@@ -13,18 +13,18 @@ Il presente documento descrive il lavoro svolto durante il periodo di stage curr
 
 \ \
   Al centro di questo elaborato vi è la progettazione e lo sviluppo del modulo di information retrieval basato su ricerca semantica, ricerca full-text e ricerca ibrida.
-  Tale modulo è concettualmente destinato a essere utilizzato in un contesto RAG.
+  Tale modulo è concettualmente destinato a essere utilizzato in un contesto #gl("rag").
 \ \
-Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate, in particolare si valuterà una modalità di ricerca detta linked che permette di cercare un'informazione all'interno dell'intero database e di ricostruirne il contesto.
+Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione #gl("pgvector") per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate.
+In particolare, si valuterà una modalità di ricerca detta linked, che permette di cercare un'informazione all'interno dell'intero database e di ricostruirne il contesto.
 \ \
 Per convalidare questa ipotesi e fornire una misura della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test di valutazione ed eventualmente test comparativi contro un sistema basato su #gl("elasticsearch"), tecnologia attualmente adottata all'interno dell'impresa.
 
-I 2 sistemi potrebbero non adottare approcci equivalenti qualora pgvector e Postgres permettano di implementare funzionalità utili non attualmente utilizzate sul sistema basato su elasticsearch.
+I due sistemi potrebbero non adottare approcci equivalenti qualora pgvector e Postgres permettano di implementare funzionalità utili non attualmente utilizzate sul sistema basato su Elasticsearch.
 \ \
-Tale progetto è da intendersi come proof of concept dalla finalità puramente esplorativa, mira a verificare il reale rapporto costi benefici di un cambiamento dello stack tecnologico.
+Tale progetto è da intendersi come proof of concept con finalità puramente esplorativa, mira a verificare il reale rapporto costi benefici di un cambiamento dello stack tecnologico.
 
-L'utilità e il valore aggiunto che questa ricerca vuole verificare stanno nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di eliminare i workaround che implementano concetti relazionali, di eliminare la necessità di 2 sistemi di persistenza dei dati che utilizzano linguaggi diversi.
-
+L'utilità e il valore aggiunto che questa ricerca vuole verificare stanno nella potenziale semplificazione dell'infrastruttura IT aziendale. Gestire dati relazionali, testuali e vettoriali all'interno di un unico ecosistema permetterebbe di eliminare i workaround che implementano concetti relazionali e la necessità di due sistemi di persistenza dei dati che utilizzano linguaggi diversi.
 Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, ridurre i costi di manutenzione sistemistica e garantire transazioni più sicure.
 
 #linebreak()
@@ -37,7 +37,7 @@ Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, 
   )[Il primo capitolo]: introduce l'azienda, il progetto e le motivazioni che mi hanno portato a sceglierlo;
 / #link(
     <cap:descrizione-stage>,
-  )[Il secondo capitolo]: descrive l'azienda, il progetto e l'organizzazione del lavoro, definendo gli obiettivi e analizzando i rischi;
+  )[Il secondo capitolo]: descrive il progetto e l'organizzazione del lavoro, definendo gli obiettivi e analizzando i rischi;
 / #link(
     <cap:analisi-requisiti>,
   )[Il terzo capitolo]: descrive l'analisi dei requisiti del progetto, indicando un'analisi degli utenti, i casi d'uso e il tracciamento dei requisiti;
@@ -48,11 +48,14 @@ Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, 
       <cap:analisi-iniziale>,
   )[Il quinto capitolo]: descrive le fasi iniziali di ricerca, le informazioni così ricavate e come queste hanno influenzato lo sviluppo;
 / #link(
-    <cap:lavoro-svolto>,
-  )[Il sesto capitolo]: descrive nel dettaglio l'implementazione concreta del progetto e le problematiche sorte nel concreto durante lo svolgimento del progetto;
+    <cap:lavoro-svolto-search-system>,
+  )[Il sesto capitolo]: descrive i punti più significativi dell'implementazione concreta del sistema di ricerca e le problematiche a esso collegate;
+/ #link(
+    <cap:lavoro-svolto-test-system>,
+  )[Il settimo capitolo]: descrive l'implementazione del sistema di test utilizzato per la valutazione, illustrandone le scelte progettuali e le difficoltà incontrate;
 / #link(
     <cap:conclusioni>,
-  )[Il settimo capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.
+  )[L'ottavo capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.
 #linebreak()
 #pagebreak(weak:true)
 #text(24pt, weight: "semibold", "Convenzioni tipografiche")
@@ -64,7 +67,7 @@ Durante la stesura del testo ho scelto di adottare le seguenti convenzioni tipog
 - I nomi di funzioni o variabili appartenenti ad un linguaggio di programmazione vengono scritte con un carattere `monospaziato`;
 - Le citazioni ad un libro o ad una risorsa presente nella #link(<bibliography>)[bibliografia] (#link(<bibliography>)[p. #context counter(page).at(<bibliography>).at(0)]) saranno affiancate dal rispettivo numero identificativo, es. [1];
 - I blocchi di codice sono rappresentati nel seguente modo:
-#code-snippet(caption: "Codice d'esempio.")[
+#code-snippet(caption: "Codice d'esempio")[
   #raw(
     lang: "c",
     block: true,

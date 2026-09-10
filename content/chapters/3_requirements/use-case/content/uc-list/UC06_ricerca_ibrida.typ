@@ -19,7 +19,7 @@
   extends: (:),
   generalizations: (
         "Ricerca ibrida con rrf",
-        "Ricerca ibrida con modello di re-ranking",
+        "Ricerca ibrida con modello di reranking",
   ),
   spacing: (2cm, 3cm),
   width: 100%,
@@ -61,7 +61,7 @@
         estensioni: none,
         specializzazioni: [
                 - #utils.uc-link("Ricerca ibrida con rrf")
-                - #utils.uc-link("Ricerca ibrida con modello di re-ranking")
+                - #utils.uc-link("Ricerca ibrida con modello di reranking")
         ],
         immagine: diagram,
         caption: none,

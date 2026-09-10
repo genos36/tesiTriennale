@@ -3,18 +3,16 @@
 #import "/plugin/mod.typ" : code-snippet
 #pagebreak(to: "odd")
 
-#heading("Implementazione", depth: 1)<cap:lavoro-svolto>
+#heading("Implementazione del sistema di ricerca", depth: 1)<cap:lavoro-svolto-search-system>
 
 #text(style: "italic", [
-  In questo capitolo approfondisco le fasi di sviluppo del progetto, descrivendo le scelte implementative concrete e le problematiche affrontate nella realizzazione del sistema di information retrieval e del sistema di test.
+  In questo capitolo approfondisco le fasi di sviluppo del progetto legate al sistema di ricerca, descrivendo le scelte implementative concrete e le problematiche affrontate nella sua realizzazione.
 ])
 #v(1em)
 
-L'implementazione viene divisa in sistema di ricerca, sistema di test e limitazioni imposte da elementi esterni, comuni a entrambi.
 
-== Sistema di ricerca
 
-=== Architettura del codice
+== Architettura del codice
 La progettazione e la codifica seguono i principi dell'architettura esagonale. Il codice è quindi organizzato nelle seguenti categorie:
 - inbound adapter,
 - outbound adapter,
@@ -27,7 +25,7 @@ La composition root è gestita tramite FastAPI.
 
 Ciascuna categoria è ulteriormente suddivisa per funzionalità: ingestion e le diverse tipologie di ricerca dispongono ciascuna dei propri adapter, service e port dedicati. Fanno eccezione le classi di dominio condivise, trattate nella @classi-dominio-condivise a loro dedicata.
 
-==== Classi di dominio condivise<classi-dominio-condivise>
+=== Classi di dominio condivise<classi-dominio-condivise>
 Le classi di dominio condivise rappresentano il modello dati descritto nella @main-system-definizione-modello-dati, e costituiscono la fonte di verità del sistema. Vengono costruite e validate una sola volta nella composition root, e da lì iniettate nelle componenti del sistema che necessitano di conoscere il modello dati.
 
 *EntityName* e *FieldName* sono due semplici wrapper attorno a una stringa, adottati per rendere il codice più leggibile e per impedire, a livello di firma, di confondere un identificativo di entità con uno di campo o con una stringa qualunque.
@@ -67,7 +65,7 @@ class Entity:
 
 *MergeWeights* rappresenta i pesi utilizzati per la fusione tra ricerca semantica e full-text, con l'unico vincolo che non possano essere negativi.
 
-===== Vincoli sullo schema
+==== Vincoli sullo schema
 Il punto di estensione esplicito descritto nel modello dati, pensato per accomodare vincoli non necessariamente relazionali, è realizzato tramite il pattern Visitor. *SchemaConstraint* è l'interfaccia astratta comune a ogni tipo di vincolo; *RelationalSchemaConstraint* è l'unica implementazione concreta attualmente presente, e rappresenta l'equivalente concettuale di una chiave esterna tra due entità.
 
 #code-snippet(caption: "SchemaConstraint e RelationalSchemaConstraint",
@@ -87,7 +85,7 @@ class SchemaConstraintVisitor(ABC):
 
 Ogni tipo di vincolo espone un metodo accept, che delega a un'implementazione di *SchemaConstraintVisitor* l'operazione specifica per quel tipo. L'introduzione di un nuovo tipo di vincolo richiede quindi un nuovo metodo visit dedicato sull'interfaccia del visitor: da quel momento, qualunque visitor che non lo implementi non può più essere istanziato, e l'errore emerge già in fase di costruzione, non alla prima volta in cui il visitor incontra quel tipo di vincolo a runtime.
 
-===== Ricerca linked e struttura a grafo
+==== Ricerca linked e struttura a grafo
 *GraphEdge* rappresenta un arco del grafo di navigazione tra entità utilizzato dalla ricerca linked, collegando due FieldReference in entità diverse; un arco non può collegare un'entità a se stessa, per evitare cicli non gestiti nell'attraversamento.
 
 *LinkedSearchConfiguration* rappresenta l'intero grafo di navigazione, come mappa di adiacenza tra entità e archi uscenti, insieme ai pesi utilizzati nella fusione dei risultati tra entità diverse. In fase di costruzione viene verificata l'aciclicità del grafo; una volta garantita, per ciascuna entità vengono precalcolati tutti i cammini possibili verso la propria radice, rappresentati come sequenze ordinate di GraphEdge (*TraversalPath*).
@@ -123,7 +121,7 @@ class TraversalPath:
 
 È importante notare che LinkedSearchConfiguration si limita a esporre, per ciascuna entità, l'insieme di tutti i cammini possibili verso la radice: non seleziona autonomamente un unico cammino. La regola del primo cammino valido, descritta nella @analisi-ricerca-linked, viene applicata a valle, dal query builder che genera la query SQL della ricerca linked, sulla base dei cammini restituiti da questa classe. Questa separazione è coerente con il principio di disaccoppiamento già discusso a proposito dei vincoli di integrità: il dominio si limita a descrivere le possibilità strutturali, mentre la logica di scelta concreta, che dipende dai dati effettivamente presenti, è responsabilità di un livello successivo.
 
-===== Radice dell'aggregato
+==== Radice dell'aggregato
 *SchemaConfiguration* è la radice dell'aggregato: raccoglie l'insieme delle entità, dei vincoli di schema e la configurazione di ricerca linked in un'unica struttura immutabile. Le entità sono rappresentate come mappa da EntityName a Entity, anziché come semplice sequenza, per garantire per costruzione l'assenza di duplicati e un accesso diretto in fase di risoluzione dei riferimenti.
 
 #code-snippet(caption: "SchemaConfiguration - dataclass",
@@ -155,7 +153,7 @@ class SchemaConfigurationBuilder:
 )
 )
 
-=== Sistema di persistenza
+== Sistema di persistenza
 Il diagramma in @diagramma-er rappresenta lo schema entità-relazione concreto adottato in questo progetto, coerente con il modello dati del service desk HDA descritto nel capitolo precedente. Trattandosi di un sistema configurabile, entità e campi possono essere personalizzati a seconda del contesto applicativo; lo schema qui presentato è quindi una delle possibili istanze concrete del modello dati, non un vincolo strutturale del sistema.
 
 Inoltre si precisa che l'inizializzazione del database non avviene tramite codice SQL scritto a mano, ma tramite script che leggono la schema configuration e altre configurazioni, come quella di pgvector. Questo è per comodità nella modifica dei parametri per ulteriori test futuri. Non è stata dedicata particolare cura a questo script, in quanto reputato esterno allo scopo del tirocinio ma una semplice comodità per il testing: vi è ampio margine di miglioramento.
@@ -183,7 +181,7 @@ Su ciascuna tabella dei chunk sono definite quattro famiglie di indici:
 
 + Un indice univoco su un'espressione costante, sulla tabella delle sessioni di ingestion, filtrato sulle sole righe con stato aperto o chiuso: questo garantisce, a livello di database e non solo applicativo, che possa esistere al più una sessione attiva alla volta, coerentemente con il principio già descritto nella sezione @gestione-staging-area.
 
-=== Ingestion
+== Ingestion
 La funzionalità di ingestion espone quattro porte inbound, ciascuna dedicata a una funzione specifica:
 + avvio della sessione di ingestion,
 + chiusura della sessione di ingestion,
@@ -192,11 +190,11 @@ La funzionalità di ingestion espone quattro porte inbound, ciascuna dedicata a 
 
 L'avvio e la chiusura scrivono sulla tabella delle sessioni di ingestion, che funge da fonte di verità esterna al processo: qualsiasi worker FastAPI, nel tentativo di aprire o chiudere una sessione, osserva lo stesso database e le stesse informazioni, indipendentemente da quale istanza dell'applicazione lo serva. La chiusura, in particolare, avvia anche il processo di promozione da staging a tabelle reali, descritto più avanti in questa sezione.
 
-==== Elaborazione dei batch e uso dello stream
+=== Elaborazione dei batch e uso dello stream
 Non vi è contraddizione tra l'uso del batching interno e il fatto che la porta di elaborazione accetti uno stream: il sistema ottimizza operazioni come il calcolo degli embedding, il rilevamento della lingua e la scrittura sul database per i singoli batch di record, ma la porta stessa espone un iteratore asincrono di batch in ingresso, così da poter gestire un flusso di dati potenzialmente continuo.
 
 
-==== Validazione, arricchimento e scrittura
+=== Validazione, arricchimento e scrittura
 Per rappresentare i valori dei campi si è scelto di adottare un'astrazione dedicata, *FieldValue*, invece di un insieme eterogeneo di tipi primitivi: l'obiettivo principale è evitare la proliferazione di tipi primitivi diversi all'interno del dominio. A partire da questa astrazione sono definite union type dedicate, rispettivamente per i dati in ingresso e per i dati destinati alla scrittura sul database.
 
 Per ciascun batch dello stream in ingresso, il service esegue in sequenza:
@@ -219,9 +217,9 @@ class IngestBatchStreamUseCase(ABC):
 ))
 Lo stato di scrittura di ciascuno stream viene inoltre tracciato tramite una porta outbound dedicata, in modo da garantire che, al momento della chiusura della sessione, tutti gli stream in corso abbiano effettivamente terminato la scrittura prima di avviare la promozione.
 
-Il caso d'uso di lettura dello stato di attività della sessione di ingestion serve esclusivamente al sistema di test, per determinare se durante l'esecuzione di una query sia in corso un processo di ingestion (si veda @sec:sistema-di-test).
+Il caso d'uso di lettura dello stato di attività della sessione di ingestion serve esclusivamente al sistema di test, per determinare se durante l'esecuzione di una query sia in corso un processo di ingestion (si veda @cap:lavoro-svolto-test-system).
 
-==== Promozione da staging a tabelle reali
+=== Promozione da staging a tabelle reali
 Lo scheduling della promozione è calcolato in base ai vincoli relazionali definiti nella schema configuration, dando priorità prima alle tabelle dei metadati e poi a quelle dei chunk, in modo da rispettare le dipendenze referenziali. La promozione avviene interamente lato database, tramite una query che seleziona i dati validi e li trasferisce sulla tabella reale senza farli transitare da Python.
 
 #code-snippet(
@@ -295,14 +293,14 @@ Questo passo carica sulla tabella reale solo gli elementi già filtrati dal CTE 
 
 La query restituisce infine il numero di elementi processati nella finestra, non il numero di record effettivamente inseriti: la promozione viene rieseguita finché la query non restituisce 0, cioè finché non rimangono più elementi promuovibili nella tabella di staging.
 
-=== Ricerca
+== Ricerca
 Ogni tipologia di ricerca è esposta tramite un endpoint dedicato, realizzato con un adapter FastAPI specifico.
 
 Le classi di dominio impiegate differiscono tra ricerca su singola entità e ricerca linked: quest'ultima richiede un filtro con struttura annidata più complessa, che abbina un filtro a ciascuna entità coinvolta nell'attraversamento. Per evitare una duplicazione eccessiva di codice tra le due varianti, senza però introdurre relazioni di subtyping scorrette, si è adottato l'uso di *Generic* e *type alias*: i Generic permettono il riuso della logica di dominio comune, mentre i type alias vengono usati da tutte le classi esterne alla catena di generici per facilitare eventuali modifiche future. Questa scelta si è rivelata utile concretamente durante la realizzazione della ricerca linked, che ha richiesto di distinguere due serie di filtri distinte a partire dalla stessa gerarchia generica.
 
 Per questo motivo, nel seguito vengono descritte solo le parti generiche condivise, un esempio di come vengono specializzate tramite type alias, e solo ciò che diverge dalla versione generica.
 
-==== Filtering
+=== Filtering
 Il filtro adotta una struttura ad albero: viene definita un'interfaccia comune, *FilterCondition*, con quattro implementazioni concrete — atomic expression, and condition, or condition, not condition.
 
 #code-snippet(
@@ -357,7 +355,7 @@ LinkedPostJoinFilter = FilterCondition[FieldReference]
 
 L'uso di Generic e type alias, anziché di un'interfaccia comune implementata separatamente da `FilterCondition[FieldName]` e `FilterCondition[FieldReference]`, permette un discreto riuso di codice senza introdurre vincoli di subtyping che sarebbero stati concettualmente scorretti: le due specializzazioni non sono l'una sottotipo dell'altra, condividono solo la struttura.
 
-==== Query e specializzazioni
+=== Query e specializzazioni
 #code-snippet(
   caption:"Ricerca - Query e specializzazioni",
   raw(
@@ -413,7 +411,7 @@ Sono contati 6 tipi di ricerca perché semantica, full-text e ibrida vanno conta
 Il calcolo degli embedding per la ricerca semantica e ibrida avviene sfruttando la stessa porta outbound utilizzata in fase di ingestion dei dati.
 L'interazione con il  database avviene sempre tramite porte in accordo con i principi dell'architettura esagonale.
 
-==== Ricerca semantica
+=== Ricerca semantica
 La ricerca semantica opera in due fasi, coerentemente con quanto descritto nella @analisi-ricerca-semantica: viene eseguita una query per ciascuna partizione della tabella dei chunk coinvolta (una per ciascun campo searchable interessato dalla ricerca), i cui risultati vengono poi combinati.
 
 #code-snippet(
@@ -473,7 +471,7 @@ Per rendere il sistema facilmente riconfigurabile, la descrizione della configur
 
 A supporto di questa configurazione, alcune classi ausiliarie coniugano il comportamento nativo di pgvector con le metriche di similarità attese dal dominio, eseguendo le trasformazioni inverse rispetto alle ottimizzazioni applicate in fase di ricerca (ad esempio la conversione tra spazio di distanza raw, usato internamente da pgvector, e spazio di similarità normalizzato, esposto verso l'esterno).
 
-==== Ricerca full-text <lavoro-svolto-ricerca-full-text>
+=== Ricerca full-text <lavoro-svolto-ricerca-full-text>
 La ricerca full-text adotta un approccio strutturalmente simile alla semantica: partition query per campo searchable, poi combinazione.
 Non è un vincolo tecnico, ma una scelta di riuso del codice della ricerca semantica: in questo caso la suddivisione per partizione non è strettamente necessaria, ma nemmeno errata.
 Semplifica la ricerca su sottoinsiemi di campi e l'applicazione dei pesi.
@@ -535,7 +533,7 @@ Questo CTE estrae l'insieme ordinato dei lessemi della query (`arr`), la sua car
   )
 )
 
-Il punteggio (raw_score) è la somma delle tre-ranking function citate sopra (plain, phrase, allwords in forma OR). Il conteggio dei lessemi in comune (matched_count), confrontato con la soglia required_k, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (&&) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con array_ops descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di matched_count.
+Il punteggio (raw_score) è la somma delle treranking function citate sopra (plain, phrase, allwords in forma OR). Il conteggio dei lessemi in comune (matched_count), confrontato con la soglia required_k, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (&&) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con array_ops descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di matched_count.
 
 #code-snippet(caption: "Ricerca full-text - filtro finale sulla soglia di corrispondenza",
   raw(
@@ -604,7 +602,7 @@ La frequenza dei lessemi richiede un ulteriore overhead in memoria in quanto con
 )
 
 
-==== Ricerca ibrida
+=== Ricerca ibrida
 Le query costruite per la ricerca semantica e per la ricerca full-text non vengono eseguite immediatamente al momento della loro costruzione: vengono prima create come frammenti tramite classi helper dedicate, e solo in un secondo momento eseguite. Questo disaccoppiamento tra costruzione ed esecuzione è ciò che rende possibile realizzare la ricerca ibrida come reciprocal rank fusion (RRF): i due frammenti vengono avvolti con RANK() OVER, per ottenere la posizione in classifica di ciascun motore a partire dal punteggio pesato già calcolato internamente da ciascuna pipeline, e poi fusi tramite un FULL OUTER JOIN sui campi identificativi dell'entità, anziché con una UNION ALL: questo permette a un risultato trovato da un solo motore di comparire comunque nell'output finale, con il contributo dell'altro motore posto a zero tramite COALESCE. Il contributo di ciascun motore alla fusione viene pesato secondo MergeWeights: il peso di ciascuna sorgente compare come numeratore nella rispettiva formula RRF, permettendo di dare più importanza alla ricerca semantica o a quella full-text a seconda della configurazione.
 
 #code-snippet(
@@ -629,7 +627,7 @@ ORDER BY weighted_score DESC
 LIMIT {real_limit}`.text
   )
 )
-==== Ricerca linked
+=== Ricerca linked
 La ricerca linked riusa i frammenti di query già descritti per la ricerca su singola entità, generandone uno per ciascuna entità effettivamente cercata.
 Le sole entità presenti tra i target di ricerca della query, non tutte le entità coinvolte nell'attraversamento. A partire dalla `LinkedSearchConfiguration` e dai `TraversalPath` precalcolati (@classi-dominio-condivise), per ciascuna entità cercata viene generato un ramo di query per ciascun cammino possibile verso la radice, che risale l'attraversamento tramite una catena di LEFT JOIN sulle tabelle reali delle entità intermedie.
 
@@ -685,203 +683,3 @@ LIMIT {top_k}`.text
 
 
 I rami di tutte le entità cercate vengono infine combinati con una singola UNION ALL, ordinati e limitati sul punteggio pesato, stessa logica di fusione già vista per la ricerca semantica e full-text, applicata qui a livello di traversal invece che di singolo campo. L'intera catena di frammenti per singola entità, risalita, filtro post-join e combinazione viene eseguita in un'unica chiamata SQL: la ricerca linked, per quanto concettualmente più complessa, non richiede round-trip aggiuntivi verso il database rispetto alle altre tipologie di ricerca.
-
-
-
-
-
-
-
-
-
-
-== Sistema di test<sec:sistema-di-test>
-
-Il sistema di test, indicato anche come retriever-trial, ha una struttura più semplice rispetto al sistema di ricerca, e ne è cliente: espone due soli casi d'uso, l'avvio di una sessione di test, *start test*, e l'esecuzione di una singola query di test, *run one*.
-
-
-Locust simula un numero configurabile di client paralleli che eseguono ricerche contro il sistema di ricerca. Lo start test viene invocato una sola volta, all'avvio della sessione di Locust; ciascun client simulato si limita poi a invocare ripetutamente run one.
-
-Il sistema di test riusa la schema configuration del sistema di ricerca, ma in una forma semplificata contenente le sole entità necessarie ai fini del test, e riutilizza le classi di query già definite nel sistema di ricerca, estese con una classe dedicata per rappresentare la ground truth di ciascuna query.
-
-Ogni esecuzione di run one, tramite una porta dedicata, recupera una query di test e la relativa ground truth; tramite una seconda porta esegue la query contro il sistema di ricerca, ottenendo sia il risultato reale sia lo stato corrente della sessione di ingestion (per poter distinguere, in fase di analisi, i risultati raccolti durante un'ingestion in corso da quelli raccolti a dati stabili); infine, tramite una terza porta, registra l'esito su un database dedicato. Da questo database, tramite una vista, vengono calcolate le metriche di interesse, che Grafana si limita a leggere e visualizzare.
-=== Perimetro di test
-L'implementazione e la realizzazione dei test sono state ritenute molto dispendiose in termini di tempo, sia a livello di codice che preparazione dei dati di test; ciò ha portato alla scelta di ridurre l'esecuzione automatica alla ricerca linked ibrida non ottimizzata per lingua: essendo la più complessa tra tutte, costituisce un limite superiore ai tempi di esecuzione delle altre. I problemi di accuratezza delle singole ricerche sono intrinseci al tipo di ricerca (@analisi-teorica-ricerche) e vengono mitigati proprio dall'uso della ricerca ibrida.
-
-Le altre tipologie di ricerca vengono comunque analizzate tramite test manuali e script al fine di poter comunque esprimere un giudizio su di esse.
-L'estensione del sistema di test al fine di gestire tutte le tipologie di ricerca è lasciata a evoluzioni successive del sistema di test.
-
-=== Architettura del codice
-Anche il sistema di test segue il principio dell'architettura esagonale, con la stessa suddivisione in adapter, port, service e classi di dominio già vista per il sistema di ricerca.
-
-Le classi relative al data modelling riutilizzate dal sistema di ricerca sono le relative alle query e ai search result.
-Sono state anche riutilizzate le classi entity seppur in modo ridotto, viene usata anche una classe schema configuration ma ridimensionata a collezione di entità.
-
-Sono state aggiunte le seguenti classi di dominio:
-#list(
-        [TestQuery, un semplice wrapper che contiene un id e una SearchRequest;],
-        [SearchRequest, aggrega una SimilarityQuery o una hybrid search request alla relativa GroundTruth;],
-        [GroundTruth, rappresenta il risultato atteso dalla ricerca;],
-        [RealResult, rappresenta il risultato reale di una ricerca;        ],
-        [LogItem, aggrega una query di test con il relativo risultato e altre informazioni come l'id della sessione o lo stato di attività dell'ingestion],
-)
-
-La logica applicativa vera è realizzata da un singolo service descritto in @evaluation-service.
-Il service utilizza delle porte outbound per comunicare con l'esterno:
-- TestQueryRepositoryPort, rappresenta il sistema di permanenza per le query da eseguire;
-- LinkedSearchExecutorPort, rappresenta il sistema di ricerca da sottoporre a valutazione;
-- IngestionStatusPort, recupera lo stato di attività della sessione di ingestion;
-- LinkedEvaluationLogPort, rappresenta il sistema di permanenza su cui vengono salvati le TestQuery e il relativo RealResult.
-
-#code-snippet(
-  caption:"Sistema di test - EvaluationService",
-  code-label:"evaluation-service",
-  raw(
-  lang:"python",
-  `
-  class EvaluationService(StartTestUseCase, RunOneUseCase):
-
-      def __init__(
-          self,
-          repository: TestQueryRepositoryPort,
-          linked_executor: LinkedSearchExecutorPort,
-          ingestion_status: IngestionStatusPort,
-          linked_logger: LinkedEvaluationLogPort,
-      ) -> None:
-      `.text+sym.dots.v+`
-      def start_test(self) -> TestSessionId:
-`.text+sym.dots.v+`
-      def run_one(self) -> bool:
-`.text+sym.dots.v
-  )
-)
-
-
-=== Sistema di persistenza
-Il sistema di test ha due sistemi di permanenza con funzionalità ed esigenze distinte;
-uno si occupa di memorizzare le query di ricerca da eseguire, TestQueryRepositoryPort, l'altro registra i risultati delle ricerche, LinkedEvaluationLogPort.
-
-*TestQueryRepositoryPort* viene solo letto in modo sequenziale, perciò si è scelto di utilizzare un semplice file jsonl, rende facile la deserializzazione, viene riutilizzato lo stesso codice usato dal sistema di ricerca
-per la deserializzazione del payload json delle richieste HTTP.
-La sua modifica si traduce in una modifica ad un file. Ha anche una maggiore facilità di condivisione e tracciamento.
-
-*LinkedEvaluationLogPort* viene usato dal backend python per scritture continue al fine di registrare i risultati delle ricerche, serve inoltre un ricalcolo continuo al fine di calcolare le metriche. Postgres risponde a queste esigenze, le scritture sono veloci e il ricalcolo continuo è eseguito tramite una view.
-Inoltre Grafana e Postgres  sono  direttamente compatibili, quindi il backend non deve occuparsi né di calcolare le metriche né di comunicarle alla dashboard.
-
-
-
-=== Start test
-La sessione di test viene avviata da Locust tramite un apposito adapter inbound, viene sempre rispettata la struttura esagonale.
-
-Un'esecuzione tipica segue il seguente flusso:
-#enum(
-        [
-        avvio, il service si occupa di generare e memorizzare l'id della sessione di test e di recuperare la lista delle TestQuery da eseguire tramite la porta TestQueryRepositoryPort e le organizza in una coda;
-        ],
-        [
-        esecuzione periodica delle ricerche, sono avviate da Locust sempre attraverso un adapter,
-        + la TestQuery viene recuperata dalla coda,
-        + tramite la porta IngestionStatusPort il service recupera l'informazione relaitva allo stato di attività dell'ingestion,
-        + l'adapter RemoteIngestionStatusAdapter recupera l'informazione relativa allo stato di attività dell'ingestion,
-        + eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult,
-        + l'adapter RemoteLinkedSearchExecutorAdapter invia la query di ricerca all'endpoint appropriato,
-        + il LogItem e l'id della sessione di test corrente vengono persistiti tramite la porta LinkedEvaluationLogPort,
-        + l'adapter PostgresLinkedEvaluationLogAdapter si occupa di salvare sul database il LogItem, eventualmente rendendo esplicite informazioni come la posizione della GroundTruth.
-        ]
-)
-
-=== Visualizzazione dei risultati
-Grafana si interfaccia direttamente con il database postgres utilizzando una sintassi sql-like.
-Per mantenere le query semplici ho scelto di utilizzare la seguente vista per semplificare l'accesso.
-
-
-
-#code-snippet(
-  caption:"Sistema di test - Vista metriche",
-  code-label: "metriche",
-  raw(
-  lang:"sql",
-  `
-CREATE VIEW evaluation_metrics AS WITH session_starts AS (
-      SELECT test_session_id, min(executed_at) AS session_started_at
-      FROM evaluation_log GROUP BY test_session_id)
-SELECT e.test_session_id, s.session_started_at, e.ingestion_active, count(*) AS total_queries, avg(e.elapsed_time) AS avg_elapsed_time,
-avg(CASE
-        WHEN e.rank_of_expected IS NOT NULL THEN 1.0
-        ELSE 0.0
-    END) AS retrieval_answer_rate,
-avg(CASE
-        WHEN e.rank_of_expected IS NOT NULL THEN 1.0 / e.rank_of_expected
-        ELSE 0.0
-    END) AS mean_reciprocal_rank,
-avg(CASE
-        WHEN e.rank_of_expected IS NOT NULL
-        AND e.rank_of_expected <= 1 THEN 1.0
-        ELSE 0.0
-    END) AS hit_rate_1,
-avg(CASE
-        WHEN e.rank_of_expected IS NOT NULL
-        AND e.rank_of_expected <= 5 THEN 1.0
-        ELSE 0.0
-    END) AS hit_rate_5,
-avg(CASE
-        WHEN e.rank_of_expected IS NOT NULL
-        AND e.rank_of_expected <= 10 THEN 1.0
-        ELSE 0.0
-    END) AS hit_rate_10,
-avg(CASE
-        WHEN NOT e.has_results THEN 1.0
-        ELSE 0.0
-    END) AS not_found_rate
-FROM evaluation_log e JOIN session_starts s USING (test_session_id)
-GROUP BY e.test_session_id,s.session_started_at,e.ingestion_active;
-`.text
-  )
-)
-Grafana utilizza una variabile che recupera in automatico la sessione più recente e parametrizza su di essa la dashboard.
-#code-snippet(
-  caption:"Sistema di test - Variabile Grafana",
-  code-label: "metriche-vita",
-  raw(
-  lang:"sql",
-"SELECT
-    test_session_id AS __value,
-    to_char(session_started_at, 'YYYY-MM-DD HH24:MI:SS') || ' — ' || test_session_id AS __text
-FROM (
-    SELECT DISTINCT test_session_id, session_started_at
-    FROM evaluation_metrics
-) sessions
-ORDER BY session_started_at DESC"
-  )
-)
-
-Per la visualizzazione dei dati sono adottati 2 schemi, un indicatore di tipo time series per vedere i tempi di ingestion e un indicatore di tipo gauge per i valori unitari, indipendentemente dalla scala dei dati(percentuale o scalare).
-#code-snippet(
-  caption:"Sistema di test - Time series",
-  raw(
-  lang:"sql",
-"SELECT
-    executed_at AS time,
-    elapsed_time
-FROM evaluation_log
-WHERE test_session_id = '$session' AND NOT ingestion_active
-ORDER BY executed_at;"
-  )
-)
-#code-snippet(
-  caption:"Sistema di test - Gauge",
-  raw(
-  lang:"sql",
-"SELECT
-    not_found_rate
-FROM evaluation_metrics
-WHERE test_session_id = '$session'
-  AND ingestion_active = false"
-  )
-)
-== Limitazioni imposte da elementi esterni
-Nell'adapter dedicato al calcolo degli embedding tramite modello remoto è stato necessario introdurre un rallentamento artificiale delle prestazioni, a causa di blocchi temporanei imposti dal servizio remoto: un numero eccessivo di chiamate in un breve intervallo causa un periodo di blocco durante il quale il servizio restituisce sistematicamente un errore 503.
-
-Questo adapter è condiviso da più componenti del sistema di ricerca — la fase di arricchimento dell'ingestion e i service di ricerca semantica e ibrida — motivo per cui la limitazione descritta in questa sezione, per quanto discussa qui in un unico punto, si ripercuote su tutte queste componenti.
-
-Da un punto di vista architetturale, questo intervento non introduce un nuovo collo di bottiglia nel sistema, ma sposta parzialmente, dall'esterno verso l'interno del sistema, un collo di bottiglia già esistente e non altrimenti evitabile. Per gestirlo sono stati introdotti meccanismi di retry con attesa esponenziale e numero massimo di tentativi, oltre a un limite al numero di richieste concorrenti verso il servizio remoto, realizzato tramite semafori e contatori.

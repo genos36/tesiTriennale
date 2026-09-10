@@ -16,9 +16,9 @@
 
 
 == Basi teoriche <analisi-teorica-ricerche>
-L'#gl("information-retrieval",long:true) si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
+L'"information-retrieval si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
 
-I risultati restituiti da un sistema di IR non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema
+I risultati restituiti da un sistema di information retrieval non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema
 
 Per recuperare i dati da un sistema di information retrieval vengono usate delle funzioni di #gl("similarity-search").
 
@@ -41,7 +41,7 @@ La ricerca ibrida combina i punti di forza della ricerca semantica e di quella f
 
 La combinazione unisce i risultati di entrambe le ricerche, assegnando un punteggio maggiore a quelli individuati da entrambe, senza scartare i risultati rilevanti prodotti da una sola delle due.
 
-Questa fusione avviene principalmente tramite Reciprocal Rank Fusion(casi d'uso #uc-link-extended("Ricerca ibrida con RRF",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con RRF",separator:" - ")) oppure tramite modelli di re-ranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di re-ranking",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con modello di re-ranking",separator:" - ")).
+Questa fusione avviene principalmente tramite Reciprocal Rank Fusion(casi d'uso #uc-link-extended("Ricerca ibrida con RRF",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con RRF",separator:" - ")) oppure tramite modelli di reranking (casi d'uso #uc-link-extended("Ricerca ibrida con modello di reranking",separator:" - ") e #uc-link-extended("Ricerca linked ibrida con modello di reranking",separator:" - ")).
 
 == Architettura del progetto
 Ho scelto di separare il progetto in due sistemi distinti e indipendenti:
@@ -203,7 +203,7 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   ),)
 )
 #technology-sheet(
-  nome: "Pgvector-python",
+  nome: "pgvector-python",
   versione: "0.5.0",
   // logo: "/images/fastapi.svg",
   // caption: "Logo Fastapi",
@@ -266,7 +266,7 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   t-label: "tec:fts-nativa"
 )
 #technology-sheet(
-  nome: "Pgvector",
+  nome: "pgvector",
   versione: "0.8.4",
   // logo: "/images/postgres.png",
   // caption: "Logo Postgres",

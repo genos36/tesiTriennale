@@ -68,7 +68,7 @@ Un limite riguarda l'impossibilità di eseguire la ricerca per similarità su so
 
 Per questo motivo il sistema di ricerca realizzato durante il tirocinio non rispecchierà il sistema attuale sotto questo aspetto, allineandosi invece con il comportamento desiderato dall'impresa.
 
-=== Limiti di Postgres e Pgvector <limiti-postgres>
+=== Limiti di Postgres e pgvector <limiti-postgres>
 Le configurazioni testuali di Postgres sono piuttosto avanzate: supportano sinonimi, frasi sinonimo, stemming morfologico, e supportano un'ampia varietà di lingue.
 
 Il limite principale non riguarda la completezza delle funzionalità linguistiche disponibili, quanto la flessibilità nel modificarle: definire o modificare una configurazione di ricerca testuale in Postgres richiede operazioni di data definition relativamente complesse, mentre in Elasticsearch un analyzer può essere definito o modificato in modo molto più semplice, anche al momento della creazione dell'indice. Di conseguenza, la disponibilità di analyzer preconfigurati equivalenti a quelli offerti di default da Elasticsearch non è replicabile in Postgres se non tramite workaround.

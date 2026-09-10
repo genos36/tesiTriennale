@@ -19,7 +19,7 @@
   extends: (:),
   generalizations: (
         "Ricerca linked ibrida con rrf",
-        "Ricerca linked ibrida con modello di re-ranking",
+        "Ricerca linked ibrida con modello di reranking",
   ),
   spacing: (1cm, 3cm),
   width: 100%,

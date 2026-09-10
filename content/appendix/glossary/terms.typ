@@ -58,8 +58,15 @@
     ],
   ),
   (
+    key: "rrf",
+    short: "RRF",
+    long: "Reciprocal rank fusion",
+    description: [
+            Algoritmo di aggregazione comunemente usato nell'abito della ricerca ibrida, permette di combinare due o più elenchi di risultati con punteggi non direttamente paragonabili, utilizza solo la posizione di ogni elemento in ogni classifica al fine di calcolare il nuovo punteggio.
+    ],
+  ),
+  (
     key: "similarity-search",
-    // short: "IR",
     long: "Ricerca per similarità",
     description: [
         Una funzione che cerca gli elementi della collezione più simili alla query secondo una misura di similarità e restituisce un ranking ordinato per grado di somiglianza decrescente.
@@ -67,7 +74,6 @@
   ),
   (
     key: "ranking",
-    // short: [IR],
     long: [Ranking],
     description: [
         Processo algoritmico con cui si assegna un punteggio di rilevanza a un insieme di documenti rispetto a una query, ordinandoli in una lista decrescente.
@@ -75,10 +81,25 @@
   ),
   (
     key: "principio-dei-cassetti",
-    // short: [IR],
     long: [Principio dei cassetti],
     description: [
-        Noto anche come 'pigeonhole principle', indica una classe di problemi in cui _n_ oggetti vengono distribuiti in _m_ contenitori, con $n > m$; ne consegue necessariamente che almeno un contenitore conterrà più di un oggetto.
+        Noto anche come _pigeonhole principle_, indica una classe di problemi in cui _n_ oggetti vengono distribuiti in _m_ contenitori, con $n > m$; ne consegue necessariamente che almeno un contenitore conterrà più di un oggetto.
+    ],
+  ),
+  (
+    key: "acid",
+    short: [ACID],
+    long: [Atomicità, Coerenza, Isolamento e Durabilità],
+    description: [
+            Rappresentano le quattro proprietà fondamentali di un DBMS che garantiscono affidabilità e correttezza.
+    ],
+  ),
+  (
+    key: "sql",
+    short: [SQL],
+    long: [Structured Query Language],
+    description: [
+        Linguaggio di programmazione standardizzato utilizzato per creare, gestire, modificare e interrogare database relazionali.
     ],
   ),
 )

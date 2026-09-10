@@ -10,7 +10,7 @@
 #v(1em)
 
 == L'azienda
-#data.myCompany è un'azienda parte del Gruppo Zucchetti, vanta un'esperienza ultra trentennale nello sviluppo di soluzioni software destinate sia ad aziende private che a istituzioni pubbliche. L'azienda si posiziona come partner tecnologico specializzato nella progettazione di piattaforme per la gestione e l'automazione dei processi aziendali e dei servizi di assistenza e supporto.
+#data.myCompany è un'azienda parte del Gruppo Zucchetti, che vanta un'esperienza ultra trentennale nello sviluppo di soluzioni software destinate sia ad aziende private che a istituzioni pubbliche. L'azienda si posiziona come partner tecnologico specializzato nella progettazione di piattaforme per la gestione e l'automazione dei processi aziendali e dei servizi di assistenza e supporto.
 #img(
   "logo-azienda.svg",
   caption: [Logo #text(data.myCompany)],
@@ -18,7 +18,7 @@
 )<fig:logo>
 
 == Il progetto
-Il progetto ha come obiettivo principale la realizzazione di un proof of concept valutativo della riprogettazione e la sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
+Il progetto ha come obiettivo principale la realizzazione di un proof of concept valutativo della riprogettazione e della sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
 
 Attualmente, l'impresa adotta una soluzione basata sul paradigma della persistenza poliglotta.
 
@@ -28,21 +28,18 @@ Sebbene questo approccio ibrido sia funzionale e ampiamente utilizzato,
 la divisione dei carichi di lavoro su motori di database differenti
 comporta diverse limitazioni architettoniche e operative:
 #list(
-  [
-    Denormalizzazione dei dati:
+  [denormalizzazione dei dati,
     la natura orientata ai documenti e non relazionale di Elasticsearch obbliga a replicare e denormalizzare
-    i dati relazionali per consentire un filtraggio efficiente, aumentando la ridondanza e forzando a implementare in modo non ottimale funzioni come i join.
+    i dati relazionali per consentire un filtraggio efficiente, aumentando la ridondanza e forzando a implementare in modo non ottimale funzioni come i join;
 
   ],
-  [
-    Overhead di sincronizzazione:
+  [overhead di sincronizzazione,
     il mantenimento della coerenza tra il database primario Postgres e il motore di ricerca Elasticsearch
     richiede complesse pipeline di allineamento,
-    esponendo il sistema di ricerca a ritardi di sincronizzazione o disallineamenti.
+    esponendo il sistema di ricerca a ritardi di sincronizzazione o disallineamenti;
 
   ],
-  [
-    Mancanza di garanzie ACID globali:
+  [mancanza di garanzie #gl("acid") globali,
     operando su sistemi separati, risulta complesso garantire l'atomicità e
     la consistenza transazionale durante l'inserimento o l'aggiornamento simultaneo di dati
     strutturati e vettoriali.
@@ -58,36 +55,34 @@ e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema re
 Nello specifico, il nuovo sistema di ricerca dovrà soddisfare i seguenti requisiti implementativi:
 #list(
   [
-    Ingestion:
+    ingestion,
     sviluppo di un modulo dedicato all'inserimento simultaneo di
-    dati relazionali e documenti.
+    dati relazionali e documenti;
 
   ],
   [
-    Ottimizzazione degli indici:
+    ottimizzazione degli indici,
     sfruttamento delle capacità di indicizzazione full-text native di Postgres
     e creazione di indici vettoriali dedicati tramite
-    pgvector per garantire l'efficienza scalabile della ricerca semantica.
+    pgvector per garantire l'efficienza scalabile della ricerca semantica;
 
   ],
   [
-    Integrazione relazionale:
-    utilizzo di costrutti SQL per correlare dinamicamente i documenti e
-    i vettori tra le varie entità del sistema di ricerca.
+    integrazione relazionale,
+    utilizzo di costrutti #gl("sql") per correlare dinamicamente i documenti e
+    i vettori tra le varie entità del sistema di ricerca;
 
   ],
   [
-    Ricerca Ibrida:
+    ricerca ibrida,
     implementazione di una logica di recupero che combini la precisione lessicale
     della ricerca testuale con la profondità concettuale della ricerca semantica,
-    fondendo i risultati tramite l'algoritmo di Reciprocal Rank Fusion.
+    fondendo i risultati tramite l'algoritmo di #gl("rrf");
 
   ],
   [
-    Ricerca Linked:
-    modalità di ricerca che permette di eseguire in modo automatico una ricerca
-    che analizza ogni entità del sistema di ricerca e ricostruisce un quadro complessivo dell'informazione
-    tramite join.
+    ricerca linked,
+    modalità che permette di analizzare automaticamente ogni entità del sistema di ricerca e di ricostruire un quadro complessivo dell'informazione tramite join.
 
   ],
 )
@@ -96,19 +91,19 @@ Al fine di validare rigorosamente l'efficacia di questa nuova architettura unifi
 I test comparativi si concentreranno sulle seguenti metriche chiave:
 #list(
   [
-    Latenza di interrogazione: misurazione dei tempi di risposta durante la ricerca testuale, semantica e ibrida.
+    latenza di interrogazione: misurazione dei tempi di risposta durante la ricerca testuale, semantica e ibrida;
 
   ],
   [
-    Velocità di indicizzazione: tempi necessari per l'elaborazione e l'inserimento a database di nuovi record complessi.
+    velocità di indicizzazione: tempi necessari per l'elaborazione e l'inserimento a database di nuovi record complessi;
 
   ],
   [
-    Impatto sullo storage: analisi dello spazio su disco occupato dai dati e dai relativi indici.
+    impatto sullo storage: analisi dello spazio su disco occupato dai dati e dai relativi indici;
 
   ],
   [
-    Complessità della pipeline: valutazione qualitativa della semplificazione architetturale.
+    complessità della pipeline: valutazione qualitativa della semplificazione architetturale.
 
   ],
 )
@@ -118,9 +113,9 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
 
 == Scelta del progetto
-Ho scelto questo progetto per 3 ragioni principali:
-+ Rilevanza dell'argomento: alla base dei moderni sistemi di Intelligenza Artificiale, come la #gl("rag"), che utilizzano l'information retrieval per fornire contesto agli #gl("llm").
+Ho scelto questo progetto per tre ragioni principali:
++ rilevanza dell'argomento, alla base dei moderni sistemi di intelligenza artificiale, come la RAG, che utilizzano l' #gl("information-retrieval",long:true) per fornire contesto agli #gl("llm")\;
 
-+ Evoluzione di un sistema di ricerca reale: permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato.
++ evoluzione di un sistema di ricerca reale, permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato;
 
-+ Stack tecnologico: offre l'opportunità di operare con strumenti e framework moderni.
++ stack tecnologico, offre l'opportunità di operare con strumenti e framework moderni.

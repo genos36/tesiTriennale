@@ -42,7 +42,7 @@ structure:
     - Ricerca ibrida:
               - Aggiunta pesi di fusione ricerca singola entità
     - Ricerca ibrida con RRF
-    - Ricerca ibrida con modello di re-ranking
+    - Ricerca ibrida con modello di reranking
     - Inserimento query su singola entità non valida
     - Errore ricerca su singola entità
     - Ricerca linked:
@@ -53,7 +53,7 @@ structure:
     - Ricerca linked ibrida:
         - Aggiunta pesi di fusione ricerca linked
     - Ricerca linked ibrida con RRF
-    - Ricerca linked ibrida con modello di re-ranking
+    - Ricerca linked ibrida con modello di reranking
     - Inserimento query linked non valida
     - Errore ricerca linked
     - Avvia test

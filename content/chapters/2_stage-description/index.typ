@@ -17,30 +17,32 @@ astrazione dei problemi complessi e progettazione di soluzioni algoritmiche gene
 promuovendo inoltre la collaborazione con i tutor.
 
 Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e approfondire le seguenti tematiche:
-- Database avanzati: Padronanza nell'utilizzo di Postgres non solo come database relazionale, ma come motore di Information Retrieval vettoriale tramite l'estensione pgvector.
-- Progettazione della ricerca ibrida: Studio e valutazione delle tecnologie di indicizzazione. Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale più avanzate.
-- Testing delle performance: Acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
+- database avanzati, padronanza nell'utilizzo di Postgres non solo come database relazionale, ma come motore di information retrieval vettoriale tramite l'estensione pgvector;
+- progettazione della ricerca ibrida, studio e valutazione delle tecnologie di indicizzazione;
+- testing delle performance, acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
+
+Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale più avanzate.
 == Vincoli
 Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca.
 
 I vincoli principali sono i seguenti:
-- Utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
-- Utilizzo della ricerca full-text nativa di Postgres, per semplicità di licensing.
+- utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
+- utilizzo della ricerca full-text nativa di Postgres, per semplicità di licensing.
 
-Estensioni più evolute come ParadeDB, pur essendo state valutate in quanto si propongono come sostituto diretto della componente full-text di Elasticsearch su Postgres, sono state escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
+Estensioni più evolute come ParadeDB, che si propongono come sostituto diretto della componente full‑text di Elasticsearch su Postgres, pur essendo state valutate sono state escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
 
 == Pianificazione <pianificazione-settimane>
 
 
-Lo stage si articola in 16 ore distribuite su sette settimane da 40 ore e una da 36.
+Lo stage si articola in 316 ore distribuite su sette settimane da 40 ore e una da 36.
 
 La pianificazione, derivata dal piano di lavoro, è la seguente:
 
-+ Prima Settimana - Studio e analisi iniziale del nuovo e del vecchio stack tecnologico e setup: studio delle tecnologie, setup dell'ambiente di lavoro locale e prove generiche;
++ Prima settimana - Studio e analisi iniziale del nuovo e del vecchio stack tecnologico e setup: studio delle tecnologie, setup dell'ambiente di lavoro locale e prove generiche;
 
-+ Seconda Settimana - Analisi comparativa dettagliata di elastic search e Postgres con tentativo di modellazione di un sottoinsieme limitato del problema;
++ Seconda settimana - Analisi comparativa dettagliata di Elasticsearch e Postgres con tentativo di modellazione di un sottoinsieme limitato del problema;
 
-+ Terza Settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale;
++ Terza settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale;
 
 + Quarta settimana - Studio del dominio, definizione dei requisiti e dei casi d'uso e definizione dello schema relazionale e ottimizzazione tramite indici;
 
@@ -57,7 +59,7 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 
 I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01, e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
 
-Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elastic, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
+Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elasticsearch, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
 
 
 #risc-list(
@@ -102,7 +104,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
             (
               name: "Curva di apprendimento delle tecnologie",
               description: [
-                L'assimilazione delle tecnologie necessarie (es. pgvector, fts Postgres) potrebbe richiedere un tempo di studio superiore alle stime iniziali.
+                L'assimilazione delle tecnologie necessarie potrebbe richiedere un tempo di studio superiore alle stime iniziali.
               ],
               mitigation: [
                 Le prime settimane dello stage includono ore dedicate esplicitamente allo studio della documentazione ufficiale, alla schematizzazione delle architetture e alla realizzazione di proof of concept isolati.
@@ -149,7 +151,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
 
                     Ulteriori misurazioni con dati reali saranno effettuate successivamente, le misurazioni definitive non verranno trattate in questo progetto ma verranno effettuate dall'azienda sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza e privacy. Utilizzando i risultati del sistema di ricerca attuale come punto di riferimento.
 
-                   Si è comunque consapevoli che il contributo principale all'accuratezza deriva da parametri esterni o configurabili, come i modelli di embedding utilizzati, i tipi di vettore e distanza utilizzata per il calcolo, le configurazioni testuali applicate e la struttura della fuznione di ranking.
+                   Si è comunque consapevoli che il contributo principale all'accuratezza deriva da parametri esterni o configurabili, come i modelli di embedding utilizzati, i tipi di vettore e distanza utilizzata per il calcolo, le configurazioni testuali applicate e la struttura della funzione di ranking.
                   ],
                   probability: "Alta",
                   consequences: [Basso],

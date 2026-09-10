@@ -13,7 +13,7 @@
    box(fill:color.rgb("E8F3FF"),inset:1em,radius:3%, stroke:1pt, width:100%)[
 
   #align(left)[
-    #strong("Codice : "+code)
+    #strong("Codice: "+code)
 
     #if r-label!=none{
             label(r-label)

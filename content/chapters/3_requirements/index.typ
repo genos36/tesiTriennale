@@ -102,5 +102,5 @@ In @tab:requisiti-funzionali, @tab:requisiti-qualità e @tab:requisiti-vincolo s
 
       align: (center + horizon),
     ),
-    caption: "Riepilogo dei requisiti.",
+    caption: "Riepilogo dei requisiti",
   )<tab:riepilogo-requisiti>

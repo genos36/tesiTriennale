@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Ricerca ibrida con modello di re-ranking"
+#let use-case-nome="Ricerca ibrida con modello di reranking"
 // #let depth=
 #let diagram=none
 
@@ -13,7 +13,7 @@
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
-        "Modello di re-ranking",
+        "Modello di reranking",
   ),
   includes: (),
   extends: (:),
@@ -32,7 +32,7 @@
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
-        attore-secondario: [Modello di re-ranking],
+        attore-secondario: [Modello di reranking],
         pre-condizioni:[
                 - Il sistema di ricerca è attivo
         ],
@@ -45,7 +45,7 @@
                 + Il sistema di ricerca utilizza il modello di embedding per calcolare il vettore di embedding da usare durante la ricerca
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca semantica
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca full-text
-                + Il sistema di ricerca fonde i risultati affidandosi a un modello di re-ranking esterno
+                + Il sistema di ricerca fonde i risultati affidandosi a un modello di reranking esterno
                 + Companion riceve i risultati #sym.arrow #utils.uc-link("ricezione risultati ricerca singola entità")
         ],
         scenari-alternativi:none,

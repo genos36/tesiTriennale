@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di ricerca deve supportare la ricerca ibrida con utilizzo di un modello di re-ranking per la fusione dei risultati.
+    Il sistema di ricerca deve supportare la ricerca ibrida con utilizzo di un modello di reranking per la fusione dei risultati.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

@@ -48,7 +48,7 @@ Il sistema di ricerca oggetto dello stage invoca questo attore delegandogli il c
 
 ]
 - #block()[
-*Modello di re-ranking*
+*Modello di reranking*
 
 Si tratta di un attore software esterno che realizza la funzione di merge dei risultati della ricerca semantica e della ricerca full-text
 ]

@@ -58,7 +58,7 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
 
 
 #figure(
-  caption: [Consuntivo orario finale.],
+  caption: [Consuntivo orario finale],
   table(
     columns: 2,
     table.header([*Fase*], [*Ore*]),
@@ -106,13 +106,13 @@ Tutti i requisiti descritti nella @tracciamento-requisiti sono stati implementat
 //
     align: (center + horizon),
   ),
-  caption: "Riepilogo dei requisiti soddisfatti.",
+  caption: "Riepilogo dei requisiti soddisfatti",
 )<tab:requisiti-soddisfatti>
 == Rischi occorsi e mitigati
 I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportati in @fig:rischi-occorsi.\
 #v(1em)
 #figure(
-  caption: [Rischi occorsi con la loro mitigazione.],
+  caption: [Rischi occorsi con la loro mitigazione],
   table(
     columns: 2,
     table.header([*Descrizione*], [*Mitigazione*]),
