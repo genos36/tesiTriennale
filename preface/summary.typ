@@ -54,21 +54,16 @@ Questo approccio promette di abbattere l'overhead di sincronizzazione dei dati, 
     <cap:conclusioni>,
   )[Il settimo capitolo]: raggruppa le conclusioni tratte dallo svolgimento del progetto.
 #linebreak()
+#pagebreak(weak:true)
 #text(24pt, weight: "semibold", "Convenzioni tipografiche")
 #linebreak()
 #v(1em)
 Durante la stesura del testo ho scelto di adottare le seguenti convenzioni tipografiche:
-// TO REMOVE
-Le convenzioni tipografiche sono momentaneamente sospese e saranno riprese durante la stesura finale della tesi
-// Preferenze personali modificabili a discrezione tua o del relatore
-// - Gli acronimi, le abbreviazioni e i termini di uso non comune menzionati vengono definiti nel #link(<glossary>)[glossario], situato alla fine del documento (#link(<glossary>)[p. #context counter(page).at(<glossary>).at(0)]);
-// - Per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: #glossary-style("Termine"); // <-- Usa direttamente l'Adapter!
-// - I termini in lingua straniera non di uso comune o facenti parti del gergo tecnico sono evidenziati con il carattere _corsivo_;
-// - I nomi di funzioni o variabili appartenenti ad un linguaggio di programmazione vengono scritte con un carattere `monospaziato`;
-// - Le citazioni ad un libro o ad una risorsa presente nella #link(<bibliography>)[bibliografia] (#link(<bibliography>)[p. #context counter(page).at(<bibliography>).at(0)]) saranno affiancate dal rispettivo numero identificativo, es. [1];
+- Gli acronimi, le abbreviazioni e i termini di uso non comune menzionati vengono definiti nel #link(<glossary>)[glossario], situato alla fine del documento (#link(<glossary>)[p. #context counter(page).at(<glossary>).at(0)]);
+- Per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: #glossary-style("Termine")\;
+- I nomi di funzioni o variabili appartenenti ad un linguaggio di programmazione vengono scritte con un carattere `monospaziato`;
+- Le citazioni ad un libro o ad una risorsa presente nella #link(<bibliography>)[bibliografia] (#link(<bibliography>)[p. #context counter(page).at(<bibliography>).at(0)]) saranno affiancate dal rispettivo numero identificativo, es. [1];
 - I blocchi di codice sono rappresentati nel seguente modo:
-
-// Usiamo il nostro Adapter personalizzato per i blocchi di codice!
 #code-snippet(caption: "Codice d'esempio.")[
   #raw(
     lang: "c",

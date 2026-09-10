@@ -7,7 +7,7 @@
 
 
 
-#frontmatter()[
+#frontmatter(reset:false)[
   #include "preface/dedication.typ"
   #include "preface/acknowledgements.typ"
   #include "preface/summary.typ"

@@ -588,7 +588,20 @@ Il codice relativo all'ordinamento lessicografico è omesso perché già trattat
 )
 
 La frequenza dei lessemi richiede un ulteriore overhead in memoria in quanto consiste in una vista materializzata che va creata esplicitamente, tuttavia ha portato  una consistente riduzione del pool di candidati che ha comportato una discreta riduzione dei tempi
+#code-snippet(caption: "Ricerca full-text - Materialized view per le frequenze",
+  raw(
+    lang:"sql",
+    `
+    CREATE MATERIALIZED VIEW lexeme_frequency AS
+    SELECT word, ndoc
+    FROM ts_stat('SELECT tsv_simple FROM e_ticket_chunk
+                  UNION ALL SELECT tsv_simple FROM e_conversation_item_chunk
+                  UNION ALL SELECT tsv_simple FROM e_attachments_chunk');
 
+    CREATE UNIQUE INDEX ON lexeme_frequency (word);
+    `.text
+  )
+)
 
 
 ==== Ricerca ibrida
