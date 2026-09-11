@@ -10,11 +10,11 @@
 
 #include "UC01.2.1.1_caricamento_blocco_entità.typ"
 
-#include "UC01.2.2_ingestione_lista_ticket.typ"
+#include "UC01.2.2_ingestion_lista_ticket.typ"
 
-#include "UC01.2.3_ingestione_lista_conversation_item.typ"
+#include "UC01.2.3_ingestion_lista_conversation_item.typ"
 
-#include "UC01.2.4_ingestione_lista_attachments.typ"
+#include "UC01.2.4_ingestion_lista_attachment.typ"
 
 #include "UC01.3_termina_ingestion.typ"
 
@@ -101,4 +101,3 @@
 #include "UC22_visualizza_dashboard_performance_test_terminato.typ"
 
 #include "UC23_nessuna_run_di_test_trovata.typ"
-

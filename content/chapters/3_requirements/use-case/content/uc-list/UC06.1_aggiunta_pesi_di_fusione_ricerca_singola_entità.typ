@@ -16,8 +16,8 @@
                 - Companion ha inserito i pesi da usare durante la fusione dei risultati di ricerca
                         ],
         scenario-principale:[
-                - Companion inserisce il peso da applicare alla ricerca full-text
-                - Companion inserisce il peso da applicare alla ricerca semantica
+                + Companion inserisce il peso da applicare alla ricerca full-text
+                + Companion inserisce il peso da applicare alla ricerca semantica
         ],
         scenari-alternativi:none,
         trigger: none,

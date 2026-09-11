@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Ingestione lista conversation item"
+#let req-name="Ingestion lista conversation item"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -17,6 +17,6 @@
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
   fonti:(
-    "Ingestione lista conversation item",
+    "Ingestion lista conversation item",
   )
 )

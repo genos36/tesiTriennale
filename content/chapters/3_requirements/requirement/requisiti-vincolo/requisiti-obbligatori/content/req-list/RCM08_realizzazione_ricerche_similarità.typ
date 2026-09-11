@@ -13,9 +13,9 @@
   descrizione:[
     #set list(marker:sym.bullet)
       Il sistema di ricerca deve implementare i seguenti tipi di ricerche di similarità sulle singole entità:
-      - Semantica
-      - Full-text
-      - Ibrida
+      - semantica,
+      - full-text,
+      - ibrida
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

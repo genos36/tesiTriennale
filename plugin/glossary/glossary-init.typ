@@ -1,5 +1,4 @@
 #import "/plugin/packages.typ": glossarium-lib
-#import "glossary-style.typ"
 
 
 #let glossary-init(terms: (), body) = {

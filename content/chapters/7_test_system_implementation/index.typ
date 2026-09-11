@@ -28,15 +28,15 @@ L'estensione del sistema di test al fine di gestire tutte le tipologie di ricerc
 Anche il sistema di test segue il principio dell'architettura esagonale, con la stessa suddivisione in adapter, port, service e classi di dominio già vista per il sistema di ricerca.
 
 Le classi relative al data modelling riutilizzate dal sistema di ricerca sono le relative alle query e ai search result.
-Sono state anche riutilizzate le classi entity seppur in modo ridotto, viene usata anche una classe schema configuration ma ridimensionata a collezione di entità.
+Sono state anche riutilizzate le classi entity seppur in modo ridotto; viene usata anche una classe schema configuration ma ridimensionata a collezione di entità.
 
 Sono state aggiunte le seguenti classi di dominio:
 #list(
         [TestQuery, un semplice wrapper che contiene un id e una SearchRequest;],
         [SearchRequest, aggrega una SimilarityQuery o una hybrid search request alla relativa GroundTruth;],
         [GroundTruth, rappresenta il risultato atteso dalla ricerca;],
-        [RealResult, rappresenta il risultato reale di una ricerca;        ],
-        [LogItem, aggrega una query di test con il relativo risultato e altre informazioni come l'id della sessione o lo stato di attività dell'ingestion],
+        [RealResult, rappresenta il risultato reale di una ricerca;],
+        [LogItem, aggrega una query di test con il relativo risultato e altre informazioni come l'id della sessione o lo stato di attività dell'ingestion.],
 )
 
 La logica applicativa vera è realizzata da un singolo service descritto in @evaluation-service.
@@ -51,8 +51,7 @@ Il service utilizza delle porte outbound per comunicare con l'esterno:
   code-label:"evaluation-service",
   raw(
   lang:"python",
-  `
-  class EvaluationService(StartTestUseCase, RunOneUseCase):
+  `class EvaluationService(StartTestUseCase, RunOneUseCase):
 
       def __init__(
           self,
@@ -74,11 +73,10 @@ Il service utilizza delle porte outbound per comunicare con l'esterno:
 Il sistema di test ha due sistemi di permanenza con funzionalità ed esigenze distinte;
 uno si occupa di memorizzare le query di ricerca da eseguire, TestQueryRepositoryPort, l'altro registra i risultati delle ricerche, LinkedEvaluationLogPort.
 
-*TestQueryRepositoryPort* viene solo letto in modo sequenziale, perciò si è scelto di utilizzare un semplice file jsonl, rende facile la deserializzazione, viene riutilizzato lo stesso codice usato dal sistema di ricerca
-per la deserializzazione del payload json delle richieste HTTP.
+*TestQueryRepositoryPort* viene solo letto in modo sequenziale, perciò si è scelto di utilizzare un semplice file jsonl. Questo rende facile la deserializzazione, riutilizzando lo stesso codice usato dal sistema di ricerca per la deserializzazione del payload json delle richieste HTTP.
 La sua modifica si traduce in una modifica ad un file. Ha anche una maggiore facilità di condivisione e tracciamento.
 
-*LinkedEvaluationLogPort* viene usato dal backend python per scritture continue al fine di registrare i risultati delle ricerche, serve inoltre un ricalcolo continuo al fine di calcolare le metriche. Postgres risponde a queste esigenze, le scritture sono veloci e il ricalcolo continuo è eseguito tramite una view.
+*LinkedEvaluationLogPort* viene usato dal backend Python per scritture continue al fine di registrare i risultati delle ricerche, serve inoltre un ricalcolo continuo al fine di calcolare le metriche. Postgres risponde a queste esigenze, le scritture sono veloci e il ricalcolo continuo è eseguito tramite una view.
 Inoltre Grafana e Postgres  sono  direttamente compatibili, quindi il backend non deve occuparsi né di calcolare le metriche né di comunicarle alla dashboard.
 
 
@@ -94,9 +92,9 @@ Un'esecuzione tipica segue il seguente flusso:
         [
         esecuzione periodica delle ricerche, sono avviate da Locust sempre attraverso un adapter,
         + la TestQuery viene recuperata dalla coda,
-        + tramite la porta IngestionStatusPort il service recupera l'informazione relaitva allo stato di attività dell'ingestion,
+        + tramite la porta IngestionStatusPort il service recupera l'informazione relativa allo stato di attività dell'ingestion,
         + l'adapter RemoteIngestionStatusAdapter recupera l'informazione relativa allo stato di attività dell'ingestion,
-        + eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult,
+        + la ricerca viene eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult,
         + l'adapter RemoteLinkedSearchExecutorAdapter invia la query di ricerca all'endpoint appropriato,
         + il LogItem e l'id della sessione di test corrente vengono persistiti tramite la porta LinkedEvaluationLogPort,
         + l'adapter PostgresLinkedEvaluationLogAdapter si occupa di salvare sul database il LogItem, eventualmente rendendo esplicite informazioni come la posizione della GroundTruth.
@@ -104,7 +102,7 @@ Un'esecuzione tipica segue il seguente flusso:
 )
 
 == Visualizzazione dei risultati
-Grafana si interfaccia direttamente con il database postgres utilizzando una sintassi sql-like.
+Grafana si interfaccia direttamente con il database Postgres utilizzando una sintassi sql-like.
 Per mantenere le query semplici ho scelto di utilizzare la seguente vista per semplificare l'accesso.
 
 
@@ -114,8 +112,7 @@ Per mantenere le query semplici ho scelto di utilizzare la seguente vista per se
   code-label: "metriche",
   raw(
   lang:"sql",
-  `
-CREATE VIEW evaluation_metrics AS WITH session_starts AS (
+  `CREATE VIEW evaluation_metrics AS WITH session_starts AS (
       SELECT test_session_id, min(executed_at) AS session_started_at
       FROM evaluation_log GROUP BY test_session_id)
 SELECT e.test_session_id, s.session_started_at, e.ingestion_active, count(*) AS total_queries, avg(e.elapsed_time) AS avg_elapsed_time,
@@ -168,7 +165,7 @@ ORDER BY session_started_at DESC"
   )
 )
 
-Per la visualizzazione dei dati sono adottati 2 schemi, un indicatore di tipo time series per vedere i tempi di ingestion e un indicatore di tipo gauge per i valori unitari, indipendentemente dalla scala dei dati(percentuale o scalare).
+Per la visualizzazione dei dati sono adottati due schemi, un indicatore di tipo time series per vedere i tempi di ingestion e un indicatore di tipo gauge per i valori unitari, indipendentemente dalla scala dei dati (percentuale o scalare).
 #code-snippet(
   caption:"Sistema di test - Time series",
   raw(

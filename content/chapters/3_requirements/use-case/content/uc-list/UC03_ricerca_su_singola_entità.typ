@@ -64,7 +64,7 @@
                 - #utils.uc-link("ricezione risultati ricerca singola entità")
         ],
         estensioni: [
-                - #utils.uc-link("Inserimento query su singola entità non valida")
+                - #utils.uc-link("Errore ricerca su singola entità")
 
         ],
         specializzazioni: [

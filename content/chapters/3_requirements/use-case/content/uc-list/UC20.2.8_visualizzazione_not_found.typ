@@ -17,7 +17,7 @@
                 - Il supervisore ha visualizzato il retrieval not found
                         ],
         scenario-principale:[
-                - Il supervisore visualizza il retrieval retrieval not found
+                + Il supervisore visualizza il retrieval not found
         ],
         scenari-alternativi:none,
         trigger: none,

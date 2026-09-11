@@ -13,7 +13,7 @@
                 - Il supervisore sta visualizzando la dashboard delle performance
         ],
         post-condizioni: [
-                - Il supervisore ha visualizzato le metriche relative al consumo di risorse del DB.
+                - Il supervisore ha visualizzato le metriche relative al consumo di risorse del database
                         ],
         scenario-principale:[
                 + Il supervisore visualizza le metriche relative al consumo di risorse del database

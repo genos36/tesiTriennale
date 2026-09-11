@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Ricerca linked ibrida con rrf"
+#let req-name="Ricerca linked ibrida con RRF"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter effettuare una ricerca ibrida in modalità linked, combinando i risultati tramite rrf
+    Companion deve poter effettuare una ricerca ibrida in modalità linked, combinando i risultati tramite RRF
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

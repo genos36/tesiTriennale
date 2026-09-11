@@ -14,7 +14,7 @@
                 - Nel sistema di ricerca si è verificato un errore durante la ricerca
         ],
         post-condizioni: [
-                - Companion riceve notifica esplicita dell'errore
+                - Companion riceve notifica esplicativa dell'errore
                         ],
         scenario-principale:[
                 + Il sistema di ricerca interrompe la ricerca

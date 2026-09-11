@@ -17,7 +17,7 @@
                 - Il supervisore ha visualizzato la retrieval wins
                         ],
         scenario-principale:[
-                - Il supervisore ha visualizzato la retrieval wins
+                + Il supervisore visualizza la retrieval wins
         ],
         scenari-alternativi:none,
         trigger: none,

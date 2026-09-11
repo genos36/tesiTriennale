@@ -17,12 +17,12 @@ ma comunque attachment deve essere riconducibile o a ticket o a conv item
 Dove ogni entità si divide in :
 - info, lista dei campi dati complessivi e del loro tipo
 - filterable: lista di campi dati da usare come filtro
-- testo cercabile con una ricerca di similarità: lista dei campi dati utilizzabili per la ricerca semantica o full text, questi campi possono essere tutti chunkabili
+- testo cercabile con una ricerca di similarità: lista dei campi dati utilizzabili per la ricerca semantica o full-text, questi campi possono essere tutti chunkabili
 
 
 si traduce ogni entità in 2 tabelle
 - tabella principale, contiene i metadati dell'entità, con l'eccezione dei campi dati cercabili con similarità
-- tabella dei chunk, una tabella di supporto con le seguenti caratteristiche : 
+- tabella dei chunk, una tabella di supporto con le seguenti caratteristiche :
   - chiave primaria data dalla tripla (id_entità, nome_campo, chunk_counter)
   - chiave esterna verso l'entità principale
   - chiave esterna verso un registro che associa ad ogni entità i nomi dei relativi campi ricercabili per similarità
@@ -44,18 +44,18 @@ comunque è buona norma usare le iterative scan quando si effettuano ricerche co
 
 
 
-La ricerca full text non subisce la stessa penalizzazione, anzi beneficia del partizionamento, questo perché usa indici esatti ed è quindi possibile ottimizzare gli accessi alle partizioni, lo stesso vale per indici come B-tree
+La ricerca full-text non subisce la stessa penalizzazione, anzi beneficia del partizionamento, questo perché usa indici esatti ed è quindi possibile ottimizzare gli accessi alle partizioni, lo stesso vale per indici come B-tree
 
 
-Vengono create anche delle tabelle generali di supporto per rendere la configurazione disponibile direttamente 
+Vengono create anche delle tabelle generali di supporto per rendere la configurazione disponibile direttamente
   - elenco entità
-  - ruolo dei fields con chiave primaria entità-campo, si assume che un campo non possa vere più di un ruolo, in caso contrario la chiave primaria diventa entità-campo-ruolo  
+  - ruolo dei fields con chiave primaria entità-campo, si assume che un campo non possa vere più di un ruolo, in caso contrario la chiave primaria diventa entità-campo-ruolo
 
 Inoltre la ricerca ibrida può essere implementata anche lato Database sfruttando CTE
 
 == Progettazione ad alto livello
 
-per testare pg vector e le sue performance si possono implementare alcune funzionalità tramite python
+per testare pg vector e le sue performance si possono implementare alcune funzionalità tramite Python
 
 bisogna testare le seguenti funzionalità:
 - ingestion
@@ -82,7 +82,7 @@ Tuttavia per visualizzare le metriche di testing relative alle performance del d
 
 
 
-probabilmente un terzo modulo che avvi i test automatici e utilizzando i 2 moduli sopra descritti e mostri i risultati, sarebbe un frontend molto semplice o una cli che fa chiamate api ed eventualmente può avviare un script che simula l'invio di dati in ingestion o in retrieval
+probabilmente un terzo modulo che avvi i test automatici e utilizzando i due moduli sopra descritti e mostri i risultati, sarebbe un frontend molto semplice o una cli che fa chiamate api ed eventualmente può avviare un script che simula l'invio di dati in ingestion o in retrieval
 
 Al fine di eseguire le query di test e i test di ingestion conviene includere la possibilità che glie embedding siano inviabili lato client
 
@@ -91,21 +91,21 @@ Al fine di eseguire le query di test e i test di ingestion conviene includere la
 == Modulo core
 
 
-Questo modulo deve contenere le classi che rappresentano l'organizzazione dei dati, conviene progettarlo senza dipendenze dalle tecnologie, 
+Questo modulo deve contenere le classi che rappresentano l'organizzazione dei dati, conviene progettarlo senza dipendenze dalle tecnologie,
 
-Tale oggetto/struttura dati deve esprimere le caratteristiche di ogni entità, ruoli dei campi dati (ovvero  quali devono essere utilizzabili per i filtraggio, quali per ricerche semantiche e full text, e ibrida) e relativi vincoli.
+Tale oggetto/struttura dati deve esprimere le caratteristiche di ogni entità, ruoli dei campi dati (ovvero  quali devono essere utilizzabili per i filtraggio, quali per ricerche semantiche e full-text, e ibrida) e relativi vincoli.
 
-devono poi essere messe insieme in un'altra classe che sarà quella usata all'interno del sistema per passare le informazioni relative ai dati
+Devono poi essere messe insieme in un'altra classe che sarà quella usata all'interno del sistema per passare le informazioni relative ai dati
 
 questa non sarà impostabile direttamente tramite interfacce o simili, sarà un file di configurazione a cui si accede tramite una porta, questo permette comunque di non hard codare la configurazione ma mi evita la gestione dell'interazione dell'utente con questo aspetto.
 
-Rimane comunque discretamente flessibile perché è modificabile 
+Rimane comunque discretamente flessibile perché è modificabile
 
-si possono configurare le porte e gli adapter inbound di ingestione per accettare un input coerente con la configurazione
+si possono configurare le porte e gli adapter inbound di ingestion per accettare un input coerente con la configurazione
 
 lo stesso database può essere generato / configurato in modo da essere coerente con la configurazione
 
-i dettagli di come il database ottimizza la sua struttura per rendere le letture più efficienti non sono conosciute alla configurazione, il db usa la configurazione per decidere la propria struttura 
+i dettagli di come il database ottimizza la sua struttura per rendere le letture più efficienti non sono conosciute alla configurazione, il db usa la configurazione per decidere la propria struttura
 
 
 inoltre servono delle classi che rappresentino le singole entità da trattare in fase di ingestion
@@ -113,7 +113,7 @@ inoltre servono delle classi che rappresentino le singole entità da trattare in
 
 per quanto riguarda le classi da usare per ritornare i dati dopo una ricerca conviene modellarli più verso un concetto di risultato di una ricerca
 
-bisogna anche modellare il concetto di query che deve essere passata al sistema 
+bisogna anche modellare il concetto di query che deve essere passata al sistema
 
 
 
@@ -123,7 +123,4 @@ bisogna anche modellare il concetto di query che deve essere passata al sistema
 
 == Modulo Benchmark-Frontend
 
-Servono delle classi che rappresentano le query di test, queste contengono anche i risultati attesi e non serve ricalcolare gli embedding, perciò un layer di permanenza potrebbe essere un semplice file json, ma servono delle interfacce per l'aggiunta, 
-
-
-
+Servono delle classi che rappresentano le query di test, queste contengono anche i risultati attesi e non serve ricalcolare gli embedding, perciò un layer di permanenza potrebbe essere un semplice file json, ma servono delle interfacce per l'aggiunta,

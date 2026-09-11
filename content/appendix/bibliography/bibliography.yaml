@@ -20,9 +20,9 @@ harry:
         page-total: 768
         date: 2003-06-21
 
-electronic:
+paradeDB-intro:
         type: Web
         title: Ishkur's Guide to Electronic Music
         serial-number: v2.5
         author: Ishkur
-        url: http://www.techno.org/electronic-music-guide/
+        url: https://www.paradedb.com/

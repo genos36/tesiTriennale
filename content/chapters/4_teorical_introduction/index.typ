@@ -16,9 +16,9 @@
 
 
 == Basi teoriche <analisi-teorica-ricerche>
-L'"information-retrieval si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
+L'information retrieval si occupa di individuare, all'interno di una collezione di dati, gli elementi più pertinenti rispetto a una richiesta espressa dall'utente. Nel contesto di questo progetto la richiesta è rappresentata da una query testuale, mentre la collezione può coincidere con i dati di una singola entità del modello oppure con l'insieme delle entità collegate secondo le regole di join configurate.
 
-I risultati restituiti da un sistema di information retrieval non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema
+I risultati restituiti da un sistema di information retrieval non costituiscono un insieme non ordinato, ma una lista ordinata secondo un criterio di rilevanza decrescente, detta #gl("ranking"). Questo concetto è alla base delle metriche di valutazione adottate nel progetto, discusse in @teoria:contesto-problema.
 
 Per recuperare i dati da un sistema di information retrieval vengono usate delle funzioni di #gl("similarity-search").
 
@@ -72,7 +72,7 @@ Legge il database del sistema di test per calcolare le metriche, gestendo automa
 Grafana non fa parte dei sistemi applicativi sviluppati: vengono forniti solamente i file YAML e JSON necessari a costruirla.
 
 === Relazione tra i sistemi
-I due sistemi non condividono né codice (eccetto un riuso di tipo copia-incolla, per convenienza) né risorse, e sono sviluppati su repository separati.
+I due sistemi non condividono né codice (eccetto un riuso di tipo copia e incolla, per convenienza) né risorse, e sono sviluppati su repository separati.
 
 Il sistema di test comunica con il sistema di ricerca simulando client esterni che inviano richieste di ricerca, mentre Grafana accede direttamente al database del sistema di test, bypassandolo, per leggerne le metriche.
 
@@ -83,9 +83,9 @@ I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui 
 === Sistema di ricerca <criteri:main-system>
 La maggior parte delle tecnologie è fissata dai requisiti di vincolo (@tab:requisiti-vincolo). Sono rimaste come scelte libere la libreria di language detection e la scelta del meccanismo di ricerca full-text.
 
-Per la ricerca full-text, oltre alla soluzione nativa di Postgres basata su tsvector e tsquery, sono state valutate alcune estensioni che la implementano tramite l'algoritmo BM25. I criteri richiesti sono: assenza di problemi di licenza compatibili con l'uso in un prodotto commerciale, e un livello di funzionalità sufficientemente avanzato rispetto alle esigenze del progetto.
+Per la ricerca full-text, oltre alla soluzione nativa di Postgres basata su tsvector e tsquery, sono state valutate alcune estensioni che la implementano tramite l'algoritmo bm25. I criteri richiesti sono: assenza di problemi di licenza compatibili con l'uso in un prodotto commerciale, e un livello di funzionalità sufficientemente avanzato rispetto alle esigenze del progetto.
 
-Un'altra scelta libera riguarda la libreria utilizzata per il riconoscimento della lingua del testo. Il criterio decisivo non è la compatibilità con la versione di Python utilizzata dal progetto (3.14).
+Un'altra scelta libera riguarda la libreria utilizzata per il riconoscimento della lingua del testo. Il criterio decisivo è stato la compatibilità con la versione di Python utilizzata dal progetto (3.14).
 
 Inoltre si è preferito non adottare librerie di query building, per mantenere il massimo controllo possibile sul codice SQL prodotto e non nasconderne la complessità, coerentemente con il criterio già seguito per l'architettura del sistema (@teoria:main-system).
 
@@ -104,11 +104,11 @@ Nelle seguenti sezioni viene analizzato l'insieme di tecnologie adottate per la 
 Ogni tecnologia è contrassegnata anche dal relativo numero di versione, in quanto vi potrebbero essere stati aggiornamenti significativi che rendono obsolete considerazioni tecniche presenti in questo documento.
 
 
-Il progetto è composto da 2 sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni
+Il progetto è composto da due sistemi distinti e indipendenti, perciò i relativi stack tecnologici sono analizzati separatamente nelle sezioni
 #link(<tec:main-system>)[sistema di ricerca] e #link(<tec:test-system>)[sistema di test].
 // Non vi è alcuna sezione dedicata a tecnologie di frontend, in quanto il progetto di questo tirocinio non richiede un frontend.
 
-Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stack tecnologici, mentre Grafana non fa formalmente parte di nessuno dei 2 sistemi.
+Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stack tecnologici, mentre Grafana non fa formalmente parte di nessuno dei due sistemi.
 
 #technology-sheet(
   nome: "Python",
@@ -120,7 +120,7 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
     Linguaggio di programmazione ad alto livello che supporta diversi paradigmi di programmazione.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("utilizzo python")
+    Richiesto dal requisito #rcm-link("utilizzo Python")
   ],
   alternative: (),
 )
@@ -171,15 +171,15 @@ Fanno eccezione Python, Poetry e Postgres, in quanto comuni ad entrambi gli stac
 Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue.
 ==== Backend
 #technology-sheet(
-  nome: "Fastapi",
+  nome: "FastAPI",
   versione: "0.115.0",
   logo: "/images/fastapi.svg",
-  caption: "Logo Fastapi",
+  caption: "Logo FastAPI",
   descrizione: [
-    Framework web veloce e moderno per la costruzione di api con Python.
+    Framework web veloce e moderno per la costruzione di API con Python.
   ],
   motivazione: [
-    Richiesto dal requisito #rcm-link("Utilizzo Fastapi") .
+    Richiesto dal requisito #rcm-link("Utilizzo FastAPI").
     Supporto nativo per l'asincronia.
   ],
   alternative: (),
@@ -190,10 +190,8 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   nome: "Asyncpg",
   t-label: "tec:asyncpg",
   versione: "0.31.0",
-  // logo: "/images/fastapi.svg",
-  // caption: "Logo Fastapi",
   descrizione: [
-    Libreria python dedicata alla comunicazione con database Postgres in un contesto python asincrono.
+    Libreria Python dedicata alla comunicazione con database Postgres in un contesto Python asincrono.
   ],
   motivazione: [
     Scelta per via della sua efficienza e per il supporto all'asincronia.
@@ -205,21 +203,17 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
 #technology-sheet(
   nome: "pgvector-python",
   versione: "0.5.0",
-  // logo: "/images/fastapi.svg",
-  // caption: "Logo Fastapi",
   descrizione: [
-    Libreria dedicata al supporto di pgvector in python.
+    Libreria dedicata al supporto di pgvector in Python.
   ],
   motivazione: [
-    Necessaria per permettere a #link(<tec:asyncpg>)[Asyncpg] di utilizzare funzioni e tipi di pgvector.
+    Necessaria per permettere ad #link(<tec:asyncpg>)[Asyncpg] di utilizzare funzioni e tipi di pgvector.
   ],
   alternative: (),
 )
 #technology-sheet(
   nome: "Py3langid",
   versione: "0.3.0",
-  // logo: "/images/fastapi.svg",
-  // caption: "Logo Fastapi",
   descrizione: [
     Libreria dedicata alla language detection.
   ],
@@ -228,7 +222,7 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   ],
   alternative: (
     (
-      (nome:"fasttext-langdetect",versione:"1.1.1",motivo:"minore manutenzione rispetto alla libreria scelta, incompatibile con python 3.14"),
+      (nome:"fasttext-langdetect",versione:"1.1.1",motivo:"minore manutenzione rispetto alla libreria scelta, incompatibile con Python 3.14"),
     )
   ),
 )
@@ -251,17 +245,17 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
     e livello di funzionalità sufficientemente avanzato rispetto alle
     esigenze del progetto. Vi sono comunque presenti lacune di funzionalità che hanno richiesto dei workaround analizzati nel dettaglio nella @lavoro-svolto-ricerca-full-text.
 
-    Il limite tecnologico principale è dato dalla non implementazione della funzione di ranking bm25 e di tutte le ottimizzazioni che un motore di ricerca testuale offre, il testo viene valutato solo sulla base del testo della ts_query e del testo del ts_vector, senza utilizzo di un corpus di documenti per ripesare il punteggio del testo.
+    Il limite tecnologico principale è dato dalla non implementazione della funzione di ranking bm25 e di tutte le ottimizzazioni che un motore di ricerca testuale offre, il testo viene valutato solo sulla base del testo della tsquery e del testo del tsvector, senza utilizzo di un corpus di documenti per ripesare il punteggio del testo.
 
-    La differenza alla base del calcolo dello score può inteaccare la qualità del ranking, ma garantisce che i punteggi calcolati su entità diverse siano direttamente comparabili.
+    La differenza alla base del calcolo dello score può intaccare la qualità del ranking, ma garantisce che i punteggi calcolati su entità diverse siano direttamente comparabili.
 
     Limite accettato dato che lo scopo del progetto è valutare la qualità della ricerca, con focus principale su pgvector.
 
     Viene accettato anche il limite sulla non ottimizzazione WAND della ricerca in quanto per il limiti imposti nella scelta della tecnologia non è possibile valutare alternative, inoltre non va in conflitto con la finalità esplorativa, è utile valutare le prestazioni di una funzione nativa invece di aggiungere prematuramente un'ulteriore dipendenza.
   ],
   alternative: (
-    (nome: "ParadeDB",versione:"0.25.0", motivo: "licenza incompatibile con i vincoli aziendali sull'uso commerciale"),
-    (nome: "pg_textsearch (TimescaleDB)",versione:"1.3.1", motivo: [il rapporto tra vantaggi,limitazioni e incognite da valutare non è stato ritenuto sufficientemente alto da giustificarne l'adozione, per le limitazioni si veda #link("https://github.com/timescale/pg_textsearch/blob/v1.3.1/README.md#limitations"), le più importanti sono la mancanza di phrase_query, l'incognita di comparabilità dei punteggi di diverse partizioni di una tabella, il partizionamento era già previsto per conformarsi raccomandazioni di pg vector, la stessa incognita va applicata alla confrontabilità dei punteggi di 2 entità diverse durante la ricerca linked]),
+          (nome: "ParadeDB",versione:"0.25.0", motivo: [licenza incompatibile con i vincoli aziendali sull'uso commerciale]),
+    (nome: "pg_textsearch (TimescaleDB)",versione:"1.3.1", motivo: [il rapporto tra vantaggi, limitazioni e incognite da valutare non è stato ritenuto sufficientemente alto da giustificarne l'adozione, per le limitazioni si veda #link("https://github.com/timescale/pg_textsearch/blob/v1.3.1/README.md#limitations"), le più importanti sono la mancanza di phrase_query, l'incognita di comparabilità dei punteggi di diverse partizioni di una tabella, il partizionamento era già previsto per conformarsi alle raccomandazioni di pg_vector, la stessa incognita va applicata alla confrontabilità dei punteggi di due entità diverse durante la ricerca linked]),
   ),
   t-label: "tec:fts-nativa"
 )
@@ -290,9 +284,9 @@ Ai fini dello sviluppo e del test in locale è stato realizzato il Dockerfile pe
 ==== Strumenti di supporto
 Altri strumenti di supporto degni di nota sono *uvicorn*, *pydantic-settings*, *sqlparse*.
 
-- Uvicorn è un 	server ASGI, scelta strettamente legata all'uso di Fastapi.
+- Uvicorn è un 	server ASGI, scelta strettamente legata all'uso di FastAPI.
 
-- Pydantic-settings viene usato per avere una gestione più pulita delle variabili d'ambiente, non richiede l'aggiunta di ulteriori dipendenze in quanto Fastapi utilizza già Pydantic.
+- Pydantic-settings viene usato per avere una gestione più pulita delle variabili d'ambiente, non richiede l'aggiunta di ulteriori dipendenze in quanto FastAPI utilizza già Pydantic.
 
 - Sqlparse è una libreria di parsing e formattazione SQL, usata per migliorare la leggibilità delle query ricostruite durante il debug e il logging.
 
@@ -326,7 +320,7 @@ Le tecnologie adottate all'interno del sistema di test sono divise come segue.
     Strumento per la comunicazione http
   ],
   motivazione: [
-    Scelto perchè il più utilizzato, si integra bene con locust
+    Scelto perché il più utilizzato, si integra bene con Locust
   ],
   alternative: (),
 )
@@ -336,14 +330,14 @@ Le tecnologie adottate all'interno del sistema di test sono divise come segue.
   // logo: "/images/postgres.png",
   // caption: "Logo Postgres",
   descrizione: [
-    Driver per la comunicazione con un database postgres
+    Driver per la comunicazione con un database Postgres
   ],
   motivazione: [
-    Scelto per la solidità e la compatibilità con locust
+    Scelto per la solidità e la compatibilità con Locust
   ],
   alternative: (
     (
-      (nome :"Asyncpg", versione:"0.31.0",motivo:"scartato per la bassa compatibilità con locust che lavora meglio su un contesto python sincrono"),
+      (nome :"Asyncpg", versione:"0.31.0",motivo:"scartato per la bassa compatibilità con Locust che lavora meglio su un contesto Python sincrono"),
     )
   ),
 )
@@ -351,10 +345,10 @@ Le tecnologie adottate all'interno del sistema di test sono divise come segue.
 
 
 ==== Database
-Vengono usati 2 storage:
+Vengono usati due storage:
 - un file jsonl per la persistenza delle query da eseguire e la ground truth, scelta dovuta alla semplicità di condivisione e alla mancanza di requisiti di prestazioni di scrittura e di lettura non sequenziale;
-- un database postgres, usato per loggare i risultati dei test, scelto per la facilità di integrazione con Grafana e per la necessità di scritture continue e ricalcolo continuo delle metriche, realizzato con una vista.
-Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgres]
+- un database Postgres, usato per loggare i risultati dei test, scelto per la facilità di integrazione con Grafana e per la necessità di scritture continue e ricalcolo continuo delle metriche, realizzato con una vista.
+Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgres].
 
 
 ==== Deployment

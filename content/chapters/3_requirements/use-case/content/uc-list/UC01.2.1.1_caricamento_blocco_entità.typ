@@ -47,13 +47,13 @@
                         ],
         scenario-principale:[
                 + Companion carica un blocco di entità
-                + Il sistema di ricerca salva i dati dei entità
+                + Il sistema di ricerca salva i dati delle entità
                 + Il sistema di ricerca calcola l'embedding da associare ai chunk di testo usando il modello di embedding
                 + Il sistema di ricerca rileva le informazioni di lingua da applicare ai chunk
                         + Il sistema di ricerca può usare l'informazione linguistica presente nei dati caricati
                         + Il sistema di ricerca può rilevare la lingua del testo
-                + Il sistema di ricerca associa gli embedding al relativo frammento di testo
-                + Il sistema di ricerca associa la lingua al relativo frammento di testo
+                + Il sistema di ricerca associa gli embedding al relativo chunk di testo
+                + Il sistema di ricerca associa la lingua al relativo chunk di testo
                 + Il sistema di ricerca salva il blocco di entità
         ],
         scenari-alternativi:[

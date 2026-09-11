@@ -18,7 +18,7 @@
   includes: ("Aggiunta pesi di fusione ricerca linked",),
   extends: (:),
   generalizations: (
-        "Ricerca linked ibrida con rrf",
+        "Ricerca linked ibrida con RRF",
         "Ricerca linked ibrida con modello di reranking",
   ),
   spacing: (1cm, 3cm),
@@ -40,13 +40,13 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
 //                - Companion riceve l'identificativo del chunk su cui è stato trovato il match
 //                - Companion riceve solo il chunk di testo su cui è stato trovato un match
 ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query linked")
-                + Companion inserisce i pesi da usare durante la fusione dei risultati di ricerca ibrida e full-text #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
+                + Companion inserisce i pesi da usare durante la fusione dei risultati di ricerca semantica e full-text #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
                 + Il sistema di ricerca utilizza il modello di embedding per calcolare il vettore di embedding da usare durante la ricerca
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca semantica
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca full-text
@@ -54,7 +54,7 @@
                 + Companion riceve i risultati #sym.arrow #utils.uc-link("ricezione risultati ricerca linked")
         ],
         scenari-alternativi:none,
-        trigger: [Companion vuole eseguire una ricerca su tutte le entità],
+        trigger: [Companion vuole eseguire una ricerca ibrida su tutte le entità],
         inclusioni: [
                 - #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
         ],

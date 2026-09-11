@@ -18,7 +18,7 @@
                         ],
         scenario-principale:[
                 + Companion carica un blocco di entità
-                + Rileva degli errori relativi a uno o più record del blocco
+                + Il sistema di ricerca rileva degli errori relativi a uno o più record del blocco
                 + Companion riceve un errore esplicativo relativo ai record che hanno generato errori
                 ],
         scenari-alternativi:none,

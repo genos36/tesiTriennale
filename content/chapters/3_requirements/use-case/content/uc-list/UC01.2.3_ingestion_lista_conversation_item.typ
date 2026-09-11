@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Ingestione lista conversation item"
+#let use-case-nome="Ingestion lista conversation item"
 // #let depth=
 
 #let diagram=none

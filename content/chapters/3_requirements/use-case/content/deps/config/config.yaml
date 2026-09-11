@@ -28,9 +28,9 @@ structure:
       - Ingestion liste entità:
         - ingestion lista entità:
             - Caricamento blocco entità
-        - Ingestione lista ticket:
-        - Ingestione lista conversation item:
-        - Ingestione lista attachments:
+        - Ingestion lista ticket:
+        - Ingestion lista conversation item:
+        - Ingestion lista attachment:
       - Termina Ingestion:
         - Errore termine ingestion
     - Fallimento ingestion

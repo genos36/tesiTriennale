@@ -37,10 +37,10 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: e_attachments; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments (
+CREATE TABLE public.e_attachment (
     f_id text NOT NULL,
     f_ticket_id text,
     f_conversation_item_id text
@@ -48,10 +48,10 @@ CREATE TABLE public.e_attachments (
 
 
 --
--- Name: e_attachments_chunk; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment_chunk; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments_chunk (
+CREATE TABLE public.e_attachment_chunk (
     f_id text NOT NULL,
     field_name text NOT NULL,
     chunk_counter integer NOT NULL,
@@ -71,10 +71,10 @@ PARTITION BY LIST (field_name);
 
 
 --
--- Name: e_attachments_chunk_f_content; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments_chunk_f_content (
+CREATE TABLE public.e_attachment_chunk_f_content (
     f_id text NOT NULL,
     field_name text NOT NULL,
     chunk_counter integer NOT NULL,
@@ -93,10 +93,10 @@ END) STORED,
 
 
 --
--- Name: e_attachments_chunk_staging; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment_chunk_staging; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments_chunk_staging (
+CREATE TABLE public.e_attachment_chunk_staging (
     staging_id bigint NOT NULL,
     f_id text NOT NULL,
     field_name text NOT NULL,
@@ -108,10 +108,10 @@ CREATE TABLE public.e_attachments_chunk_staging (
 
 
 --
--- Name: e_attachments_chunk_staging_staging_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: e_attachment_chunk_staging_staging_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.e_attachments_chunk_staging_staging_id_seq
+CREATE SEQUENCE public.e_attachment_chunk_staging_staging_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -120,27 +120,27 @@ CREATE SEQUENCE public.e_attachments_chunk_staging_staging_id_seq
 
 
 --
--- Name: e_attachments_chunk_staging_staging_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: e_attachment_chunk_staging_staging_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.e_attachments_chunk_staging_staging_id_seq OWNED BY public.e_attachments_chunk_staging.staging_id;
+ALTER SEQUENCE public.e_attachment_chunk_staging_staging_id_seq OWNED BY public.e_attachment_chunk_staging.staging_id;
 
 
 --
--- Name: e_attachments_field; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment_field; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments_field (
+CREATE TABLE public.e_attachment_field (
     field_name text NOT NULL,
     logical_name text NOT NULL
 );
 
 
 --
--- Name: e_attachments_staging; Type: TABLE; Schema: public; Owner: -
+-- Name: e_attachment_staging; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.e_attachments_staging (
+CREATE TABLE public.e_attachment_staging (
     staging_id bigint NOT NULL,
     f_id text NOT NULL,
     f_ticket_id text,
@@ -149,10 +149,10 @@ CREATE TABLE public.e_attachments_staging (
 
 
 --
--- Name: e_attachments_staging_staging_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: e_attachment_staging_staging_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.e_attachments_staging_staging_id_seq
+CREATE SEQUENCE public.e_attachment_staging_staging_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -161,10 +161,10 @@ CREATE SEQUENCE public.e_attachments_staging_staging_id_seq
 
 
 --
--- Name: e_attachments_staging_staging_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: e_attachment_staging_staging_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.e_attachments_staging_staging_id_seq OWNED BY public.e_attachments_staging.staging_id;
+ALTER SEQUENCE public.e_attachment_staging_staging_id_seq OWNED BY public.e_attachment_staging.staging_id;
 
 
 --
@@ -561,10 +561,10 @@ CREATE TABLE public.language (
 
 
 --
--- Name: e_attachments_chunk_f_content; Type: TABLE ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content; Type: TABLE ATTACH; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_chunk ATTACH PARTITION public.e_attachments_chunk_f_content FOR VALUES IN ('f_content');
+ALTER TABLE ONLY public.e_attachment_chunk ATTACH PARTITION public.e_attachment_chunk_f_content FOR VALUES IN ('f_content');
 
 
 --
@@ -596,17 +596,17 @@ ALTER TABLE ONLY public.e_ticket_chunk ATTACH PARTITION public.e_ticket_chunk_f_
 
 
 --
--- Name: e_attachments_chunk_staging staging_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: e_attachment_chunk_staging staging_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_chunk_staging ALTER COLUMN staging_id SET DEFAULT nextval('public.e_attachments_chunk_staging_staging_id_seq'::regclass);
+ALTER TABLE ONLY public.e_attachment_chunk_staging ALTER COLUMN staging_id SET DEFAULT nextval('public.e_attachment_chunk_staging_staging_id_seq'::regclass);
 
 
 --
--- Name: e_attachments_staging staging_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: e_attachment_staging staging_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_staging ALTER COLUMN staging_id SET DEFAULT nextval('public.e_attachments_staging_staging_id_seq'::regclass);
+ALTER TABLE ONLY public.e_attachment_staging ALTER COLUMN staging_id SET DEFAULT nextval('public.e_attachment_staging_staging_id_seq'::regclass);
 
 
 --
@@ -638,51 +638,51 @@ ALTER TABLE ONLY public.e_ticket_staging ALTER COLUMN staging_id SET DEFAULT nex
 
 
 --
--- Name: e_attachments_chunk e_attachments_chunk_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_chunk e_attachment_chunk_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_chunk
-    ADD CONSTRAINT e_attachments_chunk_pkey PRIMARY KEY (f_id, field_name, chunk_counter);
-
-
---
--- Name: e_attachments_chunk_f_content e_attachments_chunk_f_content_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.e_attachments_chunk_f_content
-    ADD CONSTRAINT e_attachments_chunk_f_content_pkey PRIMARY KEY (f_id, field_name, chunk_counter);
+ALTER TABLE ONLY public.e_attachment_chunk
+    ADD CONSTRAINT e_attachment_chunk_pkey PRIMARY KEY (f_id, field_name, chunk_counter);
 
 
 --
--- Name: e_attachments_chunk_staging e_attachments_chunk_staging_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content e_attachment_chunk_f_content_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_chunk_staging
-    ADD CONSTRAINT e_attachments_chunk_staging_pkey PRIMARY KEY (staging_id);
-
-
---
--- Name: e_attachments_field e_attachments_field_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.e_attachments_field
-    ADD CONSTRAINT e_attachments_field_pkey PRIMARY KEY (field_name);
+ALTER TABLE ONLY public.e_attachment_chunk_f_content
+    ADD CONSTRAINT e_attachment_chunk_f_content_pkey PRIMARY KEY (f_id, field_name, chunk_counter);
 
 
 --
--- Name: e_attachments e_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_chunk_staging e_attachment_chunk_staging_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments
-    ADD CONSTRAINT e_attachments_pkey PRIMARY KEY (f_id);
+ALTER TABLE ONLY public.e_attachment_chunk_staging
+    ADD CONSTRAINT e_attachment_chunk_staging_pkey PRIMARY KEY (staging_id);
 
 
 --
--- Name: e_attachments_staging e_attachments_staging_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_field e_attachment_field_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments_staging
-    ADD CONSTRAINT e_attachments_staging_pkey PRIMARY KEY (staging_id);
+ALTER TABLE ONLY public.e_attachment_field
+    ADD CONSTRAINT e_attachment_field_pkey PRIMARY KEY (field_name);
+
+
+--
+-- Name: e_attachment e_attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.e_attachment
+    ADD CONSTRAINT e_attachment_pkey PRIMARY KEY (f_id);
+
+
+--
+-- Name: e_attachment_staging e_attachment_staging_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.e_attachment_staging
+    ADD CONSTRAINT e_attachment_staging_pkey PRIMARY KEY (staging_id);
 
 
 --
@@ -822,101 +822,101 @@ ALTER TABLE ONLY public.language
 
 
 --
--- Name: ix_e_attachments_chunk_embedding; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_chunk_embedding; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_embedding ON ONLY public.e_attachments_chunk USING hnsw (((public.binary_quantize((embedding)::public.vector))::bit(128)) public.bit_hamming_ops);
-
-
---
--- Name: e_attachments_chunk_f_content_binary_quantize_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_binary_quantize_idx ON public.e_attachments_chunk_f_content USING hnsw (((public.binary_quantize((embedding)::public.vector))::bit(128)) public.bit_hamming_ops);
+CREATE INDEX ix_e_attachment_chunk_embedding ON ONLY public.e_attachment_chunk USING hnsw (((public.binary_quantize((embedding)::public.vector))::bit(128)) public.bit_hamming_ops);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_lang_it; Type: INDEX; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_binary_quantize_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_lang_it ON ONLY public.e_attachments_chunk USING gin (tsv_lang) WHERE (chunk_language = 'it'::text);
-
-
---
--- Name: e_attachments_chunk_f_content_tsv_lang_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_tsv_lang_idx ON public.e_attachments_chunk_f_content USING gin (tsv_lang) WHERE (chunk_language = 'it'::text);
+CREATE INDEX e_attachment_chunk_f_content_binary_quantize_idx ON public.e_attachment_chunk_f_content USING hnsw (((public.binary_quantize((embedding)::public.vector))::bit(128)) public.bit_hamming_ops);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_lang_en; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_chunk_tsv_lang_it; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_lang_en ON ONLY public.e_attachments_chunk USING gin (tsv_lang) WHERE (chunk_language = 'en'::text);
-
-
---
--- Name: e_attachments_chunk_f_content_tsv_lang_idx1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_tsv_lang_idx1 ON public.e_attachments_chunk_f_content USING gin (tsv_lang) WHERE (chunk_language = 'en'::text);
+CREATE INDEX ix_e_attachment_chunk_tsv_lang_it ON ONLY public.e_attachment_chunk USING gin (tsv_lang) WHERE (chunk_language = 'it'::text);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_simple; Type: INDEX; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_lang_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_simple ON ONLY public.e_attachments_chunk USING gin (tsv_simple);
-
-
---
--- Name: e_attachments_chunk_f_content_tsv_simple_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_tsv_simple_idx ON public.e_attachments_chunk_f_content USING gin (tsv_simple);
+CREATE INDEX e_attachment_chunk_f_content_tsv_lang_idx ON public.e_attachment_chunk_f_content USING gin (tsv_lang) WHERE (chunk_language = 'it'::text);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_simple_arr; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_chunk_tsv_lang_en; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_simple_arr ON ONLY public.e_attachments_chunk USING gin (tsvector_to_array(tsv_simple));
-
-
---
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_tsvector_to_array_idx ON public.e_attachments_chunk_f_content USING gin (tsvector_to_array(tsv_simple));
+CREATE INDEX ix_e_attachment_chunk_tsv_lang_en ON ONLY public.e_attachment_chunk USING gin (tsv_lang) WHERE (chunk_language = 'en'::text);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_lang_arr_it; Type: INDEX; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_lang_idx1; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_lang_arr_it ON ONLY public.e_attachments_chunk USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'it'::text);
-
-
---
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX e_attachments_chunk_f_content_tsvector_to_array_idx1 ON public.e_attachments_chunk_f_content USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'it'::text);
+CREATE INDEX e_attachment_chunk_f_content_tsv_lang_idx1 ON public.e_attachment_chunk_f_content USING gin (tsv_lang) WHERE (chunk_language = 'en'::text);
 
 
 --
--- Name: ix_e_attachments_chunk_tsv_lang_arr_en; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_chunk_tsv_simple; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_tsv_lang_arr_en ON ONLY public.e_attachments_chunk USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'en'::text);
+CREATE INDEX ix_e_attachment_chunk_tsv_simple ON ONLY public.e_attachment_chunk USING gin (tsv_simple);
 
 
 --
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx2; Type: INDEX; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_simple_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX e_attachments_chunk_f_content_tsvector_to_array_idx2 ON public.e_attachments_chunk_f_content USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'en'::text);
+CREATE INDEX e_attachment_chunk_f_content_tsv_simple_idx ON public.e_attachment_chunk_f_content USING gin (tsv_simple);
+
+
+--
+-- Name: ix_e_attachment_chunk_tsv_simple_arr; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ix_e_attachment_chunk_tsv_simple_arr ON ONLY public.e_attachment_chunk USING gin (tsvector_to_array(tsv_simple));
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX e_attachment_chunk_f_content_tsvector_to_array_idx ON public.e_attachment_chunk_f_content USING gin (tsvector_to_array(tsv_simple));
+
+
+--
+-- Name: ix_e_attachment_chunk_tsv_lang_arr_it; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ix_e_attachment_chunk_tsv_lang_arr_it ON ONLY public.e_attachment_chunk USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'it'::text);
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX e_attachment_chunk_f_content_tsvector_to_array_idx1 ON public.e_attachment_chunk_f_content USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'it'::text);
+
+
+--
+-- Name: ix_e_attachment_chunk_tsv_lang_arr_en; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ix_e_attachment_chunk_tsv_lang_arr_en ON ONLY public.e_attachment_chunk USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'en'::text);
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX e_attachment_chunk_f_content_tsvector_to_array_idx2 ON public.e_attachment_chunk_f_content USING gin (tsvector_to_array(tsv_lang)) WHERE (chunk_language = 'en'::text);
 
 
 --
@@ -1214,24 +1214,24 @@ CREATE INDEX e_ticket_chunk_f_subject_tsvector_to_array_idx2 ON public.e_ticket_
 
 
 --
--- Name: ix_e_attachments_chunk_staging_identifier; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_chunk_staging_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_chunk_staging_identifier ON public.e_attachments_chunk_staging USING btree (f_id);
-
-
---
--- Name: ix_e_attachments_staging_f_conversation_item_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ix_e_attachments_staging_f_conversation_item_id ON public.e_attachments_staging USING btree (f_conversation_item_id);
+CREATE INDEX ix_e_attachment_chunk_staging_identifier ON public.e_attachment_chunk_staging USING btree (f_id);
 
 
 --
--- Name: ix_e_attachments_staging_f_ticket_id; Type: INDEX; Schema: public; Owner: -
+-- Name: ix_e_attachment_staging_f_conversation_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_e_attachments_staging_f_ticket_id ON public.e_attachments_staging USING btree (f_ticket_id);
+CREATE INDEX ix_e_attachment_staging_f_conversation_item_id ON public.e_attachment_staging USING btree (f_conversation_item_id);
+
+
+--
+-- Name: ix_e_attachment_staging_f_ticket_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ix_e_attachment_staging_f_ticket_id ON public.e_attachment_staging USING btree (f_ticket_id);
 
 
 --
@@ -1270,59 +1270,59 @@ CREATE INDEX ix_ingestion_streams_session_status ON public.ingestion_streams USI
 
 
 --
--- Name: e_attachments_chunk_f_content_binary_quantize_idx; Type: INDEX ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_binary_quantize_idx; Type: INDEX ATTACH; Schema: public; Owner: -
 --
 
-ALTER INDEX public.ix_e_attachments_chunk_embedding ATTACH PARTITION public.e_attachments_chunk_f_content_binary_quantize_idx;
-
-
---
--- Name: e_attachments_chunk_f_content_pkey; Type: INDEX ATTACH; Schema: public; Owner: -
---
-
-ALTER INDEX public.e_attachments_chunk_pkey ATTACH PARTITION public.e_attachments_chunk_f_content_pkey;
+ALTER INDEX public.ix_e_attachment_chunk_embedding ATTACH PARTITION public.e_attachment_chunk_f_content_binary_quantize_idx;
 
 
 --
--- Name: e_attachments_chunk_f_content_tsv_lang_idx; Type: INDEX ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_pkey; Type: INDEX ATTACH; Schema: public; Owner: -
 --
 
-ALTER INDEX public.ix_e_attachments_chunk_tsv_lang_it ATTACH PARTITION public.e_attachments_chunk_f_content_tsv_lang_idx;
-
-
---
--- Name: e_attachments_chunk_f_content_tsv_lang_idx1; Type: INDEX ATTACH; Schema: public; Owner: -
---
-
-ALTER INDEX public.ix_e_attachments_chunk_tsv_lang_en ATTACH PARTITION public.e_attachments_chunk_f_content_tsv_lang_idx1;
+ALTER INDEX public.e_attachment_chunk_pkey ATTACH PARTITION public.e_attachment_chunk_f_content_pkey;
 
 
 --
--- Name: e_attachments_chunk_f_content_tsv_simple_idx; Type: INDEX ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_lang_idx; Type: INDEX ATTACH; Schema: public; Owner: -
 --
 
-ALTER INDEX public.ix_e_attachments_chunk_tsv_simple ATTACH PARTITION public.e_attachments_chunk_f_content_tsv_simple_idx;
-
-
---
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx; Type: INDEX ATTACH; Schema: public; Owner: -
---
-
-ALTER INDEX public.ix_e_attachments_chunk_tsv_simple_arr ATTACH PARTITION public.e_attachments_chunk_f_content_tsvector_to_array_idx;
+ALTER INDEX public.ix_e_attachment_chunk_tsv_lang_it ATTACH PARTITION public.e_attachment_chunk_f_content_tsv_lang_idx;
 
 
 --
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx1; Type: INDEX ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_lang_idx1; Type: INDEX ATTACH; Schema: public; Owner: -
 --
 
-ALTER INDEX public.ix_e_attachments_chunk_tsv_lang_arr_it ATTACH PARTITION public.e_attachments_chunk_f_content_tsvector_to_array_idx1;
+ALTER INDEX public.ix_e_attachment_chunk_tsv_lang_en ATTACH PARTITION public.e_attachment_chunk_f_content_tsv_lang_idx1;
 
 
 --
--- Name: e_attachments_chunk_f_content_tsvector_to_array_idx2; Type: INDEX ATTACH; Schema: public; Owner: -
+-- Name: e_attachment_chunk_f_content_tsv_simple_idx; Type: INDEX ATTACH; Schema: public; Owner: -
 --
 
-ALTER INDEX public.ix_e_attachments_chunk_tsv_lang_arr_en ATTACH PARTITION public.e_attachments_chunk_f_content_tsvector_to_array_idx2;
+ALTER INDEX public.ix_e_attachment_chunk_tsv_simple ATTACH PARTITION public.e_attachment_chunk_f_content_tsv_simple_idx;
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx; Type: INDEX ATTACH; Schema: public; Owner: -
+--
+
+ALTER INDEX public.ix_e_attachment_chunk_tsv_simple_arr ATTACH PARTITION public.e_attachment_chunk_f_content_tsvector_to_array_idx;
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx1; Type: INDEX ATTACH; Schema: public; Owner: -
+--
+
+ALTER INDEX public.ix_e_attachment_chunk_tsv_lang_arr_it ATTACH PARTITION public.e_attachment_chunk_f_content_tsvector_to_array_idx1;
+
+
+--
+-- Name: e_attachment_chunk_f_content_tsvector_to_array_idx2; Type: INDEX ATTACH; Schema: public; Owner: -
+--
+
+ALTER INDEX public.ix_e_attachment_chunk_tsv_lang_arr_en ATTACH PARTITION public.e_attachment_chunk_f_content_tsvector_to_array_idx2;
 
 
 --
@@ -1550,19 +1550,19 @@ ALTER INDEX public.ix_e_ticket_chunk_tsv_lang_arr_en ATTACH PARTITION public.e_t
 
 
 --
--- Name: e_attachments_chunk e_attachments_chunk_chunk_language_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_chunk e_attachment_chunk_chunk_language_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE public.e_attachments_chunk
-    ADD CONSTRAINT e_attachments_chunk_chunk_language_fkey FOREIGN KEY (chunk_language) REFERENCES public.language(code);
+ALTER TABLE public.e_attachment_chunk
+    ADD CONSTRAINT e_attachment_chunk_chunk_language_fkey FOREIGN KEY (chunk_language) REFERENCES public.language(code);
 
 
 --
--- Name: e_attachments_chunk e_attachments_chunk_field_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment_chunk e_attachment_chunk_field_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE public.e_attachments_chunk
-    ADD CONSTRAINT e_attachments_chunk_field_name_fkey FOREIGN KEY (field_name) REFERENCES public.e_attachments_field(field_name);
+ALTER TABLE public.e_attachment_chunk
+    ADD CONSTRAINT e_attachment_chunk_field_name_fkey FOREIGN KEY (field_name) REFERENCES public.e_attachment_field(field_name);
 
 
 --
@@ -1598,19 +1598,19 @@ ALTER TABLE public.e_ticket_chunk
 
 
 --
--- Name: e_attachments fk_e_attachments_f_conversation_item_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment fk_e_attachment_f_conversation_item_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments
-    ADD CONSTRAINT fk_e_attachments_f_conversation_item_id FOREIGN KEY (f_conversation_item_id) REFERENCES public.e_conversation_item(f_id);
+ALTER TABLE ONLY public.e_attachment
+    ADD CONSTRAINT fk_e_attachment_f_conversation_item_id FOREIGN KEY (f_conversation_item_id) REFERENCES public.e_conversation_item(f_id);
 
 
 --
--- Name: e_attachments fk_e_attachments_f_ticket_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: e_attachment fk_e_attachment_f_ticket_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.e_attachments
-    ADD CONSTRAINT fk_e_attachments_f_ticket_id FOREIGN KEY (f_ticket_id) REFERENCES public.e_ticket(f_id);
+ALTER TABLE ONLY public.e_attachment
+    ADD CONSTRAINT fk_e_attachment_f_ticket_id FOREIGN KEY (f_ticket_id) REFERENCES public.e_ticket(f_id);
 
 
 --
@@ -1634,4 +1634,3 @@ ALTER TABLE ONLY public.ingestion_streams
 --
 
 \unrestrict yUGCLHbWJIOEqL50OxifrKe8fthN3QNjwWOMYghVVaQeffM0m5MJLHSB7ue8OEi
-

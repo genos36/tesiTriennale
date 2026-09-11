@@ -37,7 +37,7 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
 //                - Companion riceve l'identificativo del chunk su cui è stato trovato il match
 //                - Companion riceve solo il chunk di testo su cui è stato trovato un match
 ],
@@ -48,7 +48,7 @@
                 + Companion riceve i risultati #sym.arrow #utils.uc-link("ricezione risultati ricerca linked")
         ],
         scenari-alternativi:none,
-        trigger: [Companion vuole eseguire una ricerca su tutte le entità],
+        trigger: [Companion vuole eseguire una ricerca semantica su tutte le entità],
         inclusioni: none,
         estensioni: none,
         specializzazioni: none,

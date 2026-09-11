@@ -9,7 +9,7 @@
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
                 system-name:"Sistema di ricerca",
-  parent-uc: "ricerca ibrida",             // Nome mostrato sulla linguetta; default = target-uc
+  parent-uc: "Ricerca ibrida",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
@@ -37,7 +37,7 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
                         ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query su singola entità")

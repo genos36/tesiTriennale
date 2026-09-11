@@ -13,9 +13,9 @@ class Colors:
     RESET = '\033[0m'
 # come usare
 # simulazione
-# python3 scripts/use_case_generator/manager.py scripts/use_case_generator/config.yaml
+# Python3 scripts/use_case_generator/manager.py scripts/use_case_generator/config.yaml
 # creazione e renaming
-# python3 scripts/use_case_generator/manager.py scripts/use_case_generator/config.yaml --force
+# Python3 scripts/use_case_generator/manager.py scripts/use_case_generator/config.yaml --force
 
 def get_safe_variable_name(filepath):
     """

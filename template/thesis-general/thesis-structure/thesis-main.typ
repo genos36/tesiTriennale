@@ -1,6 +1,7 @@
 #import "utils/utils.typ": make-counter, print-current-header
 #let mainmatter(body, reset: true) = {
   set page(
+          numbering:"1",
     header: align(left, print-current-header()),
     footer: align(center,make-counter("1")),
   )

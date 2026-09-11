@@ -9,7 +9,7 @@
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
                 system-name:"Sistema di ricerca",
-  parent-uc: "ricerca ibrida",             // Nome mostrato sulla linguetta; default = target-uc
+  parent-uc: "Ricerca linked ibrida",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
@@ -37,13 +37,13 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
 //                - Companion riceve l'identificativo del chunk su cui è stato trovato il match
 //                - Companion riceve solo il chunk di testo su cui è stato trovato un match
 ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query linked")
-                + Companion inserisce i pesi da usare durante la fusione dei risultati di ricerca ibrida e full-text #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
+                + Companion inserisce i pesi da usare durante la fusione dei risultati di ricerca semantica e full-text #sym.arrow #utils.uc-link("Aggiunta pesi di fusione ricerca linked")
                 + Il sistema di ricerca utilizza il modello di embedding per calcolare il vettore di embedding da usare durante la ricerca
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca semantica
                 + Il sistema di ricerca esegue la query valutando la pertinenza in base alla ricerca full-text
@@ -51,7 +51,7 @@
                 + Companion riceve i risultati #sym.arrow #utils.uc-link("ricezione risultati ricerca linked")
         ],
         scenari-alternativi:none,
-        trigger: [Companion vuole eseguire una ricerca linked ibrida ],
+        trigger: [Companion vuole eseguire una ricerca ibrida su tutte le entità usando una combinazione dei risultati basata su modello di reranking],
         inclusioni: none,
         estensioni: none,
         specializzazioni: none,

@@ -21,15 +21,15 @@ Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e appro
 - progettazione della ricerca ibrida, studio e valutazione delle tecnologie di indicizzazione;
 - testing delle performance, acquisizione di metodologie per la conduzione di benchmark, definendo metriche di valutazione per misurare le performance e l'efficienza dei sistemi sviluppati.
 
-Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di ParadeDB, una soluzione basata su Postgres che promette capacità di ricerca lessicale più avanzate.
+Per garantire un confronto equo e rigoroso con Elasticsearch, oltre alla ricerca full-text nativa di Postgres, verrà esplorata l'integrazione di #gl("parade"), una soluzione basata su Postgres che promette capacità di ricerca lessicale più avanzate.
 == Vincoli
 Il progetto è soggetto a specifici vincoli architetturali volti a garantire la coerenza con gli obiettivi della ricerca.
 
 I vincoli principali sono i seguenti:
-- utilizzo di pgvector per la ricerca vettoriale, obiettivo principale del progetto;
+- utilizzo di pgvector per la ricerca semantica, obiettivo principale del progetto;
 - utilizzo della ricerca full-text nativa di Postgres, per semplicità di licensing.
 
-Estensioni più evolute come ParadeDB, che si propongono come sostituto diretto della componente full‑text di Elasticsearch su Postgres, pur essendo state valutate sono state escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
+Estensioni più evolute come ParadeDB, che si propongono come sostituto diretto della componente full‑text di Elasticsearch su Postgres, sono state valutate ma escluse dall'implementazione finale per rispettare il vincolo di licensing; il loro studio è stato comunque utile per orientare l'implementazione delle funzionalità di ricerca full-text nativa.
 
 == Pianificazione <pianificazione-settimane>
 
@@ -119,7 +119,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                 Il modulo realizzato dovrà essere paragonabile a quello di produzione; potrebbero emergere attriti o altre differenze significative sia a livello di comportamento interno che a livello di interazione con l'esterno.
               ],
               mitigation: [
-                Confronto continuo con il team di sviluppo per comprendere a fondo le funzionalità da implementare. Adozione del design pattern "Adapter" fin dalle prime fasi di progettazione per disaccoppiare la forma dei dati accettata dal sistema di ricerca con la forma dei dati che deve essere accettata dall'esterno.
+                Confronto continuo con il team di sviluppo per comprendere a fondo le funzionalità da implementare. Adozione del design pattern #gl("adapter") fin dalle prime fasi di progettazione per disaccoppiare la forma dei dati accettata dal sistema di ricerca dalla forma dei dati che deve essere accettata dall'esterno.
               ],
               probability: "Media",
               consequences: [Medio],
@@ -144,28 +144,28 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
               (
                   name: "Rappresentatività dei dati di test e accesso limitato alla produzione",
                   description: [
-                    L'utilizzo di dati generati appositamente per le fasi di test locali, reso necessario dai vincoli di privacy aziendale, potrebbe non riflettere a pieno la reale complessità e varianza del dominio. Questa discrepanza rischia di alterare la valutazione dell'accuratezza della ricerca e di non far emergere casistiche limite verosimili, portando a possibili divergenze di performance tra l'ambiente di sviluppo e le aspettative finali.
+                    L'utilizzo di dati generati appositamente per le fasi di test locali, reso necessario dai vincoli di privacy aziendale, potrebbe non riflettere appieno la reale complessità e varianza del dominio. Questa discrepanza rischia di alterare la valutazione dell'accuratezza della ricerca e di non far emergere casistiche limite verosimili, portando a possibili divergenze di performance tra l'ambiente di sviluppo e le aspettative finali.
                   ],
                   mitigation: [
                     La validazione seguirà un approccio a due fasi: l'architettura dovrà innanzitutto superare i benchmark di riferimento in ambiente locale utilizzando dei dati di test.
 
-                    Ulteriori misurazioni con dati reali saranno effettuate successivamente, le misurazioni definitive non verranno trattate in questo progetto ma verranno effettuate dall'azienda sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza e privacy. Utilizzando i risultati del sistema di ricerca attuale come punto di riferimento.
+                    Ulteriori misurazioni con dati reali saranno effettuate successivamente; le misurazioni definitive non verranno trattate in questo progetto ma verranno effettuate dall'azienda sui dati reali operando esclusivamente all'interno dei server proprietari aziendali, nel pieno rispetto delle direttive di sicurezza e privacy, utilizzando i risultati del sistema di ricerca attuale come punto di riferimento.
 
-                   Si è comunque consapevoli che il contributo principale all'accuratezza deriva da parametri esterni o configurabili, come i modelli di embedding utilizzati, i tipi di vettore e distanza utilizzata per il calcolo, le configurazioni testuali applicate e la struttura della funzione di ranking.
+                   Si è comunque consapevoli che il contributo principale all'accuratezza deriva da parametri esterni o configurabili, come i modelli di embedding utilizzati, i tipi di vettore e distanza utilizzati per il calcolo, le configurazioni testuali applicate e la struttura della funzione di #gl("ranking", display:"ranking").
                   ],
                   probability: "Alta",
                   consequences: [Basso],
                   r-label:"r-rappresentatività",
                 ),
                 (
-                    name: "Difficoltà nella valutazione oggettiva dei risultati di Retrieval",
+                    name: "Difficoltà nella valutazione oggettiva dei risultati di retrieval",
                     description: [
                       L'assenza di metriche standardizzate o un'errata interpretazione dei risultati potrebbe portare a conclusioni soggettive, rendendo impossibile valutare se il nuovo sistema di ricerca eguaglia o meno la soluzione precedente.
                     ],
                     mitigation: [
                       Le metriche di valutazione verranno definite esplicitamente nella fase di analisi dei requisiti.
 
-                      Queste corrispondono alle metriche attualmente usate per la valutazione del sistema di ricerca attuale
+                      Queste corrispondono alle metriche attualmente usate per la valutazione del sistema di ricerca attuale.
 
                       È inoltre previsto un caso d'uso specifico per la produzione di una dashboard di monitoraggio, con criteri di accettazione e soglie minime di qualità chiaramente prestabiliti.
                     ],
@@ -176,10 +176,10 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Sbilanciamento metodologico nel confronto",
                     description: [
-                      Essendo Postgres nato come RDBMS ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
+                      Essendo Postgres nato come sistema per la gestione di database relazionali ed Elasticsearch come motore di ricerca con analizzatori linguistici avanzati, testare scenari non calibrati rischia di favorire asimmetricamente una delle due tecnologie, invalidando l'equità scientifica del benchmark.
                     ],
                     mitigation: [
-                      Il set di query e il benchmark verranno definiti e "congelati" a priori mirando solo a realizzare l'effettivo utilizzo, evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma, cercando solo di rappresentare lo scenario reale.
+                      Il set di query e il benchmark verranno definiti e congelati a priori, mirando a rispecchiare l'effettivo utilizzo ed evitando scenari costruiti ad hoc per avvantaggiare una specifica piattaforma.
                     ],
                     probability: "Alta",
                     consequences: [Alto],
@@ -192,7 +192,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
 
                     ],
                     mitigation: [
-                      Adozione dell'architettura esagonale. Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema di ricerca.
+                      Adozione dell'#gl("architettura-esagonale",display:"architettura esagonale"). Isolando la logica di dominio dall'infrastruttura di persistenza, si garantisce che i dettagli implementativi di Postgres non inquinino il comportamento atteso del sistema di ricerca.
                     ],
                     probability: "Media",
                     consequences: [Alto],
@@ -206,7 +206,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
                     ],
                     mitigation: [
-                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, Postgres + pgvector.
+                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, Postgres e pgvector.
 
                       Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico.
                     ],
@@ -214,14 +214,14 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     consequences: [Medio],
                   ),
                   (
-                    name: "Sovrapposizione tra le performance di Retrieval e Generation",
+                    name: "Sovrapposizione tra le performance di retrieval e generazione",
                     description: [
-                      L'architettura RAG si compone di due fasi: la fase di retrieval che si occupa del recupero di informazioni e la generazione della risposta.
-                      Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a ElasticSearch, le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
+                      L'architettura RAG si compone di due fasi: la fase di retrieval, che si occupa del recupero delle informazioni, e la fase di generazione della risposta.
+                      Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a Elasticsearch, le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
                     ],
                     mitigation: [
                       Vengono posti dei rigidi confini sul sistema da implementare.
-                      L'implementazione, l'analisi e il testing si concentreranno unicamente sulla componente di Retriever e sul relativo modulo di ingestion.
+                      L'implementazione, l'analisi e il testing si concentreranno unicamente sulla componente di retrieval e sul relativo modulo di ingestion.
                       La valutazione ignorerà la qualità dell'output generativo dell'LLM, misurando esclusivamente la pertinenza dei documenti e la velocità di recupero.
                     ],
                     probability: "Bassa",

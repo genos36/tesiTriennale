@@ -14,10 +14,10 @@
                 - Nel sistema di test sono presenti i dati relativi all'ultimo test svolto o in corso
         ],
         post-condizioni: [
-                - Il supervisore ha visualizzato la retrieval latency media durante la assenza di un processo di ingestion
+                - Il supervisore ha visualizzato la retrieval latency media durante l'assenza di un processo di ingestion
                         ],
         scenario-principale:[
-                + Il supervisore visualizza la retrieval latency media calcolata durante la assenza di un processo di ingestion
+                + Il supervisore visualizza la retrieval latency media calcolata durante l'assenza di un processo di ingestion
                 ],
         scenari-alternativi:none,
         trigger: none,

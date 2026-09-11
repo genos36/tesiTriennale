@@ -1,7 +1,6 @@
 #import "/template/mod.typ": appendixmatter, frontmatter, mainmatter
 // #import "template/mod.typ": thesis-setup
 
-
 #include "preface/firstpage.typ"
 #include "preface/copyright.typ"
 

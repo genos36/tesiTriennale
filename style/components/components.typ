@@ -1,4 +1,16 @@
 #import "/metadata/mod.typ": data
+// Colore per i link esterni (stile Wikipedia, blu con buon contrasto su sfondo bianco)
+#let external-blue = rgb("#0645AD")
+
+// --- Funzioni di stile, riferibili anche nelle convenzioni ---
+
+#let apply-style-internal-ref(body) = {
+  underline(text(weight: "semibold", body))
+}
+
+#let apply-style-external-link(body) = {
+  underline(text(fill: external-blue, body))
+}
 
 #let apply-components(body) = {
   // --- Liste ---
@@ -27,6 +39,35 @@
     v(1em)
   }
 
+
+  // --- Riferimenti interni "veri" (#ref a heading/figure/tabelle/codice) ---
+  // Si esclude il glossario: quando it.element non è un heading o una figura
+  // (es. punta a un'entry del glossario, o non è risolvibile), si lascia
+  // il contenuto invariato così lo stile del glossario (#gl / glossary-style)
+  // resta responsabile di sé stesso.
+  show ref: it => {
+    if it.element != none and (
+      it.element.func() == heading or it.element.func() == figure
+    ) {
+      apply-style-internal-ref(it)
+    } else {
+      it
+    }
+  }
+
+  // --- Link: interni (#link(<label>)) vs esterni (URL) ---
+  let internal-ref-kinds = (image, table, raw)
+  show ref: it => {
+    if it.element != none and (
+      it.element.func() == heading
+      or (it.element.func() == figure and it.element.kind in internal-ref-kinds)
+    ) {
+      apply-style-internal-ref(it)
+    } else {
+      it
+    }
+  }
+
   // SOLUZIONE BREAKABLE: Rendiamo breakable SOLO le tabelle, non le immagini.
   // Addio blocchi #[ ] o #{ } inseriti a mano!
   show figure.where(kind: table): set block(breakable: true)
@@ -52,7 +93,20 @@
   }
 
   // Alias
-  show "full-text": "full‑text"
+  // sosituisce il normale trattino con il tratticono non wrap point per gli a capo, all'apparenza sono uguali ma  soo dei caratteri distinti, il trattino è il non-breaking hyphen (U+2011), permette a parole come full-text di essere considerate come una singola parola invece di essere considerate come 2 parole
+  let compound-words = (
+    "full-text",
+    "language-agnostic",
+    "language-specific",
+    "any-word",
+    "all-words",
+    "post-join",
+  )
+
+  let pattern = compound-words.join("|")
+
+  show regex(pattern): it => it.text.replace("-", "\u{2011}")
+
 
   body
 }

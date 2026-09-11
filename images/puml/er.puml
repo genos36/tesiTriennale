@@ -105,23 +105,23 @@ language ||--o{ e_conversation_item_chunk : "code = chunk_language"
 e_ticket ||--o{ e_conversation_item : "f_id = f_ticket_id"
 
 ' ============================
-' ATTACHMENTS
+' ATTACHMENT
 ' ============================
-entity "e_attachments" as e_attachments {
+entity "e_attachment" as e_attachment {
   * f_id : varchar(32) <<PK>>
   --
   f_ticket_id : varchar(32) <<FK>>
   f_conversation_item_id : varchar(32) <<FK>>
 }
 
-entity "e_attachments_field" as e_attachments_field {
+entity "e_attachment_field" as e_attachment_field {
   * field_name : text <<PK>>
   --
   ' f_content
   logical_name : text
 }
 
-entity "e_attachments_chunk" as e_attachments_chunk {
+entity "e_attachment_chunk" as e_attachment_chunk {
   * f_id : varchar(32) <<PK, FK>>
   * field_name : text <<PK, FK>>
   * chunk_counter : int <<PK>>
@@ -135,11 +135,11 @@ entity "e_attachments_chunk" as e_attachments_chunk {
   f_ticket_id : varchar(32)
 }
 
-e_attachments ||--o{ e_attachments_chunk : "f_id"
-e_attachments_field ||--o{ e_attachments_chunk : "field_name"
-language ||--o{ e_attachments_chunk : "code = chunk_language"
-e_ticket ||--o{ e_attachments : "f_id = f_ticket_id"
-e_conversation_item ||--o{ e_attachments : "f_id = f_conversation_item_id"
+e_attachment ||--o{ e_attachment_chunk : "f_id"
+e_attachment_field ||--o{ e_attachment_chunk : "field_name"
+language ||--o{ e_attachment_chunk : "code = chunk_language"
+e_ticket ||--o{ e_attachment : "f_id = f_ticket_id"
+e_conversation_item ||--o{ e_attachment : "f_id = f_conversation_item_id"
 
 ' ============================
 ' INGESTION TRACKING

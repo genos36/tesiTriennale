@@ -17,7 +17,7 @@
                 - Il supervisore ha visualizzato il retrieval hitrate\@1
                         ],
         scenario-principale:[
-                - Il supervisore visualizza il retrieval hitrate\@1
+                + Il supervisore visualizza il retrieval hitrate\@1
         ],
         scenari-alternativi:none,
         trigger: none,

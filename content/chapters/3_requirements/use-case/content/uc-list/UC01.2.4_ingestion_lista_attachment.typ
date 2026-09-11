@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Ingestione lista attachments"
+#let use-case-nome="Ingestion lista attachment"
 // #let depth=
 #let diagram=none
 
@@ -42,7 +42,7 @@
                 - Il sistema di ricerca ha salvato le informazioni di lingua relative alla lista di attachment
                         ],
         scenario-principale:[
-                + Companion carica la lista dei attachment
+                + Companion carica la lista degli attachment
                         // + Companion carica un blocco di attachment #sym.arrow #utils.uc-link("Carica blocco attachment")
         ],
         scenari-alternativi:none,

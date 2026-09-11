@@ -39,8 +39,7 @@ Le classi di dominio condivise rappresentano il modello dati descritto nella @ma
 #code-snippet(caption: "Entity - dataclass e vincolo searchable/chunked_text",
 raw(
   lang:"python",
-`
-@dataclass(frozen=True, slots=True)
+`@dataclass(frozen=True, slots=True)
 class Entity:
     entity_name: EntityName
     identifier: frozenset[FieldName]
@@ -71,8 +70,7 @@ Il punto di estensione esplicito descritto nel modello dati, pensato per accomod
 #code-snippet(caption: "SchemaConstraint e RelationalSchemaConstraint",
 raw(
   lang:"python",
-  `
-class SchemaConstraint(ABC):
+  `class SchemaConstraint(ABC):
     @abstractmethod
     def accept(self, visitor: "SchemaConstraintVisitor") -> None:
         ...
@@ -94,9 +92,7 @@ Ogni tipo di vincolo espone un metodo accept, che delega a un'implementazione di
   caption: "LinkedSearchConfiguration e TraversalPath",
 raw(
   lang:"python",
-  `
-
-@dataclass(frozen=True, slots=True)
+  `@dataclass(frozen=True, slots=True)
 class LinkedSearchConfiguration:
     adjacency: Mapping[EntityName, Sequence[GraphEdge]]
     field_weights: LinkedFieldWeights
@@ -127,9 +123,7 @@ class TraversalPath:
 #code-snippet(caption: "SchemaConfiguration - dataclass",
 raw(
   lang:"python",
-  `
-
-@dataclass(frozen=True, slots=True)
+  `@dataclass(frozen=True, slots=True)
 class SchemaConfiguration:
     entities: Mapping[EntityName, Entity]
     schema_constraints: Sequence[SchemaConstraint]
@@ -145,8 +139,7 @@ Il builder accumula incrementalmente entità e vincoli, per poi eseguire, al mom
 #code-snippet(caption: "SchemaConfigurationBuilder - firma di build()",
 raw(
   lang:"python",
-  `
-class SchemaConfigurationBuilder:
+  `class SchemaConfigurationBuilder:
 
     def build(self) -> SchemaConfiguration:
   `.text+sym.dots.v
@@ -159,13 +152,13 @@ Il diagramma in @diagramma-er rappresenta lo schema entità-relazione concreto a
 Inoltre si precisa che l'inizializzazione del database non avviene tramite codice SQL scritto a mano, ma tramite script che leggono la schema configuration e altre configurazioni, come quella di pgvector. Questo è per comodità nella modifica dei parametri per ulteriori test futuri. Non è stata dedicata particolare cura a questo script, in quanto reputato esterno allo scopo del tirocinio ma una semplice comodità per il testing: vi è ampio margine di miglioramento.
 
 #figure(caption:"Diagramma ER del core del database")[
-#image("/src/PB/DocumentazioneEsterna/Specifica_Tecnica/content/05-diagrammi-classi/uml/png/frontend/schema_er_progetto.svg")
+        #image("/images/puml/svg/schema_er_progetto.svg",alt:"Diagramma ER descrittivo delle tabelle relative al modello dati")
 ]
 #figure(caption:"Diagramma ER delle tabelle di supporto allo staging")[
-#image("/src/PB/DocumentazioneEsterna/Specifica_Tecnica/content/05-diagrammi-classi/uml/png/frontend/staging_area.svg")
+        #image("/images/puml/svg/staging_area.svg",alt:"Diagramma ER descrittivo delle tabelle di supporto allo staging")
 ]
 #figure(caption:"Diagramma ER delle tabelle di supporto al tracking")[
-#image("/src/PB/DocumentazioneEsterna/Specifica_Tecnica/content/05-diagrammi-classi/uml/png/frontend/tracking.svg")
+        #image("/images/puml/svg/tracking.svg",alt:"Diagramma ER descrittivo delle tabelle di supporto al tracking dello status della sessione di ingestion")
 ]<diagramma-er>
 
 Alcuni aspetti rilevanti dello schema non sono rappresentabili graficamente in un diagramma entità-relazione, e vengono quindi descritti di seguito: il partizionamento delle tabelle e gli indici definiti su di esse.
@@ -175,11 +168,11 @@ Coerentemente con quanto descritto nella @analisi-ricerca-semantica in cui viene
 Su ciascuna tabella dei chunk sono definite quattro famiglie di indici:
 + Gli indici GIN "classici" sulle colonne tsv_simple e tsv_lang, che servono a velocizzare il filtering delle query full-text implementate da Postgres. Per tsv_lang l'indice è ulteriormente suddiviso in un indice parziale per lingua, filtrato sul valore di chunk_language;
 
-+ Gli indici GIN con opclass array_ops sull'espressione tsvector_to_array(...) delle colonne tsv_simple e tsv_lang, utilizzati dal filtro di corrispondenza minima descritto in @overlap-text-query, che si appoggia all'operatore di overlap tra array anziché a sugli operatori di match della ricerca full-text. Anche questi indici sono suddivisi per lingua sulla colonna tsv_lang, visto che il look up è sempre filtrato per lingua;
++ Gli indici GIN con opclass array_ops sull'espressione tsvector_to_array(...) delle colonne tsv_simple e tsv_lang, utilizzati dal filtro di corrispondenza minima descritto in @overlap-text-query, che si appoggia all'operatore di overlap tra array anziché agli operatori di match della ricerca full-text. Anche questi indici sono suddivisi per lingua sulla colonna tsv_lang, visto che il look up è sempre filtrato per lingua;
 
 + un indice HNSW sulla colonna embedding, utilizzato dalla ricerca semantica. L'indice non è necessariamente costruito sui valori a piena precisione della colonna: la configurazione applicativa può specificare un tipo di vettore e una distanza "candidati", eventualmente più leggeri (ad esempio una quantizzazione binaria con distanza di Hamming), utilizzati per generare rapidamente l'insieme di candidati su cui viene poi eseguito l'oversampling e il rescoring finale sui valori reali. Nella configurazione concreta di questo progetto, l'indice è costruito su una quantizzazione binaria dell'embedding, con distanza di Hamming. \ Tutti gli indici elencati sono creati sulla tabella partizionata madre: Postgres li propaga automaticamente a ciascuna partizione.
 
-+ Un indice univoco su un'espressione costante, sulla tabella delle sessioni di ingestion, filtrato sulle sole righe con stato aperto o chiuso: questo garantisce, a livello di database e non solo applicativo, che possa esistere al più una sessione attiva alla volta, coerentemente con il principio già descritto nella sezione @gestione-staging-area.
++ Un indice univoco su un'espressione costante, sulla tabella delle sessioni di ingestion, filtrato sulle sole righe con stato aperto o chiuso: questo garantisce, a livello di database e non solo applicativo, che possa esistere al più una sessione attiva alla volta, coerentemente con il principio già descritto nella @gestione-staging-area.
 
 == Ingestion
 La funzionalità di ingestion espone quattro porte inbound, ciascuna dedicata a una funzione specifica:
@@ -206,8 +199,7 @@ Per ciascun batch dello stream in ingresso, il service esegue in sequenza:
 Per notificare gli scarti a ciascuno di questi passaggi viene usata una classe *RejectedRecord*, che contiene l'identificativo del record e il motivo del fallimento. Il metodo che orchestra l'intera pipeline accetta in input un AsyncIterator di batch grezzi e restituisce in output un AsyncIterator di RejectedRecord, che l'adapter FastAPI inoltra al chiamante come streaming response.
 #code-snippet(caption:"Firma porta di ingestion dei dati",
 raw(lang:"python",
-`
-class IngestBatchStreamUseCase(ABC):
+`class IngestBatchStreamUseCase(ABC):
     @abstractmethod
     async def ingest_batch_stream(
         self, command: IngestBatchStreamCommand
@@ -381,8 +373,7 @@ In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia gen
   caption:"Ricerca - Query result e specializzazioni",
   raw(
   lang:"python",
-    `
-    @dataclass(frozen=True, slots=True)
+    `@dataclass(frozen=True, slots=True)
     class QueryResult(Generic[R]):
         results: tuple[Mapping[R, FieldValue], ...]
 
@@ -390,7 +381,7 @@ In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia gen
     class SimilaritySearchResult(Generic[R]):
             query_result: QueryResult[R]
             matched_field: R
-            chunk_counter:int
+            chunk_counter: int
             matched_text: str
             score: float
 
@@ -403,11 +394,11 @@ In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia gen
 Invece nei risultati della ricerca il riuso del codice viene applicato direttamente in modo pulito.
 
 La query, così come ricevuta dall'adapter inbound, può contenere campi con valore nullo, ad esempio i pesi di fusione o il numero di risultati desiderati (top_k). È compito del service, in fase di validazione, completare questi campi quando assenti, attingendo ai valori di default configurati; il service non esegue invece language detection, che rimane responsabilità del solo processor di ingestion. Ogni tipologia di ricerca dispone infine di un proprio command dedicato, usato per comunicare con la rispettiva porta outbound.
-Il risultato invece contiene la oltre ai normali risultati della query sono contenuti per tutte le corrispondenze trovate le informazioni richieste dalla query con l'aggiunta del testo che ha dato origine al match e le informazioni relative al campo dati di origine e al numero di chunk, il punteggio è più una comodità ai fini di debug.
+Il risultato contiene invece, oltre ai normali risultati della query, per tutte le corrispondenze trovate le informazioni richieste dalla query, con l'aggiunta del testo che ha dato origine al match e le informazioni relative al campo dati di origine e al numero di chunk; il punteggio è più una comodità ai fini di debug.
 
 
 Ogni tipo di ricerca ha un suo use case dedicato, lo stesso vale per i service e per gli adapter inbound.
-Sono contati 6 tipi di ricerca perché semantica, full-text e ibrida vanno contati separatamente sia per single entity che per la linked.
+Sono contati sei tipi di ricerca perché semantica, full-text e ibrida vanno contati separatamente sia per single entity che per la linked.
 Il calcolo degli embedding per la ricerca semantica e ibrida avviene sfruttando la stessa porta outbound utilizzata in fase di ingestion dei dati.
 L'interazione con il  database avviene sempre tramite porte in accordo con i principi dell'architettura esagonale.
 
@@ -451,7 +442,7 @@ candidates AS (
   )
 )
 La combinazione si limita a un'unione tramite UNION ALL dei frammenti già ordinati e pesati, seguita dal taglio ai primi k risultati complessivi: il taglio avviene prima del join con la tabella principale, così da eseguirlo solo sulle righe già selezionate come rilevanti, non sull'intero insieme dei candidati.
-La combinazione si limita quindi a un'unione dei frammenti già ordinati e pesati, seguita dal taglio ai primi k risultati complessivi.
+
 
 #code-snippet(
   caption:"Ricerca semantica - join con la tabella principale",
@@ -533,7 +524,7 @@ Questo CTE estrae l'insieme ordinato dei lessemi della query (`arr`), la sua car
   )
 )
 
-Il punteggio (raw_score) è la somma delle treranking function citate sopra (plain, phrase, allwords in forma OR). Il conteggio dei lessemi in comune (matched_count), confrontato con la soglia required_k, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (&&) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con array_ops descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di matched_count.
+Il punteggio (raw_score) è la somma delle tre ranking function citate sopra (any-word, phrase, all-words). Il conteggio dei lessemi in comune (matched_count), confrontato con la soglia required_k, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (&&) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con array_ops descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di matched_count.
 
 #code-snippet(caption: "Ricerca full-text - filtro finale sulla soglia di corrispondenza",
   raw(
@@ -556,14 +547,17 @@ Poiché il conteggio di corrispondenza minima non è una funzionalità nativa de
 
 Il frammento di query appena descritto viene generato per ogni configurazione testuale rilevante ed eseguito ripetutamente: per la ricerca su lingua non nota, la ricerca viene eseguita tre volte — una sul vettore tsv_simple (agnostico rispetto alla lingua) e una per ciascuna lingua supportata sul vettore tsv_lang (ad esempio una volta con `chunk_language = 'it'` e una con `chunk_language = 'en'`) — scorrendo quindi la base di dati più volte; i risultati delle diverse esecuzioni vengono infine ricombinati con `UNION ALL`, con la stessa logica di combinazione descritta per la ricerca semantica.
 
-Sono state esplorati tre ordinamenti per i lessemi delle frasi:
+Sono stati esplorati tre ordinamenti per i lessemi delle frasi:
 - ordine lessicografico,
 - lunghezza dei lessemi,
 - frequenza dei lessemi.
 
-Per applicare il principio di cassetti è sufficiente un qualsiasi tipo di ordinamento, tuttavia le configurazioni testuali semplici non eliminano le stopword, ciò porta ad un alto numero di match su cui calcolare il punteggio causando un overhead molto alto per l'ordine lessicografico, l'ordinamento per lunghezza ha prodotto risultati migliori ma con una consistenza altalenante, tramite explain analyze si è vista una discreta riduzione del candidate pool per ticket e conversation item, ma pressocchè nulla sugli attachemnts.
+Per applicare il principio di cassetti è sufficiente un qualsiasi tipo di ordinamento.
+Tuttavia le configurazioni testuali semplici non eliminano le stopword: ciò porta ad un alto numero di match su cui calcolare il punteggio causando un overhead molto alto per l'ordine lessicografico.
 
 Il codice relativo all'ordinamento lessicografico è omesso perché già trattato in @lessemi, per gli altri ordinamenti viene mostrata solo la parte differente.
+
+Tramite `EXPLAIN ANALYZE` è stato analizzato anche l'ordinamento per lunghezza: ha prodotto risultati migliori, ma con una consistenza altalenante. Si è vista una discreta riduzione del candidate pool per ticket e conversation item, ma pressoché nulla sugli attachment.
 
 
 #code-snippet(caption: "Ricerca full-text - ordinamento dei lessemi per lunghezza",
@@ -573,6 +567,9 @@ Il codice relativo all'ordinamento lessicografico è omesso perché già trattat
     SELECT array_agg(lex ORDER BY length(lex) DESC) AS arr `.text
   )
 )
+
+Invece l'ordinamento per frequenza ha dato risultati significativamente più bassi, portando all'incirca ad un dimezzamento costante sulle ricerche.
+
 #code-snippet(caption: "Ricerca full-text - ordinamento dei lessemi per frequenza",
   raw(
     lang:"sql",
@@ -585,18 +582,17 @@ Il codice relativo all'ordinamento lessicografico è omesso perché già trattat
   )
 )
 
-La frequenza dei lessemi richiede un ulteriore overhead in memoria in quanto consiste in una vista materializzata che va creata esplicitamente, tuttavia ha portato  una consistente riduzione del pool di candidati che ha comportato una discreta riduzione dei tempi
+La frequenza dei lessemi però richiede un ulteriore overhead in memoria in quanto consiste in una vista materializzata che va creata esplicitamente, tuttavia ha portato  una consistente riduzione del pool di candidati che ha comportato una discreta riduzione dei tempi.
 #code-snippet(caption: "Ricerca full-text - Materialized view per le frequenze",
   raw(
     lang:"sql",
-    `
-    CREATE MATERIALIZED VIEW lexeme_frequency AS
+    `CREATE MATERIALIZED VIEW lexeme_frequency AS
     SELECT word, ndoc
     FROM ts_stat('SELECT tsv_simple FROM e_ticket_chunk
                   UNION ALL SELECT tsv_simple FROM e_conversation_item_chunk
-                  UNION ALL SELECT tsv_simple FROM e_attachments_chunk');
+                  UNION ALL SELECT tsv_simple FROM e_attachment_chunk');
 
-    CREATE UNIQUE INDEX ON lexeme_frequency (word);
+CREATE UNIQUE INDEX ON lexeme_frequency (word);
     `.text
   )
 )
@@ -628,8 +624,7 @@ LIMIT {real_limit}`.text
   )
 )
 === Ricerca linked
-La ricerca linked riusa i frammenti di query già descritti per la ricerca su singola entità, generandone uno per ciascuna entità effettivamente cercata.
-Le sole entità presenti tra i target di ricerca della query, non tutte le entità coinvolte nell'attraversamento. A partire dalla `LinkedSearchConfiguration` e dai `TraversalPath` precalcolati (@classi-dominio-condivise), per ciascuna entità cercata viene generato un ramo di query per ciascun cammino possibile verso la radice, che risale l'attraversamento tramite una catena di LEFT JOIN sulle tabelle reali delle entità intermedie.
+La ricerca linked riusa i frammenti di query già descritti per la ricerca su singola entità, generandone uno per ciascuna entità effettivamente cercata: si considerano cioè le sole entità presenti tra i target di ricerca della query, non tutte le entità coinvolte nell'attraversamento. A partire dalla LinkedSearchConfiguration e dai TraversalPath precalcolati (@classi-dominio-condivise), per ciascuna entità cercata viene generato un ramo di query per ciascun cammino possibile verso la radice, che risale l'attraversamento tramite una catena di `LEFT JOIN` sulle tabelle reali delle entità intermedie.
 
 #code-snippet(
   caption:"Ricerca linked - un ramo di risalita lungo un TraversalPath",
@@ -665,8 +660,8 @@ Una volta effettuati i join, viene applicato il post-join filter descritto nella
   raw(
   lang:"sql",
   `-- segue dalle CTE entity_search_{entity} e dai rami definiti sopra,
--- uno per ciascun TraversalPath di ciascuna entità cercata, più un
--- ramo senza risalita per le righe prive di un cammino valido
+-- uno per ciascun TraversalPath di ciascuna entità cercata,
+-- più un ramo senza risalita per le righe prive di un cammino valido
 WITH all_branches AS (
     ( /* ramo per il primo TraversalPath della prima entità cercata */ )
     UNION ALL

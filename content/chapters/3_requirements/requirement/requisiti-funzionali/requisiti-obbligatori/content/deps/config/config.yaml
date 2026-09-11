@@ -33,9 +33,9 @@ structure:
     - Ingestion liste entità:
     - ingestion lista entità:
     - Caricamento blocco entità
-    - Ingestione lista ticket:
-    - Ingestione lista conversation item:
-    - Ingestione lista attachments:
+    - Ingestion lista ticket:
+    - Ingestion lista conversation item:
+    - Ingestion lista attachment:
     - Termina Ingestion:
     - Errore termine ingestion
     - Fallimento ingestion
@@ -48,7 +48,7 @@ structure:
     - Aggiunta pesi di fusione ricerca singola entità
     - Ricerca ibrida con RRF
     - Inserimento query su singola entità non valida
-    - Errore ricerca su singola entità 
+    - Errore ricerca su singola entità
     - Ricerca linked:
     - Inserimento query linked
     - Ricezione risultati ricerca linked
@@ -58,7 +58,7 @@ structure:
     - Aggiunta pesi di fusione ricerca linked
     - Ricerca linked ibrida con RRF
     - Inserimento query linked non valida
-    - Errore ricerca linked 
+    - Errore ricerca linked
     - Avvia test
     - Visualizza dashboard performance:
     - Visualizza id run test

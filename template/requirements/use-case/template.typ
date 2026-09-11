@@ -19,7 +19,8 @@
   padding-interno:cont=>{
           pad(left: 1em, top: 0em)[#cont]
   },
-  block-break:false
+  block-break:false,
+  alt-diagramma:""
 ) = {
 
   // 1. Intestazione
@@ -39,7 +40,8 @@ block(breakable: block-break)[
 
     figure(
       caption: local-caption,
-      kind: image
+      kind: image,
+      alt:alt-diagramma,
     )[
       #if type(immagine) == str {
         image(immagine)
@@ -103,7 +105,7 @@ block(breakable: block-break)[
 
     if trigger != none {
       [
-        *Trigger*:#trigger
+        *Trigger*: #trigger
       ]
     } else { none },
   ).filter(item => item != none).map(it=>block(breakable: false,it))

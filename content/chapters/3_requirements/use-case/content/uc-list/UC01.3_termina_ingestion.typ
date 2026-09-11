@@ -45,12 +45,12 @@
                 + Il sistema di ricerca chiude la sessione di ingestion
         ],
         scenari-alternativi:[
-                - Nel sistema di ricerca è ancora in corso l'elaborazione di dati #sym.arrow #utils.uc-link("errore termine ingestion")
+                - Nel sistema di ricerca è ancora in corso l'elaborazione dei dati #sym.arrow #utils.uc-link("errore termine ingestion")
         ],
         trigger: none,
         inclusioni: none,
         estensioni: [
-                #utils.uc-link("errore termine ingestion")
+                - #utils.uc-link("errore termine ingestion")
         ],
         specializzazioni: none,
         immagine: diagram,

@@ -25,7 +25,7 @@ note bottom of e_ticket_chunk_staging
   staging (deliberatamente permissive): solo indici
   sulle colonne identificative e di riferimento.
   Le tabelle di staging per conversation_item e
-  attachments seguono la stessa struttura.
+  attachment seguono la stessa struttura.
 end note
 
 @enduml

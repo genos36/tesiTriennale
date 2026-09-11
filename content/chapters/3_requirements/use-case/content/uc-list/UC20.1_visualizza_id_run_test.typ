@@ -17,7 +17,7 @@
                 - Il supervisore ha visualizzato l'id relativo alla run di test a cui si riferiscono le performance
                         ],
         scenario-principale:[
-                - Il supervisore visualizza l'id relativo alla run di test a cui si riferiscono le performance
+                + Il supervisore visualizza l'id relativo alla run di test a cui si riferiscono le performance
 
         ],
         scenari-alternativi:none,

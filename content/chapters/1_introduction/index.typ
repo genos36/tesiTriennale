@@ -10,7 +10,7 @@
 #v(1em)
 
 == L'azienda
-#data.myCompany è un'azienda parte del Gruppo Zucchetti, che vanta un'esperienza ultra trentennale nello sviluppo di soluzioni software destinate sia ad aziende private che a istituzioni pubbliche. L'azienda si posiziona come partner tecnologico specializzato nella progettazione di piattaforme per la gestione e l'automazione dei processi aziendali e dei servizi di assistenza e supporto.
+#data.myCompany è un'azienda parte del Gruppo Zucchetti, che vanta un'esperienza ultratrentennale nello sviluppo di soluzioni software destinate sia ad aziende private che a istituzioni pubbliche. L'azienda si posiziona come partner tecnologico specializzato nella progettazione di piattaforme per la gestione e l'automazione dei processi aziendali e dei servizi di assistenza e supporto.
 #img(
   "logo-azienda.svg",
   caption: [Logo #text(data.myCompany)],
@@ -18,11 +18,11 @@
 )<fig:logo>
 
 == Il progetto
-Il progetto ha come obiettivo principale la realizzazione di un proof of concept valutativo della riprogettazione e della sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
+Il progetto ha come obiettivo principale la realizzazione di un #gl("poc", display:"proof of concept (PoC)") valutativo della riprogettazione e della sostituzione dell'attuale architettura dati utilizzata per la persistenza e il recupero delle informazioni all'interno dei prodotti aziendali.
 
-Attualmente, l'impresa adotta una soluzione basata sul paradigma della persistenza poliglotta.
+Attualmente, l'impresa adotta una soluzione basata sul paradigma della #gl("persistenza-poliglotta",display:"persistenza poliglotta").
 
-Tale architettura prevede l'utilizzo congiunto di due sistemi separati: Postgres per la gestione dei dati strettamente relazionali ed Elasticsearch per l'indicizzazione dei documenti, la ricerca full-text, la gestione degli embedding vettoriali e le operazioni di filtraggio avanzato.
+Tale architettura prevede l'utilizzo congiunto di due sistemi separati: Postgres per la gestione dei dati strettamente relazionali ed #gl("elasticsearch") per l'indicizzazione dei documenti, la #gl("ricerca-full-text-glossario", display:"ricerca full-text"), la gestione degli #gl("embedding",display:"embedding") vettoriali e le operazioni di filtraggio avanzato.
 
 Sebbene questo approccio ibrido sia funzionale e ampiamente utilizzato,
 la divisione dei carichi di lavoro su motori di database differenti
@@ -48,7 +48,7 @@ comporta diverse limitazioni architettoniche e operative:
 )
 
 Per superare queste criticità, il progetto esplora la transizione verso un paradigma a database unificato.
-L'obiettivo è accentrare l'intero carico di lavoro su Postgres sfruttando pgvector,
+L'obiettivo è accentrare l'intero carico di lavoro su Postgres sfruttando #gl("pgvector", display:"pgvector"),
 un'estensione open-source che introduce il supporto nativo alla persistenza dei vettori di embedding
 e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema relazionale.
 
@@ -64,7 +64,7 @@ Nello specifico, il nuovo sistema di ricerca dovrà soddisfare i seguenti requis
     ottimizzazione degli indici,
     sfruttamento delle capacità di indicizzazione full-text native di Postgres
     e creazione di indici vettoriali dedicati tramite
-    pgvector per garantire l'efficienza scalabile della ricerca semantica;
+    pgvector per garantire l'efficienza scalabile della #gl("ricerca-semantica-glossario", display:"ricerca semantica")\;
 
   ],
   [
@@ -74,14 +74,14 @@ Nello specifico, il nuovo sistema di ricerca dovrà soddisfare i seguenti requis
 
   ],
   [
-    ricerca ibrida,
+    #gl("ricerca-ibrida-glossario", display:"ricerca ibrida"),
     implementazione di una logica di recupero che combini la precisione lessicale
     della ricerca testuale con la profondità concettuale della ricerca semantica,
-    fondendo i risultati tramite l'algoritmo di #gl("rrf");
+    fondendo i risultati tramite l'algoritmo di #gl("rrf")\;
 
   ],
   [
-    ricerca linked,
+    #gl("ricerca-linked-glossario", display:"ricerca linked"),
     modalità che permette di analizzare automaticamente ogni entità del sistema di ricerca e di ricostruire un quadro complessivo dell'informazione tramite join.
 
   ],
@@ -95,7 +95,7 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
   ],
   [
-    velocità di indicizzazione: tempi necessari per l'elaborazione e l'inserimento a database di nuovi record complessi;
+    velocità di indicizzazione: tempi necessari per l'elaborazione e l'inserimento nel database di nuovi record complessi;
 
   ],
   [
@@ -114,7 +114,7 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
 == Scelta del progetto
 Ho scelto questo progetto per tre ragioni principali:
-+ rilevanza dell'argomento, alla base dei moderni sistemi di intelligenza artificiale, come la RAG, che utilizzano l' #gl("information-retrieval",long:true) per fornire contesto agli #gl("llm")\;
++ rilevanza dell'argomento, alla base dei moderni sistemi di intelligenza artificiale, come la #gl("rag"), che utilizzano l'#gl("information-retrieval", display:"information retrieval  (IR)") per fornire contesto agli #gl("llm")\;
 
 + evoluzione di un sistema di ricerca reale, permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato;
 

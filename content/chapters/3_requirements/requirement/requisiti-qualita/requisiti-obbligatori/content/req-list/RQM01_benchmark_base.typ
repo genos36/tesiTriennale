@@ -11,10 +11,10 @@
     ],
 
   descrizione:[
-    Vanno verificati i benchmark previsti sul seguente volume di dati di 10.000 ticket, 50.000 conversation item e 60.000 attachemnt
+    Vanno verificati i benchmark previsti sul seguente volume di dati di 10.000 ticket, 50.000 conversation item e 60.000 attachment
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva
-  fonti:[Colloqui con il tutor]
+  fonti:[Colloquio con il tutor]
 )

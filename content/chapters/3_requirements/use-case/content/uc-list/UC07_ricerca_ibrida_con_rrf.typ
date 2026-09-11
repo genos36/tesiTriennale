@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Ricerca ibrida con rrf"
+#let use-case-nome="Ricerca ibrida con RRF"
 // #let depth=
 
 #use-case(
@@ -13,7 +13,7 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
                         ],
         scenario-principale:[
                 + Companion inserisce una query #sym.arrow #utils.uc-link("Inserimento query su singola entità")

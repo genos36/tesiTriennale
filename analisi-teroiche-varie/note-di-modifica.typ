@@ -103,9 +103,9 @@ Parlando con pippo e franco, mi è stato spiegato un po più nel dettaglio come 
     Codici specifici contenuti all'interno di testo
   ]),
   terms.item([
-    attachments
+    attachment
   ],[
-    Chiave esterna da usare per riferirsi agli attachments
+    Chiave esterna da usare per riferirsi agli attachment
   ]),
   terms.item([Dates],[
     quali campi impostare come data.

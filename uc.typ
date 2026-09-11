@@ -7,15 +7,15 @@ aggiungere ricerche su singole collection
 == UC1 Ingestion
 #list(
   [
-  Contesto: 
+  Contesto:
   - Deve essere possibile caricare documenti nel database,
-  - i documenti sono ticket, conversation item e attachments
-  - i documenti vengono caricati nel seguente ordine: tutti i ticket #sym.arrow tutti i conversation item #sym.arrow tutti gli attachments
+  - i documenti sono ticket, conversation item e attachment
+  - i documenti vengono caricati nel seguente ordine: tutti i ticket #sym.arrow tutti i conversation item #sym.arrow tutti gli attachment
   - i documenti arrivano già con i campi testuali parsati e divisi in chunk.
   - i documenti possono ma non devono avere la lingua nota a priori
     - (se la lingua del documento non è nota a priori viene eseguita la language detection per ogni chunk indipendentemente)
   - i documenti vengono caricati periodicamente, perciò si assume il caricamento di liste di documenti con l'analisi di un documento alla volta #footnote()[
-    Il caricamento periodico serve a concentrare in un momento di poca attività (la notte) un carico di lavoro molto pesante 
+    Il caricamento periodico serve a concentrare in un momento di poca attività (la notte) un carico di lavoro molto pesante
   ]
   - Il caricamento delle unità avviene a blocchi
   ],
@@ -34,13 +34,13 @@ aggiungere ricerche su singole collection
     - le informazioni sono state caricate nel sistema e indicizzate sia con indice vettoriale che indice testuale.
   ],
   [
-    Scenario principale: 
+    Scenario principale:
       + l'attore principale carica la lista dei ticket
         + l'attore carica un ticket (il ticket deve contenere i metadati del ticket e per ogni campo testuale la relativa lista di chunk)
           + lingua già inserita viene passata in automatico ai chunk
           + lingua non inserita, viene usato un modello di language detection
       + Il sistema salva i ticket tramite scritture bulk e non scritture singole.
-          - viene usato il modello di embedding per calcolare gli embedding 
+          - viene usato il modello di embedding per calcolare gli embedding
       + l'attore principale carica la lista dei conversation item
         + l'attore carica un conversation item(il ticket deve contenere i metadati del conversation item, l'identificativo del ticket e per ogni campo testuale la relativa lista di chunk)
           + lingua già inserita viene passata in automatico ai chunk
@@ -63,16 +63,16 @@ aggiungere ricerche su singole collection
 
 #list(
   [
-  Contesto: 
+  Contesto:
     - La linked search consiste nel cercare contenuti rilevanti rispetto ad un query scritta dal companion
-    - La linked search cerca su tutti i ticket, su tutti i conversation item e su tutti gli allegati. 
+    - La linked search cerca su tutti i ticket, su tutti i conversation item e su tutti gli allegati.
     - La linked search ritorna N risultati, (da chiarire se N è riferito ai chunk oppure ai ticket)
     - Il contenuto del risultato è definito dal contenuto della query (come per il select di sql)
     - Possono esserci diversi criteri per la ricerca sui ticket sui conversation item, sugli allegati (sui ticket sono rilevanti phrase query, match dove ci sono tutte le parole cercate oppure almeno una delle parole, sugli allegati invece potremmo imporre una ricerca solo per frasi, in quanto grazie alla loro dimensione possono avere molti più match)
-    - Deve essere possibile specificare filtri.(da chiarire se filtri generici oppure filtri specifici per ticket,conv item, attachments)
+    - Deve essere possibile specificare filtri.(da chiarire se filtri generici oppure filtri specifici per ticket,conv item, attachment)
   ],
   [
-    Attore principale : Companion 
+    Attore principale : Companion
   ],
   [
     Attore secondario : Modello di embedding
@@ -87,7 +87,7 @@ aggiungere ricerche su singole collection
     - companion ha ricevuto N risultati rilevanti secondo linked search basata su hybrid search
   ],
   [
-    Scenario principale: 
+    Scenario principale:
       + Companion invia una query contente N e i parametri della query
         - estensione per gestire query non valide
 
@@ -110,7 +110,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 === UC3 Aggiunta query di test
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter aggiungere query di test
   ],
   [
@@ -130,7 +130,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - viene salvato anche il vettore di embedding relativo alla domanda in linguaggio naturale.
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     + Il supervisore inserisce la lista dei valori di ritorno
       + inserisce un valore di ritorno
     + Il supervisore inserisce la lista dei filtri (assumiamo che tutti i filtri qui specificati vengano considerati come condizione AND, chiarire se servono query complesse contenti anche clausole or comprese loro composizioni varie)
@@ -154,7 +154,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 == UC4 Rimozione query di test
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter rimuovere una query di test
   ],
   [
@@ -174,7 +174,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - la query è stata rimossa dalla lista delle query di test.
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     + Il supervisore seleziona la query da eliminare
   ],
   [
@@ -186,7 +186,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 == UC5 modifica Query di test
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter modificare una query di test
   ],
   [
@@ -206,7 +206,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - il vettore di embedding è coerente con la nuova domanda in linguaggio naturale
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     + Il supervisore può modificare la lista dei valori di ritorno
       + può inserire un valore di ritorno
       + può rimuovere un valore di ritorno
@@ -226,7 +226,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter configurare i parametri per i test sotto sforzo
     - chiarire se questo caso d'uso serva oppure va bene che i parametri non siano modificabile tramite un'interfaccia applicativa
   ],
@@ -245,7 +245,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - I parametri di configurazione dei test sono salvati.
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     // + Il supervisore inserisce il volume della base di dati su cui svolgere il test
     + Il supervisore inserisce il numero degli utenti paralleli da simulare
     + Il supervisore inserisce il cooldown che ogni utente simulato deve aspettare per eseguire una query
@@ -260,7 +260,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 == UC7 Visualizza performance
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter vedere le performance del sistema
   ],
   [
@@ -278,10 +278,10 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - il supervisore ha visualizzato le performance del sistema
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     serve definire esattamente quali sono le metriche rilevanti (quali sono le metriche relative alla qualità della retrieval:recall e simili, e anche quelle relative a performance pure)
     \[inserire elenco  metriche\]
-    
+
   ],
   [
     Trigger: il supervisore vuole configurare i parametri dei test
@@ -293,7 +293,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 == UC8 Configura tabelle di test
 #list(
   [
-  Contesto: 
+  Contesto:
     - capire se serve poter configurare le tabelle tramite l'applicativo
   ],
   [
@@ -311,7 +311,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - il supervisore ha configurato la tabella
   ],
   [
-    Scenario principale: 
+    Scenario principale:
 
       Se  è necessario configurare la tabella capire come configurarla, o meglio cosa è rilevante ai fini della configurazione
   ],
@@ -324,7 +324,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 == UC9 Aggiungi indice
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter configurare gli indici in modo da testare diverse ottimizzazioni
   ],
   [
@@ -342,7 +342,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - il supervisore ha impostato un nuovo indice
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     serve definire cosa configurare, nome indice, target dell'indice, tipo di indice, clausole where.
   ],
   [
@@ -353,7 +353,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
 
 #list(
   [
-  Contesto: 
+  Contesto:
     - serve poter configurare gli indici in modo da testare diverse ottimizzazioni
   ],
   [
@@ -371,7 +371,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
     - il supervisore ha rimosso un indice
   ],
   [
-    Scenario principale: 
+    Scenario principale:
     + il supervisore seleziona l'indice da rimuovere
     + il sistema elimina l'indice
   ],

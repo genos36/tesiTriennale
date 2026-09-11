@@ -29,7 +29,7 @@ settings:
 # La struttura gerarchica
 structure:
     - Utilizzo python
-    - Utilizzo fastapi
+    - Utilizzo FastAPI
     - Utilizzo embedder remoto
     - Utilizzo di Postgres
     - Utilizzo di grafana
@@ -37,7 +37,7 @@ structure:
     - Alta configurabilità del sistema
     - Realizzazione ricerche similarità
     # - Benchmark base
-    - Ricerca full text ottimizzata su lingua
+    - Ricerca full-text ottimizzata su lingua
     - Ricerca linked
     - Roundtrip unico per le ricerche
     - Ingestion

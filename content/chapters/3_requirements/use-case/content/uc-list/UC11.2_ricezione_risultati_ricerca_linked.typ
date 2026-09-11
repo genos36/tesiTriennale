@@ -10,13 +10,14 @@
         attore-principale:[Companion],
         attore-secondario: none,
         pre-condizioni:[
-                + Il sistema di ricerca ha eseguito la query
+                - Il sistema di ricerca ha eseguito la query
         ],
         post-condizioni: [
-                + Companion ha ricevuto i risultati della ricerca
+                - Companion ha ricevuto i risultati della ricerca
                         ],
         scenario-principale:[
-                + Companion ritorna la lista dei risultati prodotti dalla ricerca
+                + Il sistema di ricerca ritorna la lista dei risultati prodotti dalla ricerca
+                + Companion riceve i risultati della ricerca
         ],
         scenari-alternativi:none,
         trigger: none,

@@ -44,7 +44,7 @@
                 - Il sistema di ricerca è attivo
         ],
         post-condizioni: [
-                - Companion ha ricevuto i risultati della ricerca.
+                - Companion ha ricevuto i risultati della ricerca
 //                - Companion riceve l'identificativo del chunk su cui è stato trovato il match
 //                - Companion riceve solo il chunk di testo su cui è stato trovato un match
                         ],

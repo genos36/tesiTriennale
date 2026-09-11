@@ -16,9 +16,9 @@
   includes: ("Caricamento blocco entità",),
   extends: (:),
   generalizations: (
-        "Ingestione lista ticket",
-        "Ingestione lista conversation item",
-        "Ingestione lista attachments"),
+        "Ingestion lista ticket",
+        "Ingestion lista conversation item",
+        "Ingestion lista attachment"),
   spacing: (0.5cm, 3cm),
   width: 100%,
   max-height: none,
@@ -30,6 +30,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramam descrive il caricamento e l'elaborazione di una singola lista di entità",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
@@ -53,9 +54,9 @@
         ],
         estensioni: none,
         specializzazioni: [
-        - #utils.uc-link("Ingestione lista ticket")
-        - #utils.uc-link("Ingestione lista conversation item")
-        - #utils.uc-link("Ingestione lista attachments")
+        - #utils.uc-link("Ingestion lista ticket")
+        - #utils.uc-link("Ingestion lista conversation item")
+        - #utils.uc-link("Ingestion lista attachment")
         ],
         immagine: diagram,
         caption: none,

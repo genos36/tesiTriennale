@@ -9,7 +9,7 @@
 #if utils.debug == true{
         diagram=utils.draw-uc-expansion(
                 system-name:"Sistema di ricerca",
-  parent-uc: "Ingestione lista attachments",             // Nome mostrato sulla linguetta; default = target-uc
+  parent-uc: "Ingestion lista attachment",             // Nome mostrato sulla linguetta; default = target-uc
   target-uc: use-case-nome,
   actors: ("Companion",),
   ext-actors: (
@@ -56,8 +56,8 @@
                 + Il sistema di ricerca rileva le informazioni di lingua da applicare ai chunk
                         + Il sistema di ricerca può usare l'informazione linguistica presente nei dati caricati
                         + Il sistema di ricerca può usare un modello language detection
-                + Il sistema di ricerca associa gli embedding al relativo frammento di testo
-                + Il sistema di ricerca associa la lingua al relativo frammento di testo
+                + Il sistema di ricerca associa gli embedding al relativo chunk di testo
+                + Il sistema di ricerca associa la lingua al relativo chunk di testo
                 + Il sistema di ricerca salva il blocco di ticket
         ],
         scenari-alternativi:none,

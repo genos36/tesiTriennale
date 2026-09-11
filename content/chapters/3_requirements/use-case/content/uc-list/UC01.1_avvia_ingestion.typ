@@ -5,6 +5,7 @@
 // #let depth=
 
 #use-case(
+        alt-diagramma:"Questo diagramma descrive l'avvio di una sessione di ingestion.",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
@@ -19,7 +20,7 @@
         scenario-principale:[
                 + Companion chiede di avviare una sessione di ingestion
                 + Il sistema di ricerca avvia la sessione di ingestion
-                + Companion viene notificato della corretta apertura del sistema di ricerca
+                + Companion viene notificato della corretta apertura della sessione di ingestion
         ],
         scenari-alternativi:none,
         trigger: none,

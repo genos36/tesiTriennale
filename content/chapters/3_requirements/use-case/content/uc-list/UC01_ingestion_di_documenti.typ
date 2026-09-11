@@ -20,16 +20,19 @@
                 ),
         extends: (:),
         generalizations: (),
-        spacing: (3.5cm, 2cm),
+        spacing: (3.5cm, 1cm),
         width: 100%,                 // Come width per le immagini: si adatta al contenitore
         max-height: none,            // Limite opzionale, utile per non sforare la pagina
         actor-offset: -0.1,
         ext-actor-offset: 1,
         note-offset: (-0.8, 0.5),
+
         )
 }
 
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta la realizzazione del processo di ingestion",
+        block-break:true,
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],
@@ -49,7 +52,7 @@
                 + Companion avvia il processo di ingestion dei dati #sym.arrow #utils.uc-link("Avvia ingestion")
                 + Companion carica le liste di entità #sym.arrow #utils.uc-link("ingestion liste entità")
                 + Companion termina il processo di ingestion #sym.arrow #utils.uc-link("Termina ingestion")
-                + Companion viene notificato del corretto salvataggio dei dati.
+                + Companion viene notificato del corretto salvataggio dei dati
 
         ],
         scenari-alternativi:none,

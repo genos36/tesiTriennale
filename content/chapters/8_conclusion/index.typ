@@ -70,7 +70,7 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
 #v(1em)
 
 == Requisiti soddisfatti
-Tutti i requisiti descritti nella @tracciamento-requisiti sono stati implementati come descritto nel riepilogo della @tab:requisiti-soddisfatti
+Tutti i requisiti descritti nella @tracciamento-requisiti sono stati implementati come descritto nel riepilogo della @tab:requisiti-soddisfatti.
   #import "/content/chapters/3_requirements/requirement/requisiti-funzionali/index.typ":obb-len as f-obb,des-len as f-des,opz-len as f-opz
   #import "/content/chapters/3_requirements/requirement/requisiti-vincolo/index.typ":obb-len as c-obb,des-len as c-des,opz-len as c-opz
   #import "/content/chapters/3_requirements/requirement/requisiti-qualita/index.typ":obb-len as q-obb,des-len as q-des,opz-len as q-opz
@@ -116,15 +116,15 @@ I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportat
   table(
     columns: 2,
     table.header([*Descrizione*], [*Mitigazione*]),
-    [*R1*: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale, la mitigazione è stata il confronto con il tutor per colmare le lacune e definire chiaramente i requisiti.],
-    [*R2*: Sovradimensionamento del progetto rispetto alle tempistiche], [Il rischio è stato incontrato tra la fase intermedia e finale del progetto, implementare un sistema di test che permettesse di esaminare tutti i tipi di ricerca richiedeva diverse considerazioni non banali in fasi di progettazione e una discreta quantità di tempo, si è perciò limitato lo scope del test alla ricerca più importante.],
+    [*R01*: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale. La mitigazione è stata il confronto con il tutor per colmare le lacune e definire chiaramente i requisiti.],
+    [*R02*: Sovradimensionamento del progetto rispetto alle tempistiche], [Il rischio è stato incontrato tra la fase intermedia e finale del progetto: implementare un sistema di test che permettesse di esaminare tutti i tipi di ricerca richiedeva diverse considerazioni non banali in fase di progettazione e una discreta quantità di tempo. Si è perciò limitato lo scope del test alla ricerca più importante.],
     [*R07*: Rappresentatività dei dati di test e accesso limitato alla produzione],[
-            Il rischio è stato incontrato durante la preparazione dei dati di test, non avendo accesso a dati veri di produzione si è optato per usare dati fittizzi generati a partire da dataset in lingua italiana e inglese.
+            Il rischio è stato incontrato durante la preparazione dei dati di test. Non avendo accesso ai dati veri di produzione si è optato per usare dati fittizi, generati a partire da dataset in lingua italiana e inglese.
     ],
     [*R08*: Difficoltà nella valutazione oggettiva dei risultati di retrieval],[
             Il rischio è stato incontrato durante la progettazione del sistema di test, mitigato tramite confronto con il tutor in cui sono state fissate le metriche di interesse.
     ],
-    [*R10*:Bias tecnologico e deriva dei requisiti],[
+    [*R10*: Bias tecnologico e deriva dei requisiti],[
             Il rischio è stato incontrato nelle fasi iniziali dell'analisi delle funzionalità da realizzare, mitigato dando priorità alle caratteristiche del problema.
     ]
   ),
@@ -135,18 +135,18 @@ I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportat
 
 Dei vari punti che questo progetto si prefiggeva di chiarire segue un resoconto ed un'analisi.
 - Adeguatezza di pgvector alla ricerca semantica: *Confermato*, le query non sono particolarmente complesse, i tempi di risposta sono sufficientemente bassi di media tra i 200-300 millisecondi;
-- Fusione di full-text e semantica lato db: *Confermata*, trattando le query sql di semantica e full text come subquery è facile implementare l'rrf;
-- linking lato db: *Confermato*, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il look up avviene tramite indice;
-- ricerca full-text: *Non confermata*, ElasticSearch senza troppe sorprese è estremamente più veloce di postgres per la ricerca full-text, per quanto l'accuratezza tramite i workaround sia diventata sufficiente. ElasticSearch rimane comunque molto più veloce di postgres. Il tempo medio di una ricerca full-text non ottimizzata per lingua va dai 5 ai 10 secondi, circa 3 secondi per le ricerche ottimizzate per lingua. Tale risultato è coerente con quanto visto nella @analisi-elasticsearch
+- Fusione di full-text e semantica lato db: *Confermata*, trattando le query SQL di semantica e full-text come subquery è facile implementare l'RRF;
+- Linking lato db: *Confermato*, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il look up avviene tramite indice;
+- Ricerca full-text: *Non confermata*, Elasticsearch senza troppe sorprese è estremamente più veloce di Postgres per la ricerca full-text, per quanto l'accuratezza tramite i workaround sia diventata sufficiente. Il tempo medio di una ricerca full-text non ottimizzata per lingua va dai 5 ai 10 secondi, contro circa 3 secondi per le ricerche ottimizzate per lingua. Tale risultato è coerente con quanto visto nella @analisi-elasticsearch.
 
 
-L'accuratezza generale viene considerata buona per tutti i vari tipi di ricerca, il retrieval rate è stato sempre del 100%, ma questo è dovuto al dataset di test, essendo generato automaticamente. In uno scenario realistico è probabile che sarà più bassa, circa 80%.
+L'accuratezza generale viene considerata buona per tutti i vari tipi di ricerca: il retrieval answer rate è stato sempre del 100%, ma questo è dovuto al dataset di test, essendo generato automaticamente. In uno scenario realistico è probabile che sarà più bassa, circa 80%.
 
-All'accuratezza corrispondono inoltre diversi fattori esterni al sistema o elementi da gestire tramite configurazione:
+All'accuratezza contribuiscono inoltre diversi fattori esterni al sistema o elementi da gestire tramite configurazione:
 - modello di embedding utilizzato,
 - configurazioni di lingua,
-- tipologia di vettori e distanza
-- qualità della query, testi poco precisi implicano risposte poco valide (questo aspetto è in genere gestito dalla parte generativa della RAG, query rewriting)
+- tipologia di vettori e distanza,
+- qualità della query, testi poco precisi implicano risposte poco valide (questo aspetto è in genere gestito dalla parte generativa della RAG, query rewriting),
 - composizione del corpus documentale.
 
 
@@ -156,8 +156,16 @@ All'accuratezza corrispondono inoltre diversi fattori esterni al sistema o eleme
 
 == Valutazione personale
 Dal punto di vista personale ho trovato questo progetto molto stimolante.
-L'argomento mi è risultato molto interessante, seppur alcune parti come a costruzione automatica delle query siano state particolarmente ostiche.
+L'argomento mi è risultato molto interessante, seppur alcune parti come la costruzione automatica delle query siano state particolarmente ostiche.
 
-Per quanto non essere riuscito a raggiungere un risultato soddisfacente con la ricerca full-text sia stata una delusione, non è stata una sorpresa in quanto era un limite tecnologico noto fin dalle prime fasi di studio.
+Per quanto il non essere riuscito a raggiungere un risultato soddisfacente con la ricerca full-text sia stato una delusione, non è stata una sorpresa in quanto era un limite tecnologico noto fin dalle prime fasi di studio.
 
 Per il resto mi ritengo soddisfatto.
+
+
+
+
+// #link("fwefw")[esempio link esterno]
+// #link(<cap:descrizione-stage>)[esempio link interno]
+
+//   @cap:descrizione-stage #sym.arrow.l esempio di riferimento con supplement automatico

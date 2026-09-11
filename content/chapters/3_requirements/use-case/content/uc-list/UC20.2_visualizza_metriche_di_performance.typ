@@ -42,15 +42,15 @@
         attore-principale:[Supervisore],
         attore-secondario: none,
         pre-condizioni:[
-                - Companion sta visualizzando la dashboard delle metriche
+                - Il supervisore sta visualizzando la dashboard delle metriche
         ],
         post-condizioni: [
                 - Il supervisore ha visualizzato la lista delle metriche
                         ],
         scenario-principale:[
-                - Il sistema di test calcola le metriche
-                - Il supervisore visualizza l'elenco delle metriche
-                - Il supervisore visualizza la retrieval latency  #sym.arrow #utils.uc-link("Visualizzazione retrieval latency")
+                + Il sistema di test calcola le metriche
+                + Il supervisore visualizza l'elenco delle metriche
+                + Il supervisore visualizza la retrieval latency  #sym.arrow #utils.uc-link("Visualizzazione retrieval latency")
                 - Il supervisore visualizza la retrieval answer rate #sym.arrow #utils.uc-link("Visualizzazione retrieval answer rate")
                 - Il supervisore visualizza la retrieval mrr #sym.arrow #utils.uc-link("Visualizzazione retrieval mrr")
                 - Il supervisore visualizza il retrieval hitrate\@1 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@1")

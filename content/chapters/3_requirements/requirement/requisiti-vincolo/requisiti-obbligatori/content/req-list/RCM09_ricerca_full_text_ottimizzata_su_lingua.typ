@@ -3,7 +3,7 @@
 
 #import "../deps/utils.typ" as utils
 
-#let req-name="Ricerca full text ottimizzata su lingua"
+#let req-name="Ricerca full-text ottimizzata su lingua"
 #let data =(
   codice:[
     #utils.get-req-code( req-name)
