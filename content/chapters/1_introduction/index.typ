@@ -5,7 +5,7 @@
 #let myTutor = data.myTutor
 = Introduzione <cap:introduzione>
 #text(style: "italic", [
-  In questo capitolo descrivo l'azienda, introduco il progetto, e spiego le motivazioni che mi hanno portato a sceglierlo.
+  In questo capitolo descrivo l'azienda, introduco il progetto e spiego le motivazioni che mi hanno portato a sceglierlo.
 ])
 #v(1em)
 
@@ -55,7 +55,7 @@ e alle operazioni di algebra lineare direttamente all'interno dell'ecosistema re
 Nello specifico, il nuovo sistema di ricerca dovrà soddisfare i seguenti requisiti implementativi:
 #list(
   [
-    ingestion,
+    #gl("ingestion",display:"ingestion"),
     sviluppo di un modulo dedicato all'inserimento simultaneo di
     dati relazionali e documenti;
 

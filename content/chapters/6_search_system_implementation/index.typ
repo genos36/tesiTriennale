@@ -26,7 +26,7 @@ La composition root è gestita tramite FastAPI.
 Ciascuna categoria è ulteriormente suddivisa per funzionalità: ingestion e le diverse tipologie di ricerca dispongono ciascuna dei propri adapter, service e port dedicati. Fanno eccezione le classi di dominio condivise, trattate nella @classi-dominio-condivise a loro dedicata.
 
 === Classi di dominio condivise<classi-dominio-condivise>
-Le classi di dominio condivise rappresentano il modello dati descritto nella @main-system-definizione-modello-dati, e costituiscono la fonte di verità del sistema. Vengono costruite e validate una sola volta nella composition root, e da lì iniettate nelle componenti del sistema che necessitano di conoscere il modello dati.
+Le classi di dominio condivise rappresentano il modello dati descritto nella @main-system-definizione-modello-dati e costituiscono la fonte di verità del sistema. Vengono costruite e validate una sola volta nella composition root, da lì iniettate nelle componenti del sistema che necessitano di conoscere il modello dati.
 
 *EntityName* e *FieldName* sono due semplici wrapper attorno a una stringa, adottati per rendere il codice più leggibile e per impedire, a livello di firma, di confondere un identificativo di entità con uno di campo o con una stringa qualunque.
 
@@ -65,7 +65,7 @@ class Entity:
 *MergeWeights* rappresenta i pesi utilizzati per la fusione tra ricerca semantica e full-text, con l'unico vincolo che non possano essere negativi.
 
 ==== Vincoli sullo schema
-Il punto di estensione esplicito descritto nel modello dati, pensato per accomodare vincoli non necessariamente relazionali, è realizzato tramite il pattern Visitor. *SchemaConstraint* è l'interfaccia astratta comune a ogni tipo di vincolo; *RelationalSchemaConstraint* è l'unica implementazione concreta attualmente presente, e rappresenta l'equivalente concettuale di una chiave esterna tra due entità.
+Il punto di estensione esplicito descritto nel modello dati, pensato per accomodare vincoli non necessariamente relazionali, è realizzato tramite il pattern Visitor. *SchemaConstraint* è l'interfaccia astratta comune a ogni tipo di vincolo; *RelationalSchemaConstraint* è l'unica implementazione concreta attualmente presente e rappresenta l'equivalente concettuale di una chiave esterna tra due entità.
 
 #code-snippet(caption: "SchemaConstraint e RelationalSchemaConstraint",
 raw(
@@ -81,7 +81,7 @@ class SchemaConstraintVisitor(ABC):
 )
 )
 
-Ogni tipo di vincolo espone un metodo accept, che delega a un'implementazione di *SchemaConstraintVisitor* l'operazione specifica per quel tipo. L'introduzione di un nuovo tipo di vincolo richiede quindi un nuovo metodo visit dedicato sull'interfaccia del visitor: da quel momento, qualunque visitor che non lo implementi non può più essere istanziato, e l'errore emerge già in fase di costruzione, non alla prima volta in cui il visitor incontra quel tipo di vincolo a runtime.
+Ogni tipo di vincolo espone un metodo accept, che delega a un'implementazione di *SchemaConstraintVisitor* l'operazione specifica per quel tipo. L'introduzione di un nuovo tipo di vincolo richiede quindi un nuovo metodo visit dedicato sull'interfaccia del visitor: da quel momento, qualunque visitor che non lo implementi non può più essere istanziato e l'errore emerge già in fase di costruzione, non alla prima volta in cui il visitor incontra quel tipo di vincolo a runtime.
 
 ==== Ricerca linked e struttura a grafo
 *GraphEdge* rappresenta un arco del grafo di navigazione tra entità utilizzato dalla ricerca linked, collegando due FieldReference in entità diverse; un arco non può collegare un'entità a se stessa, per evitare cicli non gestiti nell'attraversamento.
@@ -134,7 +134,7 @@ class SchemaConfiguration:
 
 SchemaConfiguration valida, in fase di costruzione, esclusivamente la coerenza strutturale locale (presenza di almeno un'entità, coerenza tra chiave e valore nella mappa delle entità). La validazione dell'integrità referenziale più profonda — l'esistenza e la compatibilità di tipo dei campi citati nei vincoli, l'esistenza delle entità citate nella configurazione di ricerca linked — richiede invece una visione d'insieme dell'intero schema, non disponibile al singolo oggetto preso in isolamento, ed è per questo demandata a *SchemaConfigurationBuilder*.
 
-Il builder accumula incrementalmente entità e vincoli, per poi eseguire, al momento della costruzione finale, l'intera catena di validazioni referenziali: la verifica dei vincoli di schema tramite il visitor descritto in precedenza, la coerenza della configurazione di ricerca linked rispetto alle entità effettivamente presenti, e la corrispondenza reciproca tra campi searchable e pesi configurati per la ricerca linked. Solo un'istanza di SchemaConfiguration prodotta da questo builder può quindi considerarsi garantita come valida nella sua interezza.
+Il builder accumula incrementalmente entità e vincoli, per poi eseguire, al momento della costruzione finale, l'intera catena di validazioni referenziali: la verifica dei vincoli di schema tramite il visitor descritto in precedenza, la coerenza della configurazione di ricerca linked rispetto alle entità effettivamente presenti e la corrispondenza reciproca tra campi searchable e pesi configurati per la ricerca linked. Solo un'istanza di SchemaConfiguration prodotta da questo builder può quindi considerarsi garantita come valida nella sua interezza.
 
 #code-snippet(caption: "SchemaConfigurationBuilder - firma di build()",
 raw(
@@ -161,7 +161,7 @@ Inoltre si precisa che l'inizializzazione del database non avviene tramite codic
         #image("/images/puml/svg/tracking.svg",alt:"Diagramma ER descrittivo delle tabelle di supporto al tracking dello status della sessione di ingestion")
 ]<diagramma-er>
 
-Alcuni aspetti rilevanti dello schema non sono rappresentabili graficamente in un diagramma entità-relazione, e vengono quindi descritti di seguito: il partizionamento delle tabelle e gli indici definiti su di esse.
+Alcuni aspetti rilevanti dello schema non sono rappresentabili graficamente in un diagramma entità-relazione, vengono quindi descritti di seguito: il partizionamento delle tabelle e gli indici definiti su di esse.
 
 Coerentemente con quanto descritto nella @analisi-ricerca-semantica in cui viene analizzata la ricerca semantica, la tabella dei chunk di ciascuna entità è partizionata per lista sul campo di provenienza del testo (field_name): ogni campo searchable dell'entità corrisponde a una partizione distinta.
 
@@ -209,7 +209,7 @@ raw(lang:"python",
 ))
 Lo stato di scrittura di ciascuno stream viene inoltre tracciato tramite una porta outbound dedicata, in modo da garantire che, al momento della chiusura della sessione, tutti gli stream in corso abbiano effettivamente terminato la scrittura prima di avviare la promozione.
 
-Il caso d'uso di lettura dello stato di attività della sessione di ingestion serve esclusivamente al sistema di test, per determinare se durante l'esecuzione di una query sia in corso un processo di ingestion (si veda @cap:lavoro-svolto-test-system).
+Il caso d'uso di lettura dello stato di attività della sessione di ingestion serve esclusivamente al sistema di test, per determinare se durante l'esecuzione di una query sia in corso un processo di ingestion (si veda il @cap:lavoro-svolto-test-system).
 
 === Promozione da staging a tabelle reali
 Lo scheduling della promozione è calcolato in base ai vincoli relazionali definiti nella schema configuration, dando priorità prima alle tabelle dei metadati e poi a quelle dei chunk, in modo da rispettare le dipendenze referenziali. La promozione avviene interamente lato database, tramite una query che seleziona i dati validi e li trasferisce sulla tabella reale senza farli transitare da Python.
@@ -290,8 +290,9 @@ Ogni tipologia di ricerca è esposta tramite un endpoint dedicato, realizzato co
 
 Le classi di dominio impiegate differiscono tra ricerca su singola entità e ricerca linked: quest'ultima richiede un filtro con struttura annidata più complessa, che abbina un filtro a ciascuna entità coinvolta nell'attraversamento. Per evitare una duplicazione eccessiva di codice tra le due varianti, senza però introdurre relazioni di subtyping scorrette, si è adottato l'uso di *Generic* e *type alias*: i Generic permettono il riuso della logica di dominio comune, mentre i type alias vengono usati da tutte le classi esterne alla catena di generici per facilitare eventuali modifiche future. Questa scelta si è rivelata utile concretamente durante la realizzazione della ricerca linked, che ha richiesto di distinguere due serie di filtri distinte a partire dalla stessa gerarchia generica.
 
-Per questo motivo, nel seguito vengono descritte solo le parti generiche condivise, un esempio di come vengono specializzate tramite type alias, e solo ciò che diverge dalla versione generica.
+Per questo motivo, nel seguito vengono descritte solo le parti generiche condivise e un esempio di come vengono specializzate tramite type alias.
 
+Le parti che si sono discostate da questo pattern dono state trattate esplicitamente.
 === Filtering
 Il filtro adotta una struttura ad albero: viene definita un'interfaccia comune, *FilterCondition*, con quattro implementazioni concrete — atomic expression, and condition, or condition, not condition.
 
@@ -332,7 +333,7 @@ class NotCondition(FilterCondition[R], Generic[R]):
   )
 )
 
-Questa gerarchia ha il solo scopo di rappresentare e comporre il filtro, non di applicarlo direttamente a un valore. Per applicarlo si usa quindi, anche qui, il pattern Visitor: concretamente, un'implementazione di *FilterVisitor* viene usata per validare il filtro all'interno dei service di dominio, e un'altra per costruire le clausole WHERE all'interno degli adapter SQL — sia per il filtro su singola entità, sia per il post-join filter della ricerca linked.
+Questa gerarchia ha il solo scopo di rappresentare e comporre il filtro, non di applicarlo direttamente a un valore. Per applicarlo si usa quindi, anche qui, il pattern Visitor: concretamente, un'implementazione di *FilterVisitor* viene usata per validare il filtro all'interno dei service di dominio e un'altra per costruire le clausole WHERE all'interno degli adapter SQL — sia per il filtro su singola entità, sia per il post-join filter della ricerca linked.
 
 #code-snippet(
   caption:"Ricerca - type alias per filtro su singola entità e post-join",
@@ -467,7 +468,7 @@ La ricerca full-text adotta un approccio strutturalmente simile alla semantica: 
 Non è un vincolo tecnico, ma una scelta di riuso del codice della ricerca semantica: in questo caso la suddivisione per partizione non è strettamente necessaria, ma nemmeno errata.
 Semplifica la ricerca su sottoinsiemi di campi e l'applicazione dei pesi.
 
-La ranking function nativa di Postgres per la ricerca full-text non offre, a differenza ad esempio di Elasticsearch, un meccanismo di boosting progressivo: non è possibile, con un'unica chiamata, dare un punteggio alto a un match di frase esatta, uno intermedio a un match su tutte le parole ma non in ordine, e uno basso a un match parziale. Per simulare questo comportamento si sommano più ranking function calcolate sulla stessa query: una phrase query e una allwords query, che restituiscono lo stesso punteggio in caso di match di frase, mentre la phrase query restituisce 0 se l'ordine delle parole non è rispettato.
+La ranking function nativa di Postgres per la ricerca full-text non offre, a differenza ad esempio di Elasticsearch, un meccanismo di boosting progressivo: non è possibile, con un'unica chiamata, dare un punteggio alto a un match di frase esatta, uno intermedio a un match su tutte le parole ma non in ordine, uno basso a un match parziale. Per simulare questo comportamento si sommano più ranking function calcolate sulla stessa query: una phrase query e una allwords query, che restituiscono lo stesso punteggio in caso di match di frase, mentre la phrase query restituisce 0 se l'ordine delle parole non è rispettato.
 
 Una seconda limitazione nativa è l'impossibilità di filtrare per un criterio di corrispondenza minima (match di almeno una certa percentuale di parole): anche questo viene reimplementato tramite operazioni sugli array. I lessemi della query vengono estratti direttamente all'interno di Postgres — anziché con uno strumento esterno — per evitare un rischio di stemming incoerente tra la fase di estrazione e quella di confronto.
 
@@ -494,7 +495,7 @@ Una seconda limitazione nativa è l'impossibilità di filtrare per un criterio d
   )
 )
 
-Questo CTE estrae l'insieme ordinato dei lessemi della query (`arr`), la sua cardinalità (`n`) e il numero minimo di lessemi in comune richiesto per considerare un chunk rilevante (`k`), calcolato con una soglia percentuale decrescente al crescere del numero di parole nella query, e comunque limitato a un massimo di 15.
+Questo CTE estrae l'insieme ordinato dei lessemi della query (`arr`), la sua cardinalità (`n`) e il numero minimo di lessemi in comune richiesto per considerare un chunk rilevante (`k`), calcolato con una soglia percentuale decrescente al crescere del numero di parole nella query, comunque limitato a un massimo di 15.
 
 #code-snippet(
   caption: "Ricerca full-text - selezione dei candidati per corrispondenza e ranking combinato",
@@ -599,7 +600,7 @@ CREATE UNIQUE INDEX ON lexeme_frequency (word);
 
 
 === Ricerca ibrida
-Le query costruite per la ricerca semantica e per la ricerca full-text non vengono eseguite immediatamente al momento della loro costruzione: vengono prima create come frammenti tramite classi helper dedicate, e solo in un secondo momento eseguite. Questo disaccoppiamento tra costruzione ed esecuzione è ciò che rende possibile realizzare la ricerca ibrida come reciprocal rank fusion (RRF): i due frammenti vengono avvolti con RANK() OVER, per ottenere la posizione in classifica di ciascun motore a partire dal punteggio pesato già calcolato internamente da ciascuna pipeline, e poi fusi tramite un FULL OUTER JOIN sui campi identificativi dell'entità, anziché con una UNION ALL: questo permette a un risultato trovato da un solo motore di comparire comunque nell'output finale, con il contributo dell'altro motore posto a zero tramite COALESCE. Il contributo di ciascun motore alla fusione viene pesato secondo MergeWeights: il peso di ciascuna sorgente compare come numeratore nella rispettiva formula RRF, permettendo di dare più importanza alla ricerca semantica o a quella full-text a seconda della configurazione.
+Le query costruite per la ricerca semantica e per la ricerca full-text non vengono eseguite immediatamente al momento della loro costruzione: vengono prima create come frammenti tramite classi helper dedicate e solo in un secondo momento eseguite. Questo disaccoppiamento tra costruzione ed esecuzione è ciò che rende possibile realizzare la ricerca ibrida come reciprocal rank fusion (RRF): i due frammenti vengono avvolti con RANK() OVER, per ottenere la posizione in classifica di ciascun motore a partire dal punteggio pesato già calcolato internamente da ciascuna pipeline e poi fusi tramite un FULL OUTER JOIN sui campi identificativi dell'entità, anziché con una UNION ALL: questo permette a un risultato trovato da un solo motore di comparire comunque nell'output finale, con il contributo dell'altro motore posto a zero tramite COALESCE. Il contributo di ciascun motore alla fusione viene pesato secondo MergeWeights: il peso di ciascuna sorgente compare come numeratore nella rispettiva formula RRF, permettendo di dare più importanza alla ricerca semantica o a quella full-text a seconda della configurazione.
 
 #code-snippet(
   caption:"Ricerca ibrida - fusione RRF pesata tramite FULL OUTER JOIN",
@@ -651,7 +652,7 @@ WHERE s."{hop_1_origin_field}" IS NOT NULL
 
 Ogni ramo produce un'unica colonna JSONB, ottenuta fondendo un `jsonb_build_object` per ciascuna entità effettivamente raggiunta in quel ramo. L'uso di JSONB qui non è una scelta di modellazione del dominio, ma una semplificazione della sola fase di serializzazione: entra in gioco esclusivamente nell'ultimo passo, quando i risultati vengono trasferiti dal database al backend, che li traduce poi nelle proprie classi di dominio. Rappresentare ogni entità come chiave di un oggetto JSON, anziché come gruppo di colonne dedicate, evita di dover dichiarare, per ogni ramo della combinazione finale, colonne per ogni entità possibile del traversal, con alte probabilità di essere nulle: un'entità non raggiunta in un dato ramo semplicemente non compare come chiave.
 
-La clausola WHERE del ramo realizza la regola del primo cammino valido già introdotta a proposito di `LinkedSearchConfiguration`: il campo di origine del primo hop dev'essere valorizzato, e tutti gli archi che lo precedono nell'ordine dichiarato in adjacency devono invece essere nulli, così da garantire che, tra più cammini possibili per una stessa riga, venga sempre seguito quello di priorità più alta. Le righe per cui nessun cammino risulta valido, nessuna FK di primo hop valorizzata, non vengono scartate: un ramo aggiuntivo, analogo a quello mostrato ma privo di join, le include comunque nel risultato finale, con i soli dati dell'entità cercata.
+La clausola WHERE del ramo realizza la regola del primo cammino valido già introdotta a proposito di `LinkedSearchConfiguration`: il campo di origine del primo hop dev'essere valorizzato e tutti gli archi che lo precedono nell'ordine dichiarato in adjacency devono invece essere nulli, così da garantire che, tra più cammini possibili per una stessa riga, venga sempre seguito quello di priorità più alta. Le righe per cui nessun cammino risulta valido, nessuna FK di primo hop valorizzata, non vengono scartate: un ramo aggiuntivo, analogo a quello mostrato ma privo di join, le include comunque nel risultato finale, con i soli dati dell'entità cercata.
 
 Una volta effettuati i join, viene applicato il post-join filter descritto nella sezione sul filtering (`LinkedPostJoinFilter`), che opera sui risultati già combinati tra le diverse entità raggiunte in quel ramo, non più sui singoli frammenti di ricerca.
 

@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di test deve simulare 10 utenti che eseguono 1 query ogni 10 secondi
+    Il sistema di test deve simulare dieci utenti che eseguono una query ogni dieci secondi.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

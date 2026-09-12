@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter caricare una lista di documenti, relativi a un singolo tipo di entità, da rendere disponibili per la ricerca
+    Companion deve poter caricare una lista di documenti, relativi a un singolo tipo di entità, da rendere disponibili per la ricerca.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

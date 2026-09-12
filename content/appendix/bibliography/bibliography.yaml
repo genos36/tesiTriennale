@@ -26,3 +26,155 @@ paradeDB-intro:
         serial-number: v2.5
         author: Ishkur
         url: https://www.paradedb.com/
+
+elastic-tokenizers:
+        type: Web
+        title: "Tokenizer reference"
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenizers.html"
+                date: 2026-07-07
+                parent: elastic-docs
+
+elastic-sharding:
+        type: Web
+        title: "Add and remove nodes in your cluster"
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/guide/en/elasticsearch/reference/current/scalability.html"
+                date: 2026-07-07
+                parent: elastic-docs
+
+elastic-blockmaxwand:
+        type: Web
+        title: "Improving query efficiency" # verifica tu il titolo esatto della pagina che descrive Block-Max WAND
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/blog/faster-retrieval-of-top-hits-in-elasticsearch-with-block-max-wand"
+                date: 2026-07-07
+                parent: elastic-docs
+
+
+elastic-analyzers:
+        type: web
+        title: "Analyzer reference"
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html"
+                date: 2026-07-07  # sostituisci con la data reale di consultazione
+                parent: elastic-docs
+
+elastic-stemming:
+        type: web
+        title: "Stemming"
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/guide/en/elasticsearch/reference/current/stemming.html"
+                date: 2026-07-07
+                parent: elastic-docs
+
+pgvector-iterative-scan:
+        type: web
+        title: "pgvector README"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: "pgvector"
+        url:
+                value: "https://github.com/pgvector/pgvector#iterative-index-scans"
+                date: 2026-07-01
+                parent: pgvector-repo
+postgres-text-search-config:
+        type: web
+        title: "PostgreSQL: Documentation: 18: 12.6. Dictionaries"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: "PostgreSQL Global Development Group"
+        url:
+                value: "https://www.postgresql.org/docs/current/textsearch-dictionaries.html"
+                date: 2026-07-03
+                parent: postgres-doc
+elastic-rrf:
+        type: web
+        title: "Reciprocal rank fusion | Elasticsearch Reference"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+                date: 2026-07-07
+                parent: elastic-doc
+elastic-doc-main:
+        type: web
+        title: "Elastic Docs | Elastic"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusionhttps://www.elastic.co/guide/index.html"
+                date: 2026-07-07
+                parent: elastic-doc
+parade-rrf-example:
+        type: web
+        title: "Reciprocal rank fusion | Elasticsearch Reference"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: ParadeDB
+        url:
+                value: "https://www.paradedb.com/learn/search-concepts/reciprocal-rank-fusion#implementation-in-sql"
+                date: 2026-07-10
+                parent: ParadeDB-Example
+filtering-pgvector:
+        type: web
+        title: "pgvector readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: pgvector
+        url:
+                value: "https://github.com/pgvector/pgvector#filtering"
+                date: 2026-07-10
+                parent: pgvector-doc
+indexing-pgvector:
+        type: web
+        title: "pgvector readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: pgvector
+        url:
+                value: "https://github.com/pgvector/pgvector#indexing"
+                date: 2026-07-10
+                parent: pgvector-doc
+expression-indexing-pgvector:
+        type: web
+        title: "pgvector readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: pgvector
+        url:
+                value: "https://github.com/pgvector/pgvector#binary-quantization"
+                date: 2026-07-10
+                parent: pgvector-doc
+
+score-transposing-pgvector:
+        type: web
+        title: "pgvector readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: pgvector
+        url:
+                value: "https://github.com/pgvector/pgvector#distances"
+                date: 2026-07-10
+                parent: pgvector-doc
+distance-pgvector:
+        type: web
+        title: "pgvector readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: pgvector
+        url:
+                value: "https://github.com/pgvector/pgvector#exact-search"
+                date: 2026-07-10
+                parent: pgvector-doc
+filtering-elastic:
+        type: web
+        title: "Vector search filtering: how it works & how to use it effectively | Elasticsearch Labs"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: elasticsearch
+        url:
+                value: "https://www.elastic.co/search-labs/blog/vector-search-filtering"
+                date: 2026-07-07
+                parent: elastic-doc
+grafana-datasource:
+        type: web
+        title: "PostgreSQL data source | Grafana documentation"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: Grafana
+        url:
+                value: "https://grafana.com/docs/grafana/latest/datasources/postgres/"
+                date: 2026-08-17
+                parent: grafana-doc
+limitazioni-pgtextsearch:
+        type: web
+        title: "pgtextsearch readme"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: TimescaleDB
+        url:
+                value: "https://github.com/timescale/pg_textsearch/blob/v1.3.1/README.md#limitations"
+                date: 2026-08-24
+                parent: pgtextsearch-doc

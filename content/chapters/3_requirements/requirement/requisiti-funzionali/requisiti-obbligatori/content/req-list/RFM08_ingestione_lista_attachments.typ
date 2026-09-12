@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter caricare una lista di attachment da rendere disponibili per la ricerca
+    Companion deve poter caricare una lista di attachment da rendere disponibili per la ricerca.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

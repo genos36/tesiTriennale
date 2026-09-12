@@ -12,7 +12,7 @@
 
   descrizione:[
     Companion deve poter effettuare ricerche ibride, basate sia su ricerca full-text sia su ricerca semantica,
-    su una singola entità
+    su una singola entità.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

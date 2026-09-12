@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di ricerca deve utilizzare un modello di embedding remoto di proprietà dell'azienda
+    Il sistema di ricerca deve utilizzare un modello di embedding remoto di proprietà dell'azienda.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

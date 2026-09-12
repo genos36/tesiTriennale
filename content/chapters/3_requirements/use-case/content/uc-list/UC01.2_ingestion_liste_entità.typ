@@ -27,7 +27,7 @@
         )
 }
 #use-case(
-        alt-diagramma:"Questo diagramma descrive il caricamento delle varie liste di entità del modello dati",
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta il caricamento delle varie liste di entità del modello dati",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

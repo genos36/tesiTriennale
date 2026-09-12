@@ -1,6 +1,6 @@
 #import "/plugin/packages.typ": glossarium-lib
 #import "glossary-style.typ": glossary-style
-
+#import "/plugin/glossary/glossary-key-prefix.typ":glossary-key-prefix
 /// Wrapper per richiamare i termini al singolare
 #let gl(
   key,
@@ -12,7 +12,7 @@
   capitalize: false,
 ) = glossary-style(
   glossarium-lib.gls(
-    key,
+    glossary-key-prefix+key,
     suffix: suffix,
     long: long,
     display: display,
@@ -31,7 +31,7 @@
   capitalize: false,
 ) = glossary-style(
   glossarium-lib.glspl(
-    key,
+    glossary-key-prefix+key,
     capitalize: capitalize,
     link: link,
     long: long,

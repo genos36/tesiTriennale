@@ -1,7 +1,7 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
 
 
-#let use-case-nome="Visualizzazione retrieval mrr"
+#let use-case-nome="Visualizzazione retrieval MRR"
 // #let depth=
 
 #use-case(

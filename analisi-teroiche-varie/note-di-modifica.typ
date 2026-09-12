@@ -59,7 +59,7 @@ Per la gestione del chunking esistono 3 opzioni principali:
   Per motivi di variabilità sul chunking ho preferito usare una pk separata, se si cambia algoritmo / criterio di chunking (modelli di embedding con con context window più limitata) possono essere meno significativi
 
   - indicizzazione, se si vuole fare comunque una ricerca su tutti i campi sono comunque applicabili i normali indici testuali e vettoriali.
-  - se invece si vuole fare ricerche solo su specifici campi la documentazione ufficiale di pg_vector consiglia caldamente il partitioning (fattibile in quanto abbiamo già incluso field_name su un vincolo di unique)
+  - se invece si vuole fare ricerche solo su specifici campi la documentazione ufficiale di pgvector consiglia caldamente il partitioning (fattibile in quanto abbiamo già incluso field_name su un vincolo di unique)
 
 Alcune ulteriori note sul partitioning, questa funzionalità base di Postgres permette di gestire le singole partition in modo molto personalizzabile.
 

@@ -5,6 +5,7 @@
 // #let depth=
 
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta la ricezione dei risultati di una ricerca su singola entità",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

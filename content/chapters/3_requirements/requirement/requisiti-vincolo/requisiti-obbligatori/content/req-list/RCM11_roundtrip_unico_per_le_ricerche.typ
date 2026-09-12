@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di ricerca deve effettuare ogni tipo di ricerca tramite una singola query interpellando il database una sola volta
+    Il sistema di ricerca deve effettuare ogni tipo di ricerca tramite una singola query interpellando il database una sola volta.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

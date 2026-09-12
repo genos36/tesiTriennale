@@ -19,7 +19,7 @@
       - i campi da utilizzare nella ricerca per similarità devono essere configurabili esternamente,
       - i campi filtrabili devono essere configurabili esternamente,
       - i pesi da usare nella ricerca devono poter subire override nell'ambito di una singola ricerca
-      - i pesi da usare per la fusione di ricerca semantica e ibrida devono poter subire override nell'ambito di una singola ricerca
+      - i pesi da usare per la fusione di ricerca semantica e full-text devono poter subire override nell'ambito di una singola ricerca
 
 
   ],

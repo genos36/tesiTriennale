@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter ricevere una notifica esplicativa in caso di mancanza di run di test da poter visualizzare
+    Il supervisore deve poter ricevere una notifica esplicativa in caso di mancanza di run di test da poter visualizzare.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

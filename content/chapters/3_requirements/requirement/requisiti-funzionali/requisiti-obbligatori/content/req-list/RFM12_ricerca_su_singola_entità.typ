@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter effettuare ricerche basate sulla similarità del testo su una singola entità
+    Companion deve poter effettuare ricerche basate sulla similarità del testo su una singola entità.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

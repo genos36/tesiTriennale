@@ -10,12 +10,12 @@
 ])
 #v(1em)
 
-Il sistema di test, indicato anche come retriever-trial, ha una struttura più semplice rispetto al sistema di ricerca, e ne è cliente: espone due soli casi d'uso, l'avvio di una sessione di test, *start test*, e l'esecuzione di una singola query di test, *run one*.
+Il sistema di test, indicato anche come retriever-trial, ha una struttura più semplice rispetto al sistema di ricerca e ne è cliente: espone due soli casi d'uso, l'avvio di una sessione di test, *start test*, e l'esecuzione di una singola query di test, *run one*.
 
 
 Locust simula un numero configurabile di client paralleli che eseguono ricerche contro il sistema di ricerca. Lo start test viene invocato una sola volta, all'avvio della sessione di Locust; ciascun client simulato si limita poi a invocare ripetutamente run one.
 
-Il sistema di test riusa la schema configuration del sistema di ricerca, ma in una forma semplificata contenente le sole entità necessarie ai fini del test, e riutilizza le classi di query già definite nel sistema di ricerca, estese con una classe dedicata per rappresentare la ground truth di ciascuna query.
+Il sistema di test riusa la schema configuration del sistema di ricerca, ma in una forma semplificata contenente le sole entità necessarie ai fini del test e riutilizza le classi di query già definite nel sistema di ricerca, estese con una classe dedicata per rappresentare la ground truth di ciascuna query.
 
 Ogni esecuzione di run one, tramite una porta dedicata, recupera una query di test e la relativa ground truth; tramite una seconda porta esegue la query contro il sistema di ricerca, ottenendo sia il risultato reale sia lo stato corrente della sessione di ingestion (per poter distinguere, in fase di analisi, i risultati raccolti durante un'ingestion in corso da quelli raccolti a dati stabili); infine, tramite una terza porta, registra l'esito su un database dedicato. Da questo database, tramite una vista, vengono calcolate le metriche di interesse, che Grafana si limita a leggere e visualizzare.
 == Perimetro di test

@@ -14,6 +14,7 @@
   motivazione: none,
   alternative: (),
   t-label: none,
+  alt-logo:"",
 ) = {
   block(breakable: false)[
     #v(0.8em)
@@ -21,7 +22,7 @@
     #strong(nome) v#versione
 
     #if logo != none [
-      #figure(image(logo, width: 25%), caption: caption,alt: none)
+      #figure(image(logo, width: 25%,alt:alt-logo), caption: caption,alt: none)
     ]
 
     #list(

@@ -93,7 +93,7 @@ Al fine di eseguire le query di test e i test di ingestion conviene includere la
 
 Questo modulo deve contenere le classi che rappresentano l'organizzazione dei dati, conviene progettarlo senza dipendenze dalle tecnologie,
 
-Tale oggetto/struttura dati deve esprimere le caratteristiche di ogni entità, ruoli dei campi dati (ovvero  quali devono essere utilizzabili per i filtraggio, quali per ricerche semantiche e full-text, e ibrida) e relativi vincoli.
+Tale oggetto/struttura dati deve esprimere le caratteristiche di ogni entità, ruoli dei campi dati (ovvero  quali devono essere utilizzabili per i filtraggio, quali per ricerche semantiche, full-text e ibrida) e relativi vincoli.
 
 Devono poi essere messe insieme in un'altra classe che sarà quella usata all'interno del sistema per passare le informazioni relative ai dati
 

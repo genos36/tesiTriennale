@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter effettuare una ricerca ibrida in modalità linked, combinando i risultati tramite RRF
+    Companion deve poter effettuare una ricerca ibrida in modalità linked, combinando i risultati tramite RRF.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

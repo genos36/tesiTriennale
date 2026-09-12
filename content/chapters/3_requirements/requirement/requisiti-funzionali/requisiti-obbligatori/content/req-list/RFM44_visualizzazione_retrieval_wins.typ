@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter visualizzare quante volte la ricerca ha prodotto risultati, indipendentemente dalla loro correttezza
+    Il supervisore deve poter visualizzare quante volte la ricerca ha prodotto risultati, indipendentemente dalla loro correttezza.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

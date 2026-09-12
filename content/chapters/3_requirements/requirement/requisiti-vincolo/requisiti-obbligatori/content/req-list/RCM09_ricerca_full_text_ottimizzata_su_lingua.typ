@@ -15,7 +15,7 @@
 
     Se la query di ricerca contiene l'informazione di lingua il sistema di ricerca limita il pool di candidati solo ai chunk della medesima lingua e utilizza solo la configurazione linguistica assegnata a tale lingua.
 
-    Altrimenti tutti i chunk vengono valutati sia usando una configurazione di testo agnostica rispetto alla lingua sia usando la configurazione di testo per la lingua assegnata
+    Altrimenti tutti i chunk vengono valutati sia usando una configurazione di testo agnostica rispetto alla lingua sia usando la configurazione di testo per la lingua assegnata.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

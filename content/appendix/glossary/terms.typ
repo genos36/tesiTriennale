@@ -1,3 +1,4 @@
+#import "/plugin/glossary/glossary-key-prefix.typ":glossary-key-prefix
 #let glossary-terms=(
    (key: "api",
            short: [API],
@@ -210,4 +211,302 @@
       Alcuni esempi sono il rescoring quando i punteggi delle diverse fonti sono direttamente comparabili, rrf o combinazione con modelli appositi quando non direttamente comparabili.
     ],
   ),
+  (
+    key: "mrr",
+    short: [MRR],
+    long: [Mean Reciprocal Rank],
+    description: [
+            #upper("è") un indice statistico usato per valutare i sistemi di ricerca e recupero informazioni in base a quanto in alto posizionano la prima risposta corretta.
+            Il reciproco del rank di una risposta ad una query è l'inverso della posizione (rank) della prima risposta corretta nella lista ordinata delle risposte. Il MRR è la media dei rank reciproci dei risultati per un insieme di query Q.
+            // $"MRR"=1/Q sum^Q_(i=1)"RelevanceLabelValue"/"rank"_i$
+    ],
+  ),
+  (
+    key: "hitrate",
+    short: [Hitrate\@k],
+    // long: [],
+    description: [
+            #upper("è") un indice statistico usato per valutare i sistemi di ricerca e recupero informazioni in base a quanto in alto posizionano la prima risposta corretta.
+            Misura la percentuale di tentativi o interazioni che hanno prodotto un risutlato corretto con rank minore o ugeale a k rispetto al totale dei tentativi compiuti.
+            Ad esempio hitrate\@1 misura quantospesso il primo risultato è corretto.
+            // $"MRR"=1/Q sum^Q_(i=1)"RelevanceLabelValue"/"rank"_i$
+    ],
+  ),
+  (
+    key: "retrieval-latency",
+    short: [Retrieval latency],
+    // long: [],
+    description: [
+            Indica il tempo di atteso medio trascorso tra l'avvio di una ricerca e la ricezione dei risultati dal punto di vista di chi invia la ricerca.
+
+    ],
+  ),
+  (
+    key: "retrieval-answer-rate",
+    short: [Retrieval answer rate],
+    // long: [],
+    description: [
+            Indica la percentuale di volte in cui una ricerca produce un risultato corretto indipendentemente dalla posizione.
+
+    ],
+  ),
+  (
+    key: "retrieval-wins",
+    short: [Retrieval wins],
+    // long: [],
+    description: [
+            Indica il numero di volte in cui una ricerca produce un risultato indipendentemente dalla sua correttezza.
+
+    ],
+  ),
+  (
+    key: "not-found",
+    short: [Not found],
+    // long: [],
+    description: [
+            Indica il numero di volte in cui una ricerca non produce alcun risultato.
+
+    ],
+  ),
+  (
+    key: "ingestion",
+    short: [Ingestion],
+    // long: [],
+    description: [
+            Indica il processo di caricamento e trasformazione dei documenti sorgente all'interno di un sistema di ricerca, che comprende l'estrazione dei dati, il calcolo degli embedding e la loro memorizzazione in una forma indicizzata e interrogabile.
+
+    ],
+  ),
+  (
+    key: "gin",
+    short: [GIN],
+    long: [General Inverted Index],
+    description: [
+            Indica una struttura dati che mappa i contenuti (come parole o numeri) direttamente alle loro posizioni o ai documenti in cui compaiono, consentendo ricerche full-text rapide.
+            Nel contesto di Postgres indica un tipo di indice progettato per gestire valori composti (o elementi multipli all'interno di una singola riga) ed effettuare ricerche efficienti su di essi.
+            // [1] (https://www.postgresql.org/docs/current/gin.html)
+
+    ],
+  ),
+  (
+    key: "cte",
+    short: [CTE],
+    long: [Common Table Expression],
+    description: [
+            Indica un set di risultati temporaneo e con un nome proprio, definito all'interno dell'ambito di esecuzione di una singola istruzione SQL (come SELECT, INSERT, UPDATE o DELETE).
+            Funziona come una tabella virtuale o una sottoquery con un nome, creata al volo durante l'esecuzione della query principale ed eliminata subito dopo.
+
+             // [1] (https://learnsql.it/blog/che-cose-una-cte-in-sql-server/), [2] (https://www.datacamp.com/it/tutorial/cte-sql), [3] (https://www.youtube.com/watch?v=qGx0TISr8Q8&t=981)
+    ],
+  ),
+  (
+    key: "tsvector",
+    short: [Tsvector],
+    // long: [],
+    description: [
+            Indica un tipo di dato nativo di PostgreSQL progettato specificamente per la ricerca testuale.
+        Rappresenta un elemento del corpus documentale che viene cercato tramite una tsquery.
+    ],
+  ),
+  (
+    key: "tsquery",
+    short: [Tsquery],
+    // long: [],
+    description: [
+            Indica un tipo di dato nativo di PostgreSQL progettato specificamente per la ricerca testuale.
+            Rappresenta il testo da cercare nel corpus documentale, viene usato nelle interrogazioni.
+    ],
+  ),
+  (
+    key: "ground-truth",
+    short: [Ground truth],
+    // long: [],
+    description: [
+            indica un singolo risultato o un insieme di risultati considerati corretti e usati come riferimento per valutare l'accuratezza e le prestazioni di un sistema.
+    ],
+  ),
+  (
+    key: "bm25",
+    short: [BM25],
+    // long: [],
+    description: [
+            Indica una funzione di scoring avanzata usata nella ricerca full-text.
+            Questa funzione è in grado di gestire lo scoring in base alla composizione della base documentale, attribuisce punteggi più bassi a parole molto frequenti e punteggi più alti a quelle più rare.
+    ],
+    ),
+
+    (
+      key: "tokenizer",
+      short: "Tokenizer",
+      long: none,
+      description: [
+        Componente che suddivide un testo in unità elementari (dette token),
+        tipicamente parole o sotto-parole, come primo passo
+        dell'elaborazione linguistica in un motore di ricerca
+        @elastic-tokenizers.
+      ],
+    ),
+    (
+      key: "sharding",
+      short: "Sharding",
+      long: none,
+      description: [
+        Tecnica di partizionamento orizzontale dei dati in più unità
+        indipendenti (dette shard), distribuite su nodi diversi, per migliorare
+        scalabilità e prestazioni di un sistema distribuito
+        @elastic-sharding.
+      ],
+    ),
+    (
+      key: "block-max-wand",
+      short: "Block-Max WAND",
+      long: none,
+      description: [
+        Algoritmo di pruning per l'ordinamento top-k che sfrutta limiti
+        superiori precalcolati sul punteggio dei documenti per escludere
+        candidati che non potrebbero rientrare nei risultati finali,
+        riducendo il costo computazionale della ricerca
+        @elastic-blockmaxwand.
+      ],
+    ),
+    (
+      key: "analyzer",
+      short: "Analyzer",
+      long: none,
+      description: [
+        Componente che definisce come il testo viene elaborato prima di
+        essere indicizzato o interrogato, tipicamente composto da una
+        catena di filtri di normalizzazione e da un tokenizer,
+        responsabile della segmentazione del testo in singoli token
+        @elastic-analyzers.
+      ],
+    ),
+    (
+      key: "stemming",
+      short: "Stemming",
+      long: none,
+      description: [
+        Tecnica linguistica che riduce una parola alla sua radice
+        morfologica, in modo da far corrispondere varianti flesse dello
+        stesso termine (ad esempio singolare e plurale) durante la
+        ricerca @elastic-stemming.
+      ],
+    ),
+    (
+      key: "iterative-scan",
+      short: "Iterative scan",
+      long: none,
+      description: [
+        Strategia di esecuzione che, in presenza di un filtro applicato
+        dopo una ricerca approssimata su indice vettoriale, ripete la
+        scansione dell'indice fino a recuperare il numero di risultati
+        richiesto, compensando la possibile scarsità di risultati causata
+        dal filtro @pgvector-iterative-scan.
+      ],
+    ),
+    (
+      key: "configurazione-testuale",
+      short: "configurazione testuale",
+      long: none,
+      description: [
+        Insieme di regole che definisce come Postgres elabora il testo
+        per l'indicizzazione e la ricerca full-text: comprende la
+        scelta del parser che suddivide il testo in token e dei
+        dizionari che, per ciascun tipo di token, applicano
+        trasformazioni come normalizzazione, rimozione delle stop word
+        e stemming @postgres-text-search-config.
+      ],
+    ),
+
+    (
+      key: "oversampling",
+      short: "Oversampling",
+      long: none,
+      description: [
+        Tecnica abbinata alle ricerche approssimate che recupera un numero
+        di candidati superiore a quello richiesto dall'utente, per poi
+        ricalcolarne il punteggio esatto e restituire solo i migliori k,
+        compensando eventuali perdite di precisione.
+      ],
+    ),
+    (
+      key: "rescoring",
+      short: "Rescoring",
+      long: none,
+      description: [
+        Fase successiva al recupero di un insieme di candidati in cui il
+        punteggio di rilevanza viene ricalcolato con maggiore precisione,
+        tipicamente per correggere le approssimazioni introdotte da ottimizzazioni di ricerca.
+      ],
+    ),
+    (
+      key: "hnsw",
+      short: "HNSW",
+      long: "Hierarchical Navigable Small World",
+      description: [
+        Struttura dati per la ricerca approssimata del vicino più prossimo,
+        organizzata come un grafo gerarchico multilivello che permette di
+        navigare efficientemente verso i vettori più simili senza
+        confrontare l'intero insieme di dati, particolarmente adatta a
+        scenari con inserimenti incrementali.
+      ],
+    ),
+    (
+      key: "cosine-similarity",
+      short: "Cosine similarity",
+      long: none,
+      description: [
+        Metrica di similarità tra due vettori basata sul coseno dell'angolo
+        che li separa, indipendente dalla loro magnitudine e quindi adatta
+        a confrontare vettori di embedding normalizzati o di lunghezza
+        variabile.
+      ],
+    ),
+    (
+      key: "inner-product",
+      short: "Inner product",
+      long: none,
+      description: [
+        Metrica di similarità tra due vettori calcolata come somma dei
+        prodotti delle rispettive componenti; a differenza della cosine
+        similarity tiene conto anche della magnitudine dei vettori, per cui
+        è equivalente ad essa solo quando i vettori confrontati sono già
+        normalizzati.
+      ],
+    ),
+    (
+      key: "phrase-query",
+      short: "Phrase query",
+      long: none,
+      description: [
+        Modalità di ricerca full‑text che richiede la corrispondenza
+        esatta di una sequenza di parole nell'ordine specificato, anziché
+        la semplice presenza dei singoli termini indipendentemente dalla
+        loro posizione reciproca.
+      ],
+    ),
+    (
+      key: "all-words-query",
+      short: "All-words query",
+      long: none,
+      description: [
+        Modalità di ricerca full‑text che richiede la corrispondenza un intero insieme di parole senza un ordine specifico.
+      ],
+    ),
+    (
+      key: "any-word-query",
+      short: "Any-word query",
+      long: none,
+      description: [
+        Modalità di ricerca full‑text che richiede la corrispondenza di una singola parola.
+      ],
+    ),
+
+        ).map(it=>{
+
+        (
+                ..it,
+                key:glossary-key-prefix+it.key,
+        )
+        }
 )

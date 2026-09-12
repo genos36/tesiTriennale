@@ -28,6 +28,7 @@ top-padding: 0.2 ,
   )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma rappresenta l'inserimento di una query di ricerca su singola entità",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

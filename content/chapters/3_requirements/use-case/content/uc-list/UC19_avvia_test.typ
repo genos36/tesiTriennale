@@ -24,6 +24,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta il processo di avvio di una sessione di test",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Supervisore],

@@ -30,7 +30,7 @@
         )
 }
 #use-case(
-        alt-diagramma:"Questo diagramam descrive il caricamento e l'elaborazione di una singola lista di entità",
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta il caricamento e l'elaborazione di una singola lista di entità",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

@@ -27,6 +27,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta il processo per concludere una sessione di ingestion",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

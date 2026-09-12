@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter essere notificato di errori durante la terminazione della sessione di ingestion
+    Companion deve poter essere notificato di errori durante la terminazione della sessione di ingestion.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

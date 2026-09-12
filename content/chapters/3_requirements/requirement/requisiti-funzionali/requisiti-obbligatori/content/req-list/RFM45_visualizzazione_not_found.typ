@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter visualizzare quante volte la ricerca non ha prodotto risultati
+    Il supervisore deve poter visualizzare quante volte la ricerca non ha prodotto risultati.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

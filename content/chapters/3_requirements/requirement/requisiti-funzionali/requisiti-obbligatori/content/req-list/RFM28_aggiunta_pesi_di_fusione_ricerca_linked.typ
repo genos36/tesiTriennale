@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter inserire dei pesi per la fusione di ricerca linked e full-text da usare al posto dei pesi di default
+    Companion deve poter inserire dei pesi per la fusione di ricerca linked semantica e linked full-text da usare al posto dei pesi di default.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

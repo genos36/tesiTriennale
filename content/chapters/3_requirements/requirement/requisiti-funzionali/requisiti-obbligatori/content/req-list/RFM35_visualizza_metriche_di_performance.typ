@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter visualizzare le metriche di performance relative a qualità e prestazioni della ricerca
+    Il supervisore deve poter visualizzare le metriche di performance relative a qualità e prestazioni della ricerca.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

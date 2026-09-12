@@ -32,6 +32,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta la visualizzazione della dashboard",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Supervisore],

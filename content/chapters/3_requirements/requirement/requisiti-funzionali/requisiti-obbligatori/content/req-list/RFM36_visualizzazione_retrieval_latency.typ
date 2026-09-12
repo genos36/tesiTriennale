@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter visualizzare il tempo di risposta medio a una query di ricerca
+    Il supervisore deve poter visualizzare il tempo di risposta medio a una query di ricerca.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

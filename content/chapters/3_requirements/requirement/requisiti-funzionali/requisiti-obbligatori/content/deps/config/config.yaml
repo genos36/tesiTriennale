@@ -67,7 +67,7 @@ structure:
     - Visualizzazione retrieval latency con ingestion attiva
     - Visualizzazione retrieval latency con ingestion non attiva
     - Visualizzazione retrieval answer rate
-    - Visualizzazione retrieval mrr
+    - Visualizzazione retrieval MRR
     - Visualizzazione retrieval hitrate@1
     - Visualizzazione retrieval hitrate@5
     - Visualizzazione retrieval hitrate@10

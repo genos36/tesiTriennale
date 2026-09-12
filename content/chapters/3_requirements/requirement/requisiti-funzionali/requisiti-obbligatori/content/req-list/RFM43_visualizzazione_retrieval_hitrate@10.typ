@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il supervisore deve poter visualizzare quante volte il risultato atteso è presente tra i primi 10 risultati della ricerca.
+    Il supervisore deve poter visualizzare quante volte il risultato atteso è presente tra i primi dieci risultati della ricerca.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

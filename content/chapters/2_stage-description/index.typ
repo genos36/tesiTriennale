@@ -57,7 +57,7 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 
 == Analisi dei rischi <analisi-rischi>
 
-I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01, e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
+I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01 e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
 
 Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elasticsearch, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
 
@@ -206,7 +206,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                       La loro valutazione va fuori dagli interessi dell'impresa per questo specifico tirocinio e rischia di aggiungere attività di studio non utili alla realizzazione del progetto.
                     ],
                     mitigation: [
-                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch, e le tecnologie che l'impresa vuole valutare, Postgres e pgvector.
+                      I confini del tirocinio sono rigidamente circoscritti al confronto diretto tra la soluzione in uso, basata su Elasticsearch e le tecnologie che l'impresa vuole valutare, Postgres e pgvector.
 
                       Eventuali tecnologie alternative verranno affrontate esclusivamente a livello teorico.
                     ],
@@ -216,7 +216,7 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                   (
                     name: "Sovrapposizione tra le performance di retrieval e generazione",
                     description: [
-                      L'architettura RAG si compone di due fasi: la fase di retrieval, che si occupa del recupero delle informazioni, e la fase di generazione della risposta.
+                      L'architettura RAG si compone di due fasi: la fase di retrieval, che si occupa del recupero delle informazioni e la fase di generazione della risposta.
                       Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a Elasticsearch, le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
                     ],
                     mitigation: [

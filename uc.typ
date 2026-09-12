@@ -47,7 +47,7 @@ aggiungere ricerche su singole collection
           + lingua non inserita, viene usato un modello di language detection
           - viene usato il modello di embedding per calcolare gli embedding
       + l'attore principale carica la lista degli allegati
-        + l'attore carica un allegato (il ticket deve contenere i metadati dell'allegato e un riferimento al ticket o al conversation item di riferimento, e la relativa lista di chunk)
+        + l'attore carica un allegato (il ticket deve contenere i metadati dell'allegato e un riferimento al ticket o al conversation item di riferimento e la relativa lista di chunk)
           + lingua già inserita viene passata in automatico ai chunk
           + lingua non inserita, viene usato un modello di language detection
           - viene usato il modello di embedding per calcolare gli embedding
@@ -279,7 +279,7 @@ Al fine di testare correttamente il sistema vi è l'opzione di configurare delle
   ],
   [
     Scenario principale:
-    serve definire esattamente quali sono le metriche rilevanti (quali sono le metriche relative alla qualità della retrieval:recall e simili, e anche quelle relative a performance pure)
+    serve definire esattamente quali sono le metriche rilevanti (quali sono le metriche relative alla qualità della retrieval:recall e simili e anche quelle relative a performance pure)
     \[inserire elenco  metriche\]
 
   ],

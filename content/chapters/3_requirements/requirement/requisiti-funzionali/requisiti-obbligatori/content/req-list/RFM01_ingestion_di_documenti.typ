@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter caricare documenti nel sistema di ricerca per renderli ricercabili
+    Companion deve poter caricare documenti nel sistema di ricerca per renderli ricercabili.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

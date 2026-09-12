@@ -5,7 +5,7 @@
 // #let depth=
 
 #use-case(
-        alt-diagramma:"Questo diagramma descrive l'avvio di una sessione di ingestion.",
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta l'avvio di una sessione di ingestion.",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

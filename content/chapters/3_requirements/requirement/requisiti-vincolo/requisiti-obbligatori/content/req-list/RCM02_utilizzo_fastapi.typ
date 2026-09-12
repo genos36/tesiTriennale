@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di ricerca deve utilizzare FastAPI per la realizzazione delle API
+    Il sistema di ricerca deve utilizzare FastAPI per la realizzazione delle API.
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome
   // La conversione in codice con label sarà effettuata in una fase successiva

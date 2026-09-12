@@ -30,6 +30,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta la visualizzazione delle sfumature della retrieval latency",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Supervisore],

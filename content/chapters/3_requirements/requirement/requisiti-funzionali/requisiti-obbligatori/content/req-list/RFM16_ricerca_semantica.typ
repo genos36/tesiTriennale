@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Companion deve poter effettuare ricerche semantiche su una singola entità
+    Companion deve poter effettuare ricerche semantiche su una singola entità.
 
   ],
   // Per facilitare l'automazione, gli use case associati vanno riferiti solo per nome

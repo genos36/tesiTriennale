@@ -1,5 +1,5 @@
 #import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
-
+#import "/plugin/mod.typ": gl
 
 #let use-case-nome="Visualizza metriche di performance"
 // #let depth=
@@ -16,7 +16,7 @@
   includes: (
         "Visualizzazione retrieval latency",
         "Visualizzazione retrieval answer rate",
-        "Visualizzazione retrieval mrr",
+        "Visualizzazione retrieval MRR",
         "Visualizzazione retrieval hitrate@1",
         "Visualizzazione retrieval hitrate@5",
         "Visualizzazione retrieval hitrate@10",
@@ -37,6 +37,7 @@
         )
 }
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta la visualizzazione delle metriche all'interno dashboard",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Supervisore],
@@ -50,14 +51,14 @@
         scenario-principale:[
                 + Il sistema di test calcola le metriche
                 + Il supervisore visualizza l'elenco delle metriche
-                + Il supervisore visualizza la retrieval latency  #sym.arrow #utils.uc-link("Visualizzazione retrieval latency")
-                - Il supervisore visualizza la retrieval answer rate #sym.arrow #utils.uc-link("Visualizzazione retrieval answer rate")
-                - Il supervisore visualizza la retrieval mrr #sym.arrow #utils.uc-link("Visualizzazione retrieval mrr")
-                - Il supervisore visualizza il retrieval hitrate\@1 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@1")
-                - Il supervisore visualizza il retrieval hitrate\@5 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@5")
-                - Il supervisore visualizza il retrieval hitrate\@10 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@10")
-                - Il supervisore visualizza il retrieval wins #sym.arrow #utils.uc-link("Visualizzazione retrieval wins")
-                - Il supervisore visualizza il not found #sym.arrow #utils.uc-link("Visualizzazione not found")
+                + Il supervisore visualizza la #gl("retrieval-latency",display:"retrieval latency") #sym.arrow #utils.uc-link("Visualizzazione retrieval latency")
+                + Il supervisore visualizza la #gl("retrieval-answer-rate",display:"retrieval answer rate") #sym.arrow #utils.uc-link("Visualizzazione retrieval answer rate")
+                + Il supervisore visualizza la retrieval #gl("mrr") #sym.arrow #utils.uc-link("Visualizzazione retrieval MRR")
+                + Il supervisore visualizza il retrieval #gl("hitrate",display:"hitrate@1") #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@1")
+                + Il supervisore visualizza il retrieval hitrate\@5 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@5")
+                + Il supervisore visualizza il retrieval hitrate\@10 #sym.arrow #utils.uc-link("Visualizzazione retrieval hitrate@10")
+                + Il supervisore visualizza il #gl("retrieval-wins",display:"retrieval wins") #sym.arrow #utils.uc-link("Visualizzazione retrieval wins")
+                + Il supervisore visualizza il #gl("not-found",display:"not found") #sym.arrow #utils.uc-link("Visualizzazione not found")
         ],
         scenari-alternativi:none,
         trigger: "Il supervisore vuole visualizzare le metriche di performance del sistema di ricerca",

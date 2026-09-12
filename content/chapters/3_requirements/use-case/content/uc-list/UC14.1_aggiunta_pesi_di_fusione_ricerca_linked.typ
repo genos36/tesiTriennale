@@ -4,6 +4,7 @@
 #let use-case-nome="Aggiunta pesi di fusione ricerca linked"
 // #let depth=
 #use-case(
+        alt-diagramma:"Questo diagramma dei casi d'uso rappresenta l'inserimento dei pesi per la fusione di ricerca full-text e ricerca semantica durante la ricerca ibrida linked",
         codice: get-use-case-code(use-case-nome),
         nome: use-case-nome,
         attore-principale:[Companion],

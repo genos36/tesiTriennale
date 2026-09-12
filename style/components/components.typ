@@ -39,21 +39,16 @@
     v(1em)
   }
 
-
-  // --- Riferimenti interni "veri" (#ref a heading/figure/tabelle/codice) ---
-  // Si esclude il glossario: quando it.element non è un heading o una figura
-  // (es. punta a un'entry del glossario, o non è risolvibile), si lascia
-  // il contenuto invariato così lo stile del glossario (#gl / glossary-style)
-  // resta responsabile di sé stesso.
-  show ref: it => {
-    if it.element != none and (
-      it.element.func() == heading or it.element.func() == figure
-    ) {
-      apply-style-internal-ref(it)
+  show link: it => {
+    if type(it.dest) == str {
+      apply-style-external-link(it)
+    } else if type(it.dest) == label and str(it.dest).starts-with("gls:") {
+      it // lascia stare lo stile del glossario
     } else {
-      it
+      apply-style-internal-ref(it)
     }
   }
+
 
   // --- Link: interni (#link(<label>)) vs esterni (URL) ---
   let internal-ref-kinds = (image, table, raw)
@@ -91,6 +86,10 @@
       [],
     )
   }
+
+
+  show table.cell: it => block(breakable: false, it)
+
 
   // Alias
   // sosituisce il normale trattino con il tratticono non wrap point per gli a capo, all'apparenza sono uguali ma  soo dei caratteri distinti, il trattino è il non-breaking hyphen (U+2011), permette a parole come full-text di essere considerate come una singola parola invece di essere considerate come 2 parole

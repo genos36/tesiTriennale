@@ -17,7 +17,7 @@ Coerentemente con quanto stabilito nella @pianificazione-settimane, le prime due
 
 Nell'ambito di questo studio sono state valutate anche estensioni più evolute rispetto agli strumenti nativi di Postgres, come ParadeDB e pg_textsearch; entrambe sono state escluse dall'implementazione finale per i motivi discussi nell'#link(<tec:fts-nativa>)[analisi della full-text search nativa], ma il loro studio ha comunque contribuito alla comprensione delle capacità disponibili nell'ecosistema.
 
-Per acquisire una comprensione adeguata delle capacità di Elasticsearch è stato condotto uno studio della documentazione ufficiale, che ha evidenziato, come atteso, una maggiore maturità e potenza rispetto a Postgres sia nell'ambito della ricerca full-text sia in quello della ricerca semantica.
+Per acquisire una comprensione adeguata delle capacità di Elasticsearch è stato condotto uno studio della documentazione ufficiale@elastic-doc-main, che ha evidenziato, come atteso, una maggiore maturità e potenza rispetto a Postgres sia nell'ambito della ricerca full-text sia in quello della ricerca semantica.
 
 Sul fronte della ricerca semantica non sono state individuate differenze sostanziali tra le due tecnologie in termini di funzionalità di base; Elasticsearch offre tuttavia una maggiore granularità nel controllo della precisione dei dati (con supporto a diversi livelli di precisione numerica, come float e double) e implementa un meccanismo di pre-filtering automatico quando una clausola di filtro risulta sufficientemente selettiva.
 
@@ -25,7 +25,7 @@ Sul fronte della ricerca full-text, lo studio ha invece evidenziato alcuni limit
 - le pipeline di elaborazione del testo sono utilizzabili solo se predefinite come configurazioni di testo, senza possibilità di composizione dinamica;
 - manca il supporto a text analyzer multipli;
 - i filtri disponibili sono limitati (corrispondenza a frase, a tutte le parole o ad almeno una parola), mentre Elasticsearch consente di richiedere la corrispondenza di un numero specifico di parole, anche determinato dinamicamente in base alla lunghezza della query;
-- la funzione di scoring nativa risulta meno evoluta,
+- la funzione di scoring nativa risulta meno evoluta;
 - nel calcolo dei punteggi e nel loro ordinamento non vengono applicate le stesse ottimizzazioni di Elasticsearch.
 
 Parallelamente allo studio teorico, sono stati realizzati progressivamente alcuni proof of concept, con l'obiettivo di acquisire familiarità pratica con le tecnologie valutate.
@@ -37,7 +37,7 @@ In questa sezione vengono trattati principi e caratteristiche relativi al sistem
 === Definizione modello dati <main-system-definizione-modello-dati>
 Il modello dati del sistema di ricerca deve rappresentare le entità del dominio del service desk HDA, articolate in ticket, conversation item e attachment come richiesto da #rcm-link("Rispetto modello dati hda"), collegate tra loro secondo una struttura relazionale gerarchica.
 
-Aggiungendo le caratteristiche richieste dal requisito #rcm-link("Alta configurabilità del sistema"), il modello dati così definito costituisce la fonte di verità del sistema, e comprende:
+Aggiungendo le caratteristiche richieste dal requisito #rcm-link("Alta configurabilità del sistema"), il modello dati così definito costituisce la fonte di verità del sistema e comprende:
 - l'elenco delle entità;
 - per ciascuna entità, la definizione dei campi (nome, tipo e obbligatorietà), i campi identificativi (con supporto anche a chiavi composte), i ruoli dei campi e i relativi pesi di default;
 - l'elenco dei vincoli tra le entità. Questi non sono stati limitati fin da subito al solo vincolo relazionale, ma definiti in forma generica, di cui il vincolo relazionale rappresenta una specializzazione: si tratta di un punto di estensione esplicito, pensato per accomodare eventuali tipologie di vincolo non relazionale che potrebbero emergere in futuro;
@@ -51,7 +51,8 @@ I ruoli supportati per i campi sono due:
 
 A partire da questi due ruoli sono state definite alcune regole di progetto. Una parte è imposta direttamente dai requisiti raccolti, un'altra è frutto di scelte autonome, resa necessaria dalla natura esplorativa del progetto:
 
-Per decisione di progetto, non esiste un ruolo dedicato ai campi restituibili da una ricerca: si assume che siano restituibili tutti i campi privi di ruolo o con ruolo filterable. I campi searchable non sono restituibili per intero, per evitare di riportare porzioni di testo estese e poco significative; ogni ricerca restituisce comunque, a prescindere, il chunk di testo che ha determinato il match, il nome del campo di provenienza e il numero del chunk. Il recupero di porzioni di testo più estese è demandato a un caso d'uso dedicato, trattabile in implementazioni future, che a partire dalle informazioni identificative del match ricostruisce l'intorno testuale del chunk corrispondente, oppure lo step di espansione può essere incluso nella pipeline di recupero del testo, tuttavia tale funzionalità non è ritenuta rilevante per un progetto esplorativo, andrebbe ad aggiungere uno step di join che richiede solo una query che filtra per chiave primaria, quindi non è necessario dimostrarne l'efficienza.
+Per decisione di progetto, non esiste un ruolo dedicato ai campi restituibili da una ricerca: si assume che siano restituibili tutti i campi privi di ruolo o con ruolo filterable. I campi searchable non sono restituibili per intero, per evitare di riportare porzioni di testo estese e poco significative; ogni ricerca restituisce comunque, a prescindere, il chunk di testo che ha determinato il match, il nome del campo di provenienza e il numero del chunk. Il recupero di porzioni di testo più estese è demandato a un caso d'uso dedicato, trattabile in implementazioni future, che a partire dalle informazioni identificative del match ricostruisce l'intorno testuale del chunk corrispondente; oppure lo step di espansione può essere incluso nella pipeline di recupero del testo.
+Tuttavia tale funzionalità non è ritenuta rilevante per un progetto esplorativo: andrebbe ad aggiungere uno step di join che richiede solo una query che filtra per chiave primaria, quindi non è necessario dimostrarne l'efficienza.
 
 Un campo deve avere ruolo searchable se e solo se rappresenta testo suddiviso in chunk. La necessità che un campo searchable sia sempre diviso in chunk è un vincolo imposto dalla natura del problema; il vincolo complementare, ovvero che ogni testo diviso in chunk debba necessariamente avere ruolo searchable, è invece una decisione di progetto.
 
@@ -98,29 +99,29 @@ Questa scelta semplifica la progettazione iniziale del sistema, rimandando l'eve
 
 L'adozione di impostazioni uniformi evita inoltre problemi in fase di combinazione dei risultati tra entità diverse, poiché garantisce che i punteggi prodotti dalle ricerche su entità distinte siano direttamente paragonabili. Anche qualora questa comparabilità diretta venisse meno, ad esempio in seguito a una futura differenziazione delle configurazioni per singola entità, il sistema resterebbe comunque estendibile adottando la stessa logica di fusione RRF già utilizzata per la ricerca ibrida. Questo introdurrebbe però un doppio livello di fusione: una prima volta all'interno della ricerca ibrida sulla singola entità, una seconda volta nella combinazione tra entità con il rischio di appiattire sfumature o differenze significative nella fase intermedia.
 
-Il presente lavoro non affronta la questione della paragonabilità diretta tra i punteggi prodotti da due o più fusioni RRF: stabilire se un semplice rescoring sia sufficiente, oppure se sia necessario un ulteriore livello di fusione, resta un aspetto da approfondire in lavori futuri.
+Il presente lavoro non affronta la questione della paragonabilità diretta tra i punteggi prodotti da due o più fusioni RRF: stabilire se un semplice #gl("rescoring",display:"rescoring") sia sufficiente, oppure se sia necessario un ulteriore livello di fusione, resta un aspetto da approfondire in lavori futuri.
 
 ==== Ricerca semantica <analisi-ricerca-semantica>
 La configurazione condivisa per la ricerca semantica, richiamata in apertura di sezione, recepisce le seguenti ottimizzazioni raccomandate da pgvector:
 
 #list(
   [
-    *Partizionamento*: le tabelle dei chunk vengono partizionate sul nome del campo dati di origine. pgvector raccomanda il partizionamento quando si effettuano filtri su un insieme ristretto di valori; tale filtro è necessario per supportare le ricerche ristrette a un sottoinsieme di campi.
+    *Partizionamento*@filtering-pgvector: le tabelle dei chunk vengono partizionate sul nome del campo dati di origine. pgvector raccomanda il partizionamento quando si effettuano filtri su un insieme ristretto di valori; tale filtro è necessario per supportare le ricerche ristrette a un sottoinsieme di campi.
   ],
   [
-    *Tipo di indice*: viene adottato un indice HNSW. Si tratta di una scelta relativamente arbitraria tra le opzioni disponibili, motivata dal fatto che si adatta meglio a scenari con inserimenti incrementali, coerenti con il principio di staging adottato per l'ingestion.
+    *Tipo di indice*@indexing-pgvector: viene adottato un indice #gl("hnsw"). Si tratta di una scelta relativamente arbitraria tra le opzioni disponibili, motivata dal fatto che si adatta meglio a scenari con inserimenti incrementali, coerenti con il principio di staging adottato per l'ingestion.
   ],
   [
-    *Indice su espressione*: l'indice HNSW viene costruito tramite un indice su espressione che esegue la riduzione di precisione dei vettori, al fine di contenere il consumo di memoria.
+    *Indice su espressione*@expression-indexing-pgvector: l'indice HNSW viene costruito tramite un indice su espressione che esegue la riduzione di precisione dei vettori, al fine di contenere il consumo di memoria.
   ],
   [
-    *Oversampling*: pgvector raccomanda l'utilizzo di oversampling con rescoring in combinazione con l'uso di indici, in particolare quando questi sono costruiti su vettori a precisione ridotta, come nel caso descritto sopra.
+    *Oversampling*@expression-indexing-pgvector: pgvector raccomanda l'utilizzo di #gl("oversampling",display:"oversampling") con rescoring in combinazione con l'uso di indici, in particolare quando questi sono costruiti su vettori a precisione ridotta, come nel caso descritto sopra.
   ],
   [
-    *Convenzione sui punteggi*: per motivi di ottimizzazione interna e di coerenza tra le metriche disponibili, pgvector restituisce sia la cosine similarity sia l'inner product in una forma per cui il risultato più pertinente corrisponde al valore più basso (calcolando l'inner product con segno negativo e la cosine similarity in modo analogo). Questa convenzione viene tradotta internamente, in modo che l'utente del sistema non debba conoscere né ragionare in base al funzionamento interno di pgvector.
+    *Convenzione sui punteggi*@score-transposing-pgvector: per motivi di ottimizzazione interna e di coerenza tra le metriche disponibili, pgvector restituisce sia la #gl("cosine-similarity",display:"cosine similarity") sia l'#gl("inner-product",display:"inner product") in una forma per cui il risultato più pertinente corrisponde al valore più basso (calcolando l'inner product con segno negativo e la cosine similarity in modo analogo). Questa convenzione viene tradotta internamente, in modo che l'utente del sistema non debba conoscere né ragionare in base al funzionamento interno di pgvector.
   ],
   [
-    *Scelta della metrica*: per i vettori già normalizzati viene utilizzato l'inner product al posto della cosine similarity, poiché sui vettori normalizzati i due valori sono equivalenti a meno di una costante, ma il calcolo dell'inner product risulta meno oneroso.
+    *Scelta della distanza*@distance-pgvector: per i vettori già normalizzati viene utilizzato l'inner product al posto della cosine similarity, poiché sui vettori normalizzati i due valori sono equivalenti a meno di una costante, ma il calcolo dell'inner product risulta meno oneroso.
   ],
 )
 ==== Ricerca full-text <descr:ricerca-full-text>
@@ -137,14 +138,14 @@ Le caratteristiche minime da replicare e i relativi workaround elaborati sono i 
   [
     *Funzione di ranking granulare*:
 
-    Elasticsearch e altri motori di ricerca full-text avanzati permettono di definire query con meccanismi di boosting dei risultati basati sull'accuratezza della corrispondenza, ad esempio assegnando un punteggio più alto a un testo che soddisfa tutte le clausole di una query composta (clausole in OR, phrase query, all-words query, ecc.).
+    Elasticsearch e altri motori di ricerca full-text avanzati permettono di definire query con meccanismi di boosting dei risultati basati sull'accuratezza della corrispondenza, ad esempio assegnando un punteggio più alto a un testo che soddisfa tutte le clausole di una query composta (clausole in OR, #gl("phrase-query",display:"phrase query"), #gl("all-words-query",display:"all-words query"), ecc.).
 
     La ricerca full-text di Postgres non implementa nativamente questo comportamento: le sue funzioni di ranking si limitano a verificare il rispetto della query, calcolando un punteggio solo in caso positivo e restituendo zero altrimenti. Per simulare il comportamento desiderato è quindi necessario calcolare e sommare separatamente il punteggio delle singole sotto-query.
   ],
   [
     *Query di filtro*:
 
-    nativamente Postgres offre tre tipologie di query per ranking e filtraggio: phrase query, all-words query e any-word query; a ciascuna di queste è possibile aggiungere, per singola parola, un carattere jolly per la ricerca per prefisso.
+    nativamente Postgres offre tre tipologie di query per ranking e filtraggio: phrase query, all-words query e #gl("any-word-query",display:"any-word query"); a ciascuna di queste è possibile aggiungere, per singola parola, un carattere jolly per la ricerca per prefisso.
 
     Non è previsto alcun supporto nativo per una corrispondenza di almeno X parole. La sua replicazione tramite composizione di tsquery è stata esclusa per l'eccessiva complessità computazionale. È stato quindi adottato un workaround che tratta i tsvector come array di testo ordinati lessicograficamente, ordinamento gestito nativamente da Postgres in fase di creazione del tsvector: questa precondizione di ordinamento consente di ridurre significativamente la complessità della ricerca, richiedendo tuttavia, ai fini dell'ottimizzazione, un tipo di indice diverso da quello utilizzato per le altre query full-text. Da questa scelta deriva che tale meccanismo non può essere utilizzato per il ranking, poiché non produce una tsquery; questo non costituisce una limitazione, poiché anche in Elasticsearch un vincolo di questo tipo viene utilizzato solo ai fini del filtraggio, mentre l'ultimo livello di ranking è affidato a una any-word query.
   ],
@@ -161,7 +162,7 @@ Prima di arrivare alla soluzione adottata, sono stati considerati e scartati due
 - un prefiltro costruito come OR di tutti i termini della query, seguito dal conteggio esatto dei match sui soli candidati. Sebbene l'OR sia indicizzabile tramite GIN, per query lunghe o composte da termini poco selettivi il filtro produce un insieme di candidati che copre una porzione consistente della tabella, vanificando il beneficio dell'indice;
 - la generazione combinatoria di tutte le clausole AND di k termini su n, unite da OR. Il numero di combinazioni cresce secondo C(n,k), risultando rapidamente insostenibile all'aumentare della lunghezza della query.
 
-La soluzione adottata sfrutta il fatto che Postgres ordina nativamente i lessemi in fase di creazione del tsvector (approfondito in @gestione-tsv): il tsvector viene trattato come un array ordinato lessicograficamente, e il problema della corrispondenza minima viene ricondotto a un controllo di overlap tra array, tramite l'indice dedicato già introdotto nella sezione precedente.
+La soluzione adottata sfrutta il fatto che Postgres ordina nativamente i lessemi in fase di creazione del tsvector (approfondito in @gestione-tsv): il tsvector viene trattato come un array ordinato lessicograficamente e il problema della corrispondenza minima viene ricondotto a un controllo di overlap tra array, tramite l'indice dedicato già introdotto nella sezione precedente.
 
 L'ordinamento lessicografico è ciò che rende possibile ricondurre il problema a un semplice controllo su un prefisso dell'array, anziché a un'esplosione combinatoria di sottoinsiemi da verificare: garantendo un ordine deterministico e condiviso tra la query e ogni documento candidato, permette di individuare tramite un singolo slice, calcolato una sola volta sull'array della query, quali posizioni è sufficiente controllare.
 
@@ -173,17 +174,17 @@ Rispetto all'approccio precedentemente adottato, basato su una any-word query ut
 ===== Gestione dei tsvector <gestione-tsv>
 La documentazione ufficiale di Postgres non esprime una preferenza netta tra due strategie di ottimizzazione delle ricerche full-text: l'uso di indici su espressione oppure la materializzazione dei tsvector in colonne dedicate. I primi sono più leggeri in termini di spazio occupato, ma più difficili da gestire rispetto ai vettori materializzati.
 
-Per questo progetto si è scelto di materializzare i tsvector. Alla tabella dei chunk sono state aggiunte due colonne: una per il tsvector language-agnostic e una per quello language-specific. È stata prevista una sola colonna per la versione language-specific, e non una per lingua, poiché ogni chunk ha una singola lingua assegnata e non richiede supporto multilingua a livello di singolo chunk.
+Per questo progetto si è scelto di materializzare i tsvector. Alla tabella dei chunk sono state aggiunte due colonne: una per il tsvector language-agnostic e una per quello language-specific. È stata prevista una sola colonna per la versione language-specific, non una per lingua, poiché ogni chunk ha una singola lingua assegnata e non richiede supporto multilingua a livello di singolo chunk.
 
-L'alternativa sarebbe stata mantenere due serie di indici su espressione distinti, uno per il ranking full-text nativo e uno per il filtro overlap. A livello di spazio occupato dagli indici stessi, le due strategie sono equivalenti: la materializzazione non comporta alcun risparmio in tal senso, e anzi introduce un costo aggiuntivo, poiché le colonne materializzate occupano spazio extra su disco rispetto al calcolo del tsvector a runtime tramite indici su espressione. Il motivo principale della scelta è quindi di comodità implementativa: avere le colonne materializzate consente di costruire su di esse entrambi gli insiemi di indici senza dover ripetere la stessa espressione in più punti dello schema. Inoltre si è rivelata utile per la realizzazione di un workaround meglio trattato nella @lavoro-svolto-ricerca-full-text.
+L'alternativa sarebbe stata mantenere due serie di indici su espressione distinti, uno per il ranking full-text nativo e uno per il filtro overlap. A livello di spazio occupato dagli indici stessi, le due strategie sono equivalenti: la materializzazione non comporta alcun risparmio in tal senso, anzi introduce un costo aggiuntivo, poiché le colonne materializzate occupano spazio extra su disco rispetto al calcolo del tsvector a runtime tramite indici su espressione. Il motivo principale della scelta è quindi di comodità implementativa: avere le colonne materializzate consente di costruire su di esse entrambi gli insiemi di indici senza dover ripetere la stessa espressione in più punti dello schema. Inoltre si è rivelata utile per la realizzazione di un workaround meglio trattato nella @lavoro-svolto-ricerca-full-text.
 
-Resta aperto, e non è stato oggetto di analisi approfondita in questo lavoro, il trade-off tra il costo di ricalcolare il tsvector a ogni interrogazione (nel caso di indici su espressione) e lo spazio extra occupato dalla loro materializzazione: una valutazione più rigorosa richiederebbe ulteriori considerazioni e i risultati di sperimentazioni reali.
+Resta aperto e non è stato oggetto di analisi approfondita in questo lavoro, il trade-off tra il costo di ricalcolare il tsvector a ogni interrogazione (nel caso di indici su espressione) e lo spazio extra occupato dalla loro materializzazione: una valutazione più rigorosa richiederebbe ulteriori considerazioni e i risultati di sperimentazioni reali.
 
 I due insiemi di indici, quello per la ricerca full-text nativa e quello per il filtro overlap, coesistono sulle stesse colonne materializzate. Questa scelta è coerente con la natura esplorativa del progetto: mantenerli distinti rende le due strategie intercambiabili, semplificando la sperimentazione. Qualora si decidesse in futuro di abbandonare il filtro overlap o l'uso delle tsquery per il filtraggio, l'indice corrispondente può essere eliminato senza conseguenze, poiché le funzioni di ranking native di Postgres non richiedono la presenza di un indice per funzionare.
 
 In entrambi i casi è necessario un indice generico per la ricerca language-agnostic e una serie di indici parziali, uno per lingua, per la ricerca language-specific.
 ==== Ricerca ibrida
-La ricerca ibrida combina i risultati della ricerca semantica e della ricerca full-text sulla medesima entità, fondendoli tramite l'algoritmo di Reciprocal Rank Fusion. Si tratta di una tecnica standard per la fusione di risultati provenienti da fonti con punteggi non direttamente paragonabili tra loro, quali quelli prodotti dalla ricerca semantica e dalla ricerca full-text.
+La ricerca ibrida combina i risultati della ricerca semantica e della ricerca full-text sulla medesima entità, fondendoli tramite l'algoritmo di RRF. Si tratta di una tecnica standard per la fusione di risultati provenienti da fonti con punteggi non direttamente paragonabili tra loro, quali quelli prodotti dalla ricerca semantica e dalla ricerca full-text.
 
 La fusione viene eseguita interamente lato database, in un'unica query, coerentemente con il requisito #rcm-link("Roundtrip unico per le ricerche"). Questa scelta non è motivata da una maggiore velocità di calcolo di Postgres rispetto al backend applicativo, ma dal fatto che eseguire la fusione lato applicativo richiederebbe un round-trip di rete aggiuntivo tra database e backend per un'operazione che può essere svolta interamente all'interno del database stesso, senza necessità di scambiare dati con l'esterno.
 
@@ -195,9 +196,9 @@ La ricerca linked permette di recuperare, a partire dalle singole entità, un qu
 
 Nello specifico, la ricerca linked esegue prima una ricerca indipendente su ciascuna entità coinvolta, per poi ricostruire, seguendo le regole di linking definite nel modello dati, i collegamenti tra i risultati tramite join.
 
-Per "risalita" si intende la navigazione delle relazioni dall'entità figlia verso l'entità genitore (ad esempio da attachment verso conversation item, e da conversation item verso ticket). Il progetto supporta esclusivamente questa direzione di navigazione: la discesa, oltre a non essere banale da implementare, non rientra tra gli interessi dell'azienda per questo tirocinio.
+Per "risalita" si intende la navigazione delle relazioni dall'entità figlia verso l'entità genitore (ad esempio da attachment verso conversation item e da conversation item verso ticket). Il progetto supporta esclusivamente questa direzione di navigazione: la discesa, oltre a non essere banale da implementare, non rientra tra gli interessi dell'azienda per questo tirocinio.
 
-Alcune entità, come attachment, dispongono di più regole di linking possibili verso entità diverse (ad esempio verso conversation item oppure direttamente verso ticket). Per questi casi si è scelto di adottare la regola del primo cammino valido: viene applicata la prima regola di linking per cui è presente un riferimento effettivo, e le successive vengono considerate solo in sua assenza; ad esempio: se un attachment non presenta un riferimento diretto a un ticket, viene utilizzato il riferimento al conversation item, qualora presente.
+Alcune entità, come attachment, dispongono di più regole di linking possibili verso entità diverse (ad esempio verso conversation item oppure direttamente verso ticket). Per questi casi si è scelto di adottare la regola del primo cammino valido: viene applicata la prima regola di linking per cui è presente un riferimento effettivo e le successive vengono considerate solo in sua assenza; ad esempio: se un attachment non presenta un riferimento diretto a un ticket, viene utilizzato il riferimento al conversation item, qualora presente.
 
 Questa regola nasce da una scelta di disaccoppiamento generale. Nei dati reali, un attachment non può avere contemporaneamente un riferimento sia a un conversation item sia a un ticket: si tratta di un vincolo di integrità proprio del modello dati, che tuttavia non è stato implementato come constraint a livello di singola entità (né tramite controllo a database né nella logica applicativa), poiché ritenuto fuori dal perimetro di questo progetto e di scarso beneficio pratico rispetto alla complessità che avrebbe introdotto. Anche qualora fosse stato implementato, associarlo direttamente alle regole di linking non sarebbe stata una soluzione opportuna, per lo stesso principio di separazione già adottato tra la configurazione della ricerca linked e la definizione dei vincoli relazionali tramite chiavi esterne. La regola del primo cammino valido permette quindi alla ricerca linked di funzionare correttamente a prescindere dall'esistenza o meno di un simile vincolo, mantenendo il meccanismo disaccoppiato e più facilmente estendibile in futuro.
 
@@ -220,7 +221,7 @@ In questa sezione viene illustrato l'ordine delle operazioni eseguite per ogni t
     La *ricerca full-text* si articola in due varianti: ottimizzata sulla lingua e multilingua.
 
     La ricerca ottimizzata sulla lingua si articola come segue:
-    + ricerca sulla singola partizione, con selezione per lingua, esecuzione dell'overlap query o di un'altra query full-text configurata, e applicazione del filtro definito dall'utente;
+    + ricerca sulla singola partizione, con selezione per lingua, esecuzione dell'overlap query o di un'altra query full-text configurata e applicazione del filtro definito dall'utente;
     + applicazione della soglia di threshold sul raw score;
     + applicazione del peso configurato per campo, successivamente al threshold e precedentemente alla combinazione dei risultati;
     + combinazione dei risultati tramite rescoring semplice, per lo stesso motivo di comparabilità già descritto per la ricerca semantica;
@@ -246,7 +247,7 @@ In questa sezione viene illustrato l'ordine delle operazioni eseguite per ogni t
     + esecuzione della ricerca dello stesso tipo specificato per ciascuna entità coinvolta, garantendo la restituzione delle chiavi primarie;
     + join per ricostruire l'informazione completa, seguendo le regole di linking definite nel modello dati;
     + applicazione di un filtro successivo al join;
-    + combinazione dei risultati delle ricerche sulle diverse entità tramite rescoring semplice: i punteggi prodotti dalle ricerche sulle singole entità sono in questo caso direttamente comparabili, e non richiedono quindi una fusione RRF;
+    + combinazione dei risultati delle ricerche sulle diverse entità tramite rescoring semplice: i punteggi prodotti dalle ricerche sulle singole entità sono in questo caso direttamente comparabili, non richiedono quindi una fusione RRF;
     + restituzione dei dati richiesti dalla query.
 
     Nel caso specifico della ricerca linked ibrida, i pesi per campo vengono applicati a livello di singola entità prima della fusione RRF che le combina, anziché successivamente. Si tratta di una deviazione rispetto al principio generale di applicare i pesi dopo la fase di filtraggio e prima della combinazione, ma è una scelta ritenuta accettabile poiché lo stesso comportamento è adottato da Elasticsearch in scenari analoghi.
@@ -259,11 +260,11 @@ Per garantire un round-trip unico, come richiesto dal requisito #rcm-link("Round
 === Caratteristiche del backend
 Il backend organizza le impostazioni generali di ricerca tramite oggetti di configurazione strutturati, costruiti a monte e iniettati nei livelli che compongono la ricerca. Questa struttura, coerentemente con il requisito #rcm-link("Alta configurabilità del sistema"), permette di effettuare l'override dei pesi per una singola richiesta di ricerca; in assenza di override, vengono applicati i pesi di default definiti nel modello dati.
 
-Le configurazioni contenenti i pesi sono oggetti di dominio, agnostici rispetto alla tecnologia sottostante, e associano a ciascuna entità i seguenti valori:
+Le configurazioni contenenti i pesi sono oggetti di dominio, agnostici rispetto alla tecnologia sottostante e associano a ciascuna entità i seguenti valori:
 - la lista dei pesi da applicare ai vari campi dati durante il rescoring;
 - i pesi da applicare nella fusione tra ricerca semantica e full-text.
 
-Le configurazioni che gestiscono aspetti più tecnici, e non separabili dalla tecnologia utilizzata, sono invece oggetti distinti e specifici per la ricerca full-text e per la ricerca semantica.
+Le configurazioni che gestiscono aspetti più tecnici, non separabili dalla tecnologia utilizzata, sono invece oggetti distinti e specifici per la ricerca full-text e per la ricerca semantica.
 
 La configurazione per la ricerca semantica specifica le seguenti informazioni:
 - il tipo di vettore a cui convertire il vettore di embedding durante la fase di oversampling;
@@ -290,17 +291,17 @@ Le diverse sotto-ricerche che compongono una ricerca, descritte nella pipeline d
 
 Il backend deve inoltre essere asincrono, per supportare l'accesso concorrente di più utenti senza che l'elaborazione di una richiesta blocchi le altre.
 
-Anche la fase di ingestion adotta un principio di riduzione del numero di chiamate, applicato in modo trasversale ai diversi servizi coinvolti: i testi vengono organizzati e inviati a blocchi verso il modello di embedding remoto, così da pagare un costo di attesa complessivo inferiore rispetto all'esecuzione di numerose chiamate singole. Lo stesso principio si applica alle eventuali funzionalità di elaborazione a batch offerte dagli strumenti di language detection, e alle scritture verso il database, effettuate a blocchi anziché tramite una serie di chiamate singole.
+Anche la fase di ingestion adotta un principio di riduzione del numero di chiamate, applicato in modo trasversale ai diversi servizi coinvolti: i testi vengono organizzati e inviati a blocchi verso il modello di embedding remoto, così da pagare un costo di attesa complessivo inferiore rispetto all'esecuzione di numerose chiamate singole. Lo stesso principio si applica alle eventuali funzionalità di elaborazione a batch offerte dagli strumenti di language detection e alle scritture verso il database, effettuate a blocchi anziché tramite una serie di chiamate singole.
 
 == Principi del sistema di test
 In questa sezione vengono descritti i principi guida e le caratteristiche del sistema di test.
 
 === Definizione modello dati
-Il modello dati del sistema di test è composto da due parti: una riadattata dal modello dati del sistema di ricerca, e una dedicata alla gestione della ground truth e del logging, trattata in @caratteristiche-db-test.
+Il modello dati del sistema di test è composto da due parti: una riadattata dal modello dati del sistema di ricerca e una dedicata alla gestione della ground truth e del logging, trattata in @caratteristiche-db-test.
 
 Per quanto riguarda la parte riadattata, il sistema di test adotta una versione semplificata del modello dati del sistema di ricerca: la definizione delle entità è la medesima, ma vengono meno i dettagli legati alla configurabilità, quali le configurazioni di ricerca e i vincoli relazionali. Anche la struttura delle ricerche è la stessa di quella descritta per il sistema di ricerca, rimangono solo le parti ritenute utili per la finalità di allineamento all'ambiente di test.
 
-Questa scelta è il risultato di un riutilizzo di comodità del codice esistente: i due progetti restano comunque indipendenti a livello di codice, e l'unico punto di contatto tra i due sistemi è l'interfaccia API del sistema di ricerca, utilizzata dal sistema di test come da qualunque altro utente.
+Questa scelta è il risultato di un riutilizzo di comodità del codice esistente: i due progetti restano comunque indipendenti a livello di codice, l'unico punto di contatto tra i due sistemi è l'interfaccia API del sistema di ricerca, utilizzata dal sistema di test come da qualunque altro utente.
 
 === Metriche e il loro significato
 Le metriche di valutazione trattate in questa sezione non sono state definite autonomamente, ma fornite durante un colloquio con il tutor aziendale, secondo la seguente definizione e significato.
@@ -345,4 +346,4 @@ Il sistema di test adotta due meccanismi di persistenza distinti, ciascuno scelt
 
 Il registro delle query da eseguire, comprensivo della relativa ground truth, è mantenuto in un file jsonl: una soluzione ritenuta sufficiente data la natura strettamente sequenziale della sua lettura.
 
-I risultati delle ricerche eseguite vengono invece registrati in un database Postgres, necessario per gestire in modo affidabile le scritture concorrenti provenienti dai diversi utenti simulati. Lo stesso database viene inoltre utilizzato per automatizzare il calcolo delle metriche, esposte sotto forma di viste, e può essere monitorato tramite Grafana.
+I risultati delle ricerche eseguite vengono invece registrati in un database Postgres, necessario per gestire in modo affidabile le scritture concorrenti provenienti dai diversi utenti simulati. Lo stesso database viene inoltre utilizzato per automatizzare il calcolo delle metriche, esposte sotto forma di viste e può essere monitorato tramite Grafana.
