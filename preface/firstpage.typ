@@ -20,7 +20,7 @@
   // Corpo
   [
     // Logo
-    #align(center, image(logo, width: 50%))
+    #align(center, image(logo, width: 50%, alt:""))
     #v(30pt)
 
     // Titolo

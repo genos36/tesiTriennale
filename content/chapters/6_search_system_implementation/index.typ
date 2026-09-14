@@ -21,7 +21,7 @@ La progettazione e la codifica seguono i principi dell'architettura esagonale. I
 - service,
 - classi di dominio.
 
-La composition root è gestita tramite FastAPI.
+La #gl("composition-root",display:"composistion root") è gestita tramite FastAPI.
 
 Ciascuna categoria è ulteriormente suddivisa per funzionalità: ingestion e le diverse tipologie di ricerca dispongono ciascuna dei propri adapter, service e port dedicati. Fanno eccezione le classi di dominio condivise, trattate nella @classi-dominio-condivise a loro dedicata.
 
@@ -62,10 +62,10 @@ class Entity:
                 `.text+sym.dots.v
 ))
 
-*MergeWeights* rappresenta i pesi utilizzati per la fusione tra ricerca semantica e full-text, con l'unico vincolo che non possano essere negativi.
+*MergeWeights* rappresenta i pesi utilizzati per la fusione tra ricerca semantica e full-text\, con l'unico vincolo che non possano essere negativi.
 
 ==== Vincoli sullo schema
-Il punto di estensione esplicito descritto nel modello dati, pensato per accomodare vincoli non necessariamente relazionali, è realizzato tramite il pattern Visitor. *SchemaConstraint* è l'interfaccia astratta comune a ogni tipo di vincolo; *RelationalSchemaConstraint* è l'unica implementazione concreta attualmente presente e rappresenta l'equivalente concettuale di una chiave esterna tra due entità.
+Il punto di estensione esplicito descritto nel modello dati, pensato per accomodare vincoli non necessariamente relazionali, è realizzato tramite il pattern #gl("visitor"). *SchemaConstraint* è l'interfaccia astratta comune a ogni tipo di vincolo; *RelationalSchemaConstraint* è l'unica implementazione concreta attualmente presente e rappresenta l'equivalente concettuale di una chiave esterna tra due entità.
 
 #code-snippet(caption: "SchemaConstraint e RelationalSchemaConstraint",
 raw(
@@ -118,7 +118,7 @@ class TraversalPath:
 È importante notare che LinkedSearchConfiguration si limita a esporre, per ciascuna entità, l'insieme di tutti i cammini possibili verso la radice: non seleziona autonomamente un unico cammino. La regola del primo cammino valido, descritta nella @analisi-ricerca-linked, viene applicata a valle, dal query builder che genera la query SQL della ricerca linked, sulla base dei cammini restituiti da questa classe. Questa separazione è coerente con il principio di disaccoppiamento già discusso a proposito dei vincoli di integrità: il dominio si limita a descrivere le possibilità strutturali, mentre la logica di scelta concreta, che dipende dai dati effettivamente presenti, è responsabilità di un livello successivo.
 
 ==== Radice dell'aggregato
-*SchemaConfiguration* è la radice dell'aggregato: raccoglie l'insieme delle entità, dei vincoli di schema e la configurazione di ricerca linked in un'unica struttura immutabile. Le entità sono rappresentate come mappa da EntityName a Entity, anziché come semplice sequenza, per garantire per costruzione l'assenza di duplicati e un accesso diretto in fase di risoluzione dei riferimenti.
+*SchemaConfiguration* è la #gl("aggregate-root",display:"radice dell'aggregato"): raccoglie l'insieme delle entità, dei vincoli di schema e la configurazione di ricerca linked in un'unica struttura immutabile. Le entità sono rappresentate come mappa da EntityName a Entity, anziché come semplice sequenza, per garantire per costruzione l'assenza di duplicati e un accesso diretto in fase di risoluzione dei riferimenti.
 
 #code-snippet(caption: "SchemaConfiguration - dataclass",
 raw(
@@ -132,7 +132,7 @@ class SchemaConfiguration:
 )
 )
 
-SchemaConfiguration valida, in fase di costruzione, esclusivamente la coerenza strutturale locale (presenza di almeno un'entità, coerenza tra chiave e valore nella mappa delle entità). La validazione dell'integrità referenziale più profonda — l'esistenza e la compatibilità di tipo dei campi citati nei vincoli, l'esistenza delle entità citate nella configurazione di ricerca linked — richiede invece una visione d'insieme dell'intero schema, non disponibile al singolo oggetto preso in isolamento, ed è per questo demandata a *SchemaConfigurationBuilder*.
+SchemaConfiguration valida, in fase di costruzione, esclusivamente la coerenza strutturale locale (presenza di almeno un'entità, coerenza tra chiave e valore nella mappa delle entità). La validazione dell'integrità referenziale più profonda, l'esistenza e la compatibilità di tipo dei campi citati nei vincoli, l'esistenza delle entità citate nella configurazione di ricerca linked richiede invece una visione d'insieme dell'intero schema, non disponibile al singolo oggetto preso in isolamento, ed è per questo demandata a *SchemaConfigurationBuilder*.
 
 Il builder accumula incrementalmente entità e vincoli, per poi eseguire, al momento della costruzione finale, l'intera catena di validazioni referenziali: la verifica dei vincoli di schema tramite il visitor descritto in precedenza, la coerenza della configurazione di ricerca linked rispetto alle entità effettivamente presenti e la corrispondenza reciproca tra campi searchable e pesi configurati per la ricerca linked. Solo un'istanza di SchemaConfiguration prodotta da questo builder può quindi considerarsi garantita come valida nella sua interezza.
 
@@ -146,33 +146,34 @@ raw(
 )
 )
 
-== Sistema di persistenza
+== Sistema di persistenza <main-system-persistence>
 Il diagramma in @diagramma-er rappresenta lo schema entità-relazione concreto adottato in questo progetto, coerente con il modello dati del service desk HDA descritto nel capitolo precedente. Trattandosi di un sistema configurabile, entità e campi possono essere personalizzati a seconda del contesto applicativo; lo schema qui presentato è quindi una delle possibili istanze concrete del modello dati, non un vincolo strutturale del sistema.
 
 Inoltre si precisa che l'inizializzazione del database non avviene tramite codice SQL scritto a mano, ma tramite script che leggono la schema configuration e altre configurazioni, come quella di pgvector. Questo è per comodità nella modifica dei parametri per ulteriori test futuri. Non è stata dedicata particolare cura a questo script, in quanto reputato esterno allo scopo del tirocinio ma una semplice comodità per il testing: vi è ampio margine di miglioramento.
 
 #figure(caption:"Diagramma ER del core del database")[
         #image("/images/puml/svg/schema_er_progetto.svg",alt:"Diagramma ER descrittivo delle tabelle relative al modello dati")
-]
+]<diagramma-er>
 #figure(caption:"Diagramma ER delle tabelle di supporto allo staging")[
         #image("/images/puml/svg/staging_area.svg",alt:"Diagramma ER descrittivo delle tabelle di supporto allo staging")
 ]
 #figure(caption:"Diagramma ER delle tabelle di supporto al tracking")[
         #image("/images/puml/svg/tracking.svg",alt:"Diagramma ER descrittivo delle tabelle di supporto al tracking dello status della sessione di ingestion")
-]<diagramma-er>
+]
 
-Alcuni aspetti rilevanti dello schema non sono rappresentabili graficamente in un diagramma entità-relazione, vengono quindi descritti di seguito: il partizionamento delle tabelle e gli indici definiti su di esse.
+Alcuni aspetti rilevanti dello schema non sono rappresentabili graficamente in un diagramma entità-relazione; vengono quindi descritti di seguito: il partizionamento delle tabelle e gli indici definiti su di esse.
 
-Coerentemente con quanto descritto nella @analisi-ricerca-semantica in cui viene analizzata la ricerca semantica, la tabella dei chunk di ciascuna entità è partizionata per lista sul campo di provenienza del testo (field_name): ogni campo searchable dell'entità corrisponde a una partizione distinta.
+Coerentemente con quanto descritto nella @analisi-ricerca-semantica in cui viene analizzata la ricerca semantica, la tabella dei chunk di ciascuna entità è partizionata per lista sul campo di provenienza del testo (`field_name`): ogni campo searchable dell'entità corrisponde a una partizione distinta.
 
-Su ciascuna tabella dei chunk sono definite quattro famiglie di indici:
-+ Gli indici GIN "classici" sulle colonne tsv_simple e tsv_lang, che servono a velocizzare il filtering delle query full-text implementate da Postgres. Per tsv_lang l'indice è ulteriormente suddiviso in un indice parziale per lingua, filtrato sul valore di chunk_language;
+Su ciascuna tabella dei chunk sono definiti i seguenti indici:
++ Gli indici GIN "classici" sulle colonne `tsv_simple` e `tsv_lang`, che servono a velocizzare il filtering delle query full-text implementate da Postgres. Per `tsv_lang` l'indice è ulteriormente suddiviso in un indice parziale per lingua, filtrato sul valore di chunk_language;
 
-+ Gli indici GIN con opclass array_ops sull'espressione tsvector_to_array(...) delle colonne tsv_simple e tsv_lang, utilizzati dal filtro di corrispondenza minima descritto in @overlap-text-query, che si appoggia all'operatore di overlap tra array anziché agli operatori di match della ricerca full-text. Anche questi indici sono suddivisi per lingua sulla colonna tsv_lang, visto che il look up è sempre filtrato per lingua;
++ Gli indici GIN con opclass array_ops sull'espressione tsvector_to_array(...) delle colonne `tsv_simple` e `tsv_lang`, utilizzati dal filtro di corrispondenza minima descritto in @overlap-text-query, che si appoggia all'operatore di overlap tra array anziché agli operatori di match della ricerca full-text. Anche questi indici sono suddivisi per lingua sulla colonna `tsv_lang`, visto che il lookup è sempre filtrato per lingua;
 
-+ un indice HNSW sulla colonna embedding, utilizzato dalla ricerca semantica. L'indice non è necessariamente costruito sui valori a piena precisione della colonna: la configurazione applicativa può specificare un tipo di vettore e una distanza "candidati", eventualmente più leggeri (ad esempio una quantizzazione binaria con distanza di Hamming), utilizzati per generare rapidamente l'insieme di candidati su cui viene poi eseguito l'oversampling e il rescoring finale sui valori reali. Nella configurazione concreta di questo progetto, l'indice è costruito su una quantizzazione binaria dell'embedding, con distanza di Hamming. \ Tutti gli indici elencati sono creati sulla tabella partizionata madre: Postgres li propaga automaticamente a ciascuna partizione.
++ un indice HNSW sulla colonna embedding, utilizzato dalla ricerca semantica. L'indice non è necessariamente costruito sui valori a piena precisione della colonna: la configurazione applicativa può specificare un tipo di vettore e una distanza "candidati", eventualmente più leggeri (ad esempio una #gl("quantizzazione-binaria",display:"quantizzazione binaria") con #gl("distanza-hamming",display:"distanza di Hamming")), utilizzati per generare rapidamente l'insieme di candidati su cui viene poi eseguito l'oversampling e il rescoring finale sui valori reali. Nella configurazione concreta di questo progetto, l'indice è costruito su una quantizzazione binaria dell'embedding, con distanza di Hamming. \ Tutti gli indici elencati sono creati sulla tabella partizionata: Postgres li propaga automaticamente a ciascuna partizione.
 
-+ Un indice univoco su un'espressione costante, sulla tabella delle sessioni di ingestion, filtrato sulle sole righe con stato aperto o chiuso: questo garantisce, a livello di database e non solo applicativo, che possa esistere al più una sessione attiva alla volta, coerentemente con il principio già descritto nella @gestione-staging-area.
+
+Un ulteriore indice, non legato alle tabelle dei chunk, è definito come univoco su un'espressione costante, sulla tabella delle sessioni di ingestion, filtrato sulle sole righe con stato aperto o chiuso: questo garantisce, a livello di database e non solo applicativo, che possa esistere al più una sessione attiva alla volta, coerentemente con il principio già descritto nella @gestione-staging-area.
 
 == Ingestion
 La funzionalità di ingestion espone quattro porte inbound, ciascuna dedicata a una funzione specifica:
@@ -192,9 +193,9 @@ Per rappresentare i valori dei campi si è scelto di adottare un'astrazione dedi
 
 Per ciascun batch dello stream in ingresso, il service esegue in sequenza:
 
-+ *validazione* — verifica la coerenza dei dati ricevuti con la schema configuration e scarta i record non conformi. È in questa fase che avviene anche il casting dei tipi non deducibili nell'adapter inbound: il tipo di un dato viene normalmente dedotto dal suo formato, ma per i valori data/ora la conversione da stringa a datetime può essere ambigua (un campo di tipo testo il cui valore ha una forma di data, se convertito, genererebbe errori più avanti). Il service applica quindi questa trasformazione solo dove necessario, guidato dalla schema configuration;
-+ *arricchimento* — un processor riceve alla costruzione le porte outbound per la language detection e per il calcolo degli embedding; aggrega le liste di testi da passare a ciascuna porta e costruisce i refined entity batch. Se lingua è già nota a priori viene usata quella, altrimenti si ricorre a language detection; i record per cui l'arricchimento fallisce vengono scartati;
-+ *scrittura* — i record rimanenti vengono scritti sulle tabelle di staging tramite comando COPY, tramite una porta outbound write repository dedicata.
++ *validazione*, verifica la coerenza dei dati ricevuti con la schema configuration e scarta i record non conformi. È in questa fase che avviene anche il casting dei tipi non deducibili nell'adapter inbound: il tipo di un dato viene normalmente dedotto dal suo formato, ma per i valori data/ora la conversione da stringa a datetime può essere ambigua (un campo di tipo testo il cui valore ha una forma di data, se convertito, genererebbe errori più avanti). Il service applica quindi questa trasformazione solo dove necessario, guidato dalla schema configuration;
++ *arricchimento*, un processor riceve alla costruzione le porte outbound per la language detection e per il calcolo degli embedding; aggrega le liste di testi da passare a ciascuna porta e costruisce i `refined_entity_batch`. Se la lingua è già nota a priori viene usata quella, altrimenti si ricorre a language detection; i record per cui l'arricchimento fallisce vengono scartati;
++ *scrittura*, i record rimanenti vengono scritti sulle tabelle di staging tramite comando `COPY`, attraverso una porta outbound write repository dedicata.
 
 Per notificare gli scarti a ciascuno di questi passaggi viene usata una classe *RejectedRecord*, che contiene l'identificativo del record e il motivo del fallimento. Il metodo che orchestra l'intera pipeline accetta in input un AsyncIterator di batch grezzi e restituisce in output un AsyncIterator di RejectedRecord, che l'adapter FastAPI inoltra al chiamante come streaming response.
 #code-snippet(caption:"Firma porta di ingestion dei dati",
@@ -227,7 +228,7 @@ Lo scheduling della promozione è calcolato in base ai vincoli relazionali defin
   )
 )
 
-Questo primo CTE seleziona fino a self.\_batch_size elementi candidati alla promozione, cioè rimovibili dalla tabella di staging e inseribili nella tabella reale. Il sistema si occupa solo di costruire un'opportuna where_clause, che verifica che, dopo la promozione, restino rispettati i vincoli di integrità referenziale: ad esempio, per l'entità radice (i ticket) non è necessaria alcuna clausola aggiuntiva, mentre per un'entità figlia (i conversation item) viene richiesto che il ticket a cui fanno riferimento esista già nella tabella reale.
+Questo primo CTE seleziona fino a `self._batch_size` elementi candidati alla promozione, cioè rimovibili dalla tabella di staging e inseribili nella tabella reale. Il sistema si occupa solo di costruire un'opportuna `where_clause`, che verifica che, dopo la promozione, restino rispettati i vincoli di integrità referenziale: ad esempio, per l'entità radice (i ticket) non è necessaria alcuna clausola aggiuntiva, mentre per un'entità figlia (i conversation item) viene richiesto che il ticket a cui fanno riferimento esista già nella tabella reale.
 
 #code-snippet(
   caption: "Staging promotion - gestione dei duplicati",
@@ -242,7 +243,7 @@ Questo primo CTE seleziona fino a self.\_batch_size elementi candidati alla prom
   )
 )
 
-La staging window viene qui espansa a tutti i possibili duplicati degli elementi selezionati e ordinata in ordine decrescente di staging_id. Questo, combinato con l'autoincremento dello staging_id e con DISTINCT ON, garantisce che venga selezionata solo la versione più recente di ciascun dato, anche in presenza di più caricamenti duplicati dello stesso record.
+La staging window viene qui espansa a tutti i possibili duplicati degli elementi selezionati e ordinata in ordine decrescente di `staging_id`. Questo, combinato con l'autoincremento dello `staging_id` e con `DISTINCT ON`, garantisce che venga selezionata solo la versione più recente di ciascun dato, anche in presenza di più caricamenti duplicati dello stesso record.
 
 Questa soluzione non è riconosciuta come ottimale, ma è funzionalmente corretta e, per un progetto di natura esplorativa, sufficiente: lo staging, per quanto utile alla robustezza del caricamento, non è centrale al problema di ricerca affrontato dal tirocinio. Viene qui esplicitamente riconosciuto come debito tecnico, da sanare in eventuali evoluzioni successive del sistema.
 
@@ -258,7 +259,7 @@ Questa soluzione non è riconosciuta come ottimale, ma è funzionalmente corrett
   )
 )
 
-Questo CTE rimuove dalla tabella di staging gli elementi candidati e ne salva temporaneamente il valore, tramite la clausola RETURNING, per il passo successivo.
+Questo CTE rimuove dalla tabella di staging gli elementi candidati e ne salva temporaneamente il valore, tramite la clausola `RETURNING`, per il passo successivo.
 
 #code-snippet(
   caption: "Staging promotion - inserimento nella tabella reale",
@@ -274,7 +275,8 @@ Questo CTE rimuove dalla tabella di staging gli elementi candidati e ne salva te
   )
 )
 
-Questo passo carica sulla tabella reale solo gli elementi già filtrati dal CTE batch (cioè una versione per ciascuna chiave), specificando come gestire eventuali conflitti con righe già presenti nella tabella reale — da non confondere con la deduplicazione dei duplicati interni allo staging, gestita al passo precedente. L'azione concreta in caso di conflitto (tipicamente un upsert) è definita dal backend, non hard-coded nella query.
+Questo passo carica sulla tabella reale solo gli elementi già filtrati dal CTE batch (cioè una versione per ciascuna chiave), specificando come gestire eventuali conflitti con righe già presenti nella tabella reale
+Da non confondere con la rimozione dei duplicati interni allo staging, gestita al passo precedente. L'azione concreta in caso di conflitto (tipicamente un #gl(display:"upsert","upsert")) è definita dal backend, non hard-coded nella query.
 
 #code-snippet(caption: "Staging promotion - conteggio degli elementi processati",
   raw(
@@ -292,9 +294,9 @@ Le classi di dominio impiegate differiscono tra ricerca su singola entità e ric
 
 Per questo motivo, nel seguito vengono descritte solo le parti generiche condivise e un esempio di come vengono specializzate tramite type alias.
 
-Le parti che si sono discostate da questo pattern dono state trattate esplicitamente.
+Le parti che si sono discostate da questo pattern sono state trattate esplicitamente.
 === Filtering
-Il filtro adotta una struttura ad albero: viene definita un'interfaccia comune, *FilterCondition*, con quattro implementazioni concrete — atomic expression, and condition, or condition, not condition.
+Il filtro adotta una struttura ad albero: viene definita un'interfaccia comune, *FilterCondition*, con quattro implementazioni concrete: AtomicExpression, AndCondition, OrCondition, NotCondition.
 
 #code-snippet(
   caption:"Ricerca - interfaccia FilterCondition e implementazioni concrete",
@@ -333,7 +335,7 @@ class NotCondition(FilterCondition[R], Generic[R]):
   )
 )
 
-Questa gerarchia ha il solo scopo di rappresentare e comporre il filtro, non di applicarlo direttamente a un valore. Per applicarlo si usa quindi, anche qui, il pattern Visitor: concretamente, un'implementazione di *FilterVisitor* viene usata per validare il filtro all'interno dei service di dominio e un'altra per costruire le clausole WHERE all'interno degli adapter SQL — sia per il filtro su singola entità, sia per il post-join filter della ricerca linked.
+Questa gerarchia ha il solo scopo di rappresentare e comporre il filtro, non di applicarlo direttamente a un valore. Per applicarlo si usa quindi, anche qui, il pattern Visitor: concretamente, un'implementazione di *FilterVisitor* viene usata per validare il filtro all'interno dei service di dominio e un'altra per costruire le clausole `WHERE` all'interno degli adapter SQL, sia per il filtro su singola entità, sia per il post-join filter della ricerca linked.
 
 #code-snippet(
   caption:"Ricerca - type alias per filtro su singola entità e post-join",
@@ -368,7 +370,7 @@ class LinkedQuery:
     `.text
   )
 )
-In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia generica e la sua specializzazione linked: è dovuto alla necessità, propria della sola ricerca linked, di abbinare un filtro distinto a ciascuna entità coinvolta, tramite `LinkedFilter`, anziché un unico filtro sull'intera query.
+In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia generica e la sua specializzazione linked: è dovuto alla necessità, propria della sola ricerca linked, di abbinare un filtro distinto a ciascuna entità coinvolta, tramite LinkedFilter, anziché un unico filtro sull'intera query.
 
 #code-snippet(
   caption:"Ricerca - Query result e specializzazioni",
@@ -394,12 +396,12 @@ In LinkedQuery si osserva il primo punto di disallineamento tra la gerarchia gen
 
 Invece nei risultati della ricerca il riuso del codice viene applicato direttamente in modo pulito.
 
-La query, così come ricevuta dall'adapter inbound, può contenere campi con valore nullo, ad esempio i pesi di fusione o il numero di risultati desiderati (top_k). È compito del service, in fase di validazione, completare questi campi quando assenti, attingendo ai valori di default configurati; il service non esegue invece language detection, che rimane responsabilità del solo processor di ingestion. Ogni tipologia di ricerca dispone infine di un proprio command dedicato, usato per comunicare con la rispettiva porta outbound.
+La query, così come ricevuta dall'adapter inbound, può contenere campi con valore nullo, ad esempio i pesi di fusione o il numero di risultati desiderati (`top_k`). È compito del service, in fase di validazione, completare questi campi quando assenti, attingendo ai valori di default configurati; il service non esegue invece language detection, che rimane responsabilità del solo processor di ingestion. Ogni tipologia di ricerca dispone infine di un proprio command dedicato, usato per comunicare con la rispettiva porta outbound.
 Il risultato contiene invece, oltre ai normali risultati della query, per tutte le corrispondenze trovate le informazioni richieste dalla query, con l'aggiunta del testo che ha dato origine al match e le informazioni relative al campo dati di origine e al numero di chunk; il punteggio è più una comodità ai fini di debug.
 
 
-Ogni tipo di ricerca ha un suo use case dedicato, lo stesso vale per i service e per gli adapter inbound.
-Sono contati sei tipi di ricerca perché semantica, full-text e ibrida vanno contati separatamente sia per single entity che per la linked.
+Ogni tipo di ricerca ha un suo use case dedicato; lo stesso vale per i service e per gli adapter inbound.
+Sono contati sei tipi di ricerca perché semantica, full-text e ibrida vanno contati separatamente sia per la ricerca su singola entità che per la ricerca linked.
 Il calcolo degli embedding per la ricerca semantica e ibrida avviene sfruttando la stessa porta outbound utilizzata in fase di ingestion dei dati.
 L'interazione con il  database avviene sempre tramite porte in accordo con i principi dell'architettura esagonale.
 
@@ -424,7 +426,7 @@ La ricerca semantica opera in due fasi, coerentemente con quanto descritto nella
 ),`.text
   )
 )
-Questo primo CTE viene generato una volta per ciascun campo searchable coinvolto nella ricerca (candidates_{field_name_1}, candidates_{field_name_2}, ...); l'ORDER BY/LIMIT opera sulla distanza approssimata quantizzata, in modo da sfruttare l'indice HNSW descritto nella sezione sul sistema di persistenza, mentre refined_score viene già calcolato sul valore esatto per il passo di combinazione successivo.
+Questo primo CTE viene generato una volta per ciascun campo searchable coinvolto nella ricerca (`candidates_{field_name_1}, candidates_{field_name_2}, ...`); l'`ORDER BY`/`LIMIT` opera sulla distanza approssimata quantizzata, in modo da sfruttare l'indice HNSW descritto nella @main-system-persistence, mentre `refined_score` viene già calcolato sul valore esatto per il passo di combinazione successivo.
 
 #code-snippet(
   caption:"Ricerca semantica - combinazione dei candidati tra partizioni",
@@ -442,7 +444,7 @@ candidates AS (
 ),`.text
   )
 )
-La combinazione si limita a un'unione tramite UNION ALL dei frammenti già ordinati e pesati, seguita dal taglio ai primi k risultati complessivi: il taglio avviene prima del join con la tabella principale, così da eseguirlo solo sulle righe già selezionate come rilevanti, non sull'intero insieme dei candidati.
+La combinazione si limita a un'unione tramite `UNION ALL` dei frammenti già ordinati e pesati, seguita dal taglio ai primi k risultati complessivi: il taglio avviene prima del join con la tabella principale, così da eseguirlo solo sulle righe già selezionate come rilevanti, non sull'intero insieme dei candidati.
 
 
 #code-snippet(
@@ -456,21 +458,21 @@ JOIN candidates ON {ticket_table}.id = candidates.id
 ORDER BY candidates.refined_score {order_clause}`.text
   )
 )
-Infine si esegue un join con la tabella principale per recuperare i campi richiesti dalla query. L'ORDER BY finale va ripetuto esplicitamente anche dopo il join: Postgres non garantisce che l'ordine dei risultati del CTE candidates sopravviva al join successivo, quindi il ranking calcolato nel passo precedente va riaffermato per essere preservato nel risultato finale.
+Infine si esegue un join con la tabella principale per recuperare i campi richiesti dalla query. L'`ORDER BY` finale va ripetuto esplicitamente anche dopo il join: Postgres non garantisce che l'ordine dei risultati del CTE candidates sopravviva al join successivo, quindi il ranking calcolato nel passo precedente va riaffermato per essere preservato nel risultato finale.
 
-Per rendere il sistema facilmente riconfigurabile, la descrizione della configurazione di pgvector (tipo di distanza, tipo di vettore, soglia utente, fattore di oversampling, ...) è iniettata tramite dependency injection di un oggetto dedicato, PgVectorEngineConfig, costruito da una factory che gestisce automaticamente le variabili d'ambiente.
+Per rendere il sistema facilmente riconfigurabile, la descrizione della configurazione di pgvector (tipo di distanza, tipo di vettore, soglia utente, fattore di oversampling, ...) è iniettata tramite #gl("dependency-injection",display:"dependency injection") di un oggetto dedicato, PgVectorEngineConfig, costruito da una factory che gestisce automaticamente le variabili d'ambiente.
 
 
-A supporto di questa configurazione, alcune classi ausiliarie coniugano il comportamento nativo di pgvector con le metriche di similarità attese dal dominio, eseguendo le trasformazioni inverse rispetto alle ottimizzazioni applicate in fase di ricerca (ad esempio la conversione tra spazio di distanza raw, usato internamente da pgvector, e spazio di similarità normalizzato, esposto verso l'esterno).
+A supporto di questa configurazione, alcune classi ausiliarie coniugano il comportamento nativo di pgvector con le metriche di similarità attese dal dominio, eseguendo le trasformazioni inverse rispetto alle ottimizzazioni applicate in fase di ricerca (ad esempio la conversione tra spazio di distanza grezza, usato internamente da pgvector, e spazio di similarità normalizzato, esposto verso l'esterno).
 
 === Ricerca full-text <lavoro-svolto-ricerca-full-text>
 La ricerca full-text adotta un approccio strutturalmente simile alla semantica: partition query per campo searchable, poi combinazione.
 Non è un vincolo tecnico, ma una scelta di riuso del codice della ricerca semantica: in questo caso la suddivisione per partizione non è strettamente necessaria, ma nemmeno errata.
 Semplifica la ricerca su sottoinsiemi di campi e l'applicazione dei pesi.
 
-La ranking function nativa di Postgres per la ricerca full-text non offre, a differenza ad esempio di Elasticsearch, un meccanismo di boosting progressivo: non è possibile, con un'unica chiamata, dare un punteggio alto a un match di frase esatta, uno intermedio a un match su tutte le parole ma non in ordine, uno basso a un match parziale. Per simulare questo comportamento si sommano più ranking function calcolate sulla stessa query: una phrase query e una allwords query, che restituiscono lo stesso punteggio in caso di match di frase, mentre la phrase query restituisce 0 se l'ordine delle parole non è rispettato.
+La ranking function nativa di Postgres per la ricerca full-text non offre, a differenza di Elasticsearch, un meccanismo di boosting progressivo: non è possibile, con un'unica chiamata, dare un punteggio alto a un match di frase esatta, uno intermedio a un match su tutte le parole ma non in ordine, uno basso a un match parziale. Per simulare questo comportamento si sommano più ranking function calcolate sulla stessa query: una phrase query e una all-words query, che restituiscono lo stesso punteggio in caso di match di frase, mentre la phrase query restituisce 0 se l'ordine delle parole non è rispettato.
 
-Una seconda limitazione nativa è l'impossibilità di filtrare per un criterio di corrispondenza minima (match di almeno una certa percentuale di parole): anche questo viene reimplementato tramite operazioni sugli array. I lessemi della query vengono estratti direttamente all'interno di Postgres — anziché con uno strumento esterno — per evitare un rischio di stemming incoerente tra la fase di estrazione e quella di confronto.
+Una seconda limitazione nativa è l'impossibilità di filtrare per un criterio di corrispondenza minima (match di almeno una certa percentuale di parole): anche questo viene reimplementato tramite operazioni sugli array. I lessemi della query vengono estratti direttamente all'interno di Postgres, anziché con uno strumento esterno, per evitare un rischio di stemming incoerente tra la fase di estrazione e quella di confronto.
 
 #code-snippet(
   caption: "Ricerca full-text - estrazione dei lessemi e calcolo della soglia di corrispondenza",
@@ -525,7 +527,7 @@ Questo CTE estrae l'insieme ordinato dei lessemi della query (`arr`), la sua car
   )
 )
 
-Il punteggio (raw_score) è la somma delle tre ranking function citate sopra (any-word, phrase, all-words). Il conteggio dei lessemi in comune (matched_count), confrontato con la soglia required_k, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (&&) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con array_ops descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di matched_count.
+Il punteggio (`raw_score`) è la somma delle tre ranking function citate sopra (any-word, phrase, all-words). Il conteggio dei lessemi in comune (`matched_count`), confrontato con la soglia `required_k`, realizza il filtro di corrispondenza minima descritto in @overlap-text-query; la condizione nella clausola WHERE sull'operatore di overlap (`&&`) applicato a una porzione dell'array dei lessemi della query è un filtro di pre-selezione più permissivo, pensato per sfruttare l'indice GIN con `array_ops` descritto nella sezione sul sistema di persistenza, prima del calcolo esatto di `matched_count`.
 
 #code-snippet(caption: "Ricerca full-text - filtro finale sulla soglia di corrispondenza",
   raw(
@@ -544,9 +546,9 @@ WHERE raw_score >= 0.0
 )
 
 
-Poiché il conteggio di corrispondenza minima non è una funzionalità nativa della full-text search di Postgres, non è utilizzabile direttamente nella ranking function, ma solo come filtro applicato a valle, con soglie e percentuali configurabili. Rimane comunque possibile, in configurazione, usare una semplice allwords query come filtro; tuttavia, su query lunghe e basi di dati ampie, una condizione di questo tipo da sola non riduce in modo significativo l'insieme di righe da valutare — da qui la necessità del meccanismo sopra descritto.
+Poiché il conteggio di corrispondenza minima non è una funzionalità nativa della full-text search di Postgres, non è utilizzabile direttamente nella ranking function, ma solo come filtro applicato a valle, con soglie e percentuali configurabili. Rimane comunque possibile, in configurazione, usare una semplice all-words query come filtro; tuttavia, su query lunghe e basi di dati ampie, una condizione di questo tipo da sola non riduce in modo significativo l'insieme di righe da valutare, da qui la necessità del meccanismo sopra descritto.
 
-Il frammento di query appena descritto viene generato per ogni configurazione testuale rilevante ed eseguito ripetutamente: per la ricerca su lingua non nota, la ricerca viene eseguita tre volte — una sul vettore tsv_simple (agnostico rispetto alla lingua) e una per ciascuna lingua supportata sul vettore tsv_lang (ad esempio una volta con `chunk_language = 'it'` e una con `chunk_language = 'en'`) — scorrendo quindi la base di dati più volte; i risultati delle diverse esecuzioni vengono infine ricombinati con `UNION ALL`, con la stessa logica di combinazione descritta per la ricerca semantica.
+Il frammento di query appena descritto viene generato per ogni configurazione testuale rilevante ed eseguito ripetutamente: per la ricerca su lingua non nota, la ricerca viene eseguita tre volte: una sul vettore `tsv_simple` (agnostico rispetto alla lingua) e una per ciascuna lingua supportata sul vettore `tsv_lang` (ad esempio una volta con `chunk_language = 'it'` e una con `chunk_language = 'en'`) scorrendo quindi la base di dati più volte; i risultati delle diverse esecuzioni vengono infine ricombinati con `UNION ALL`, con la stessa logica di combinazione descritta per la ricerca semantica.
 
 Sono stati esplorati tre ordinamenti per i lessemi delle frasi:
 - ordine lessicografico,
@@ -554,9 +556,9 @@ Sono stati esplorati tre ordinamenti per i lessemi delle frasi:
 - frequenza dei lessemi.
 
 Per applicare il principio di cassetti è sufficiente un qualsiasi tipo di ordinamento.
-Tuttavia le configurazioni testuali semplici non eliminano le stopword: ciò porta ad un alto numero di match su cui calcolare il punteggio causando un overhead molto alto per l'ordine lessicografico.
+Tuttavia le configurazioni testuali semplici non eliminano le stopword: ciò porta a un elevato numero di match su cui calcolare il punteggio causando un overhead molto alto per l'ordine lessicografico.
 
-Il codice relativo all'ordinamento lessicografico è omesso perché già trattato in @lessemi, per gli altri ordinamenti viene mostrata solo la parte differente.
+Il codice relativo all'ordinamento lessicografico è omesso perché già trattato in @lessemi; per gli altri ordinamenti viene mostrata solo la parte differente.
 
 Tramite `EXPLAIN ANALYZE` è stato analizzato anche l'ordinamento per lunghezza: ha prodotto risultati migliori, ma con una consistenza altalenante. Si è vista una discreta riduzione del candidate pool per ticket e conversation item, ma pressoché nulla sugli attachment.
 
@@ -583,7 +585,8 @@ Invece l'ordinamento per frequenza ha dato risultati significativamente più bas
   )
 )
 
-La frequenza dei lessemi però richiede un ulteriore overhead in memoria in quanto consiste in una vista materializzata che va creata esplicitamente, tuttavia ha portato  una consistente riduzione del pool di candidati che ha comportato una discreta riduzione dei tempi.
+La frequenza dei lessemi però richiede un ulteriore overhead in memoria.
+Richiede una vista materializzata che va creata esplicitamente, tuttavia ha portato  una consistente riduzione del pool di candidati che ha comportato una discreta riduzione dei tempi.
 #code-snippet(caption: "Ricerca full-text - Materialized view per le frequenze",
   raw(
     lang:"sql",
@@ -600,7 +603,7 @@ CREATE UNIQUE INDEX ON lexeme_frequency (word);
 
 
 === Ricerca ibrida
-Le query costruite per la ricerca semantica e per la ricerca full-text non vengono eseguite immediatamente al momento della loro costruzione: vengono prima create come frammenti tramite classi helper dedicate e solo in un secondo momento eseguite. Questo disaccoppiamento tra costruzione ed esecuzione è ciò che rende possibile realizzare la ricerca ibrida come reciprocal rank fusion (RRF): i due frammenti vengono avvolti con RANK() OVER, per ottenere la posizione in classifica di ciascun motore a partire dal punteggio pesato già calcolato internamente da ciascuna pipeline e poi fusi tramite un FULL OUTER JOIN sui campi identificativi dell'entità, anziché con una UNION ALL: questo permette a un risultato trovato da un solo motore di comparire comunque nell'output finale, con il contributo dell'altro motore posto a zero tramite COALESCE. Il contributo di ciascun motore alla fusione viene pesato secondo MergeWeights: il peso di ciascuna sorgente compare come numeratore nella rispettiva formula RRF, permettendo di dare più importanza alla ricerca semantica o a quella full-text a seconda della configurazione.
+Le query costruite per la ricerca semantica e per la ricerca full-text non vengono eseguite immediatamente al momento della loro costruzione: vengono prima create come frammenti tramite classi helper dedicate e solo in un secondo momento eseguite. Questo disaccoppiamento tra costruzione ed esecuzione è ciò che rende possibile realizzare la ricerca ibrida come reciprocal rank fusion (RRF): i due frammenti vengono avvolti con `RANK() OVER`, per ottenere la posizione in classifica di ciascun motore a partire dal punteggio pesato già calcolato internamente da ciascuna pipeline e poi fusi tramite un `FULL OUTER JOIN` sui campi identificativi dell'entità, anziché con una `UNION ALL`: questo permette a un risultato trovato da un solo motore di comparire comunque nell'output finale, con il contributo dell'altro motore posto a zero tramite `COALESCE`. Il contributo di ciascun motore alla fusione viene pesato secondo MergeWeights: il peso di ciascuna sorgente compare come numeratore nella rispettiva formula RRF, permettendo di dare più importanza alla ricerca semantica o a quella full-text a seconda della configurazione.
 
 #code-snippet(
   caption:"Ricerca ibrida - fusione RRF pesata tramite FULL OUTER JOIN",
@@ -652,7 +655,7 @@ WHERE s."{hop_1_origin_field}" IS NOT NULL
 
 Ogni ramo produce un'unica colonna JSONB, ottenuta fondendo un `jsonb_build_object` per ciascuna entità effettivamente raggiunta in quel ramo. L'uso di JSONB qui non è una scelta di modellazione del dominio, ma una semplificazione della sola fase di serializzazione: entra in gioco esclusivamente nell'ultimo passo, quando i risultati vengono trasferiti dal database al backend, che li traduce poi nelle proprie classi di dominio. Rappresentare ogni entità come chiave di un oggetto JSON, anziché come gruppo di colonne dedicate, evita di dover dichiarare, per ogni ramo della combinazione finale, colonne per ogni entità possibile del traversal, con alte probabilità di essere nulle: un'entità non raggiunta in un dato ramo semplicemente non compare come chiave.
 
-La clausola WHERE del ramo realizza la regola del primo cammino valido già introdotta a proposito di `LinkedSearchConfiguration`: il campo di origine del primo hop dev'essere valorizzato e tutti gli archi che lo precedono nell'ordine dichiarato in adjacency devono invece essere nulli, così da garantire che, tra più cammini possibili per una stessa riga, venga sempre seguito quello di priorità più alta. Le righe per cui nessun cammino risulta valido, nessuna FK di primo hop valorizzata, non vengono scartate: un ramo aggiuntivo, analogo a quello mostrato ma privo di join, le include comunque nel risultato finale, con i soli dati dell'entità cercata.
+La clausola `WHERE` del ramo realizza la regola del primo cammino valido già introdotta a proposito di `LinkedSearchConfiguration`: il campo di origine del primo hop dev'essere valorizzato e tutti gli archi che lo precedono nell'ordine dichiarato in `adjacency` devono invece essere nulli, così da garantire che, tra più cammini possibili per una stessa riga, venga sempre seguito quello di priorità più alta. Le righe per cui nessun cammino risulta valido, cioè per cui nessuna FK di primo hop è valorizzata, non vengono scartate: un ramo aggiuntivo, analogo a quello mostrato ma privo di join, le include comunque nel risultato finale, con i soli dati dell'entità cercata.
 
 Una volta effettuati i join, viene applicato il post-join filter descritto nella sezione sul filtering (`LinkedPostJoinFilter`), che opera sui risultati già combinati tra le diverse entità raggiunte in quel ramo, non più sui singoli frammenti di ricerca.
 
@@ -678,4 +681,4 @@ LIMIT {top_k}`.text
 
 
 
-I rami di tutte le entità cercate vengono infine combinati con una singola UNION ALL, ordinati e limitati sul punteggio pesato, stessa logica di fusione già vista per la ricerca semantica e full-text, applicata qui a livello di traversal invece che di singolo campo. L'intera catena di frammenti per singola entità, risalita, filtro post-join e combinazione viene eseguita in un'unica chiamata SQL: la ricerca linked, per quanto concettualmente più complessa, non richiede round-trip aggiuntivi verso il database rispetto alle altre tipologie di ricerca.
+I rami di tutte le entità cercate vengono infine combinati con una singola `UNION ALL`, ordinati e limitati sul punteggio pesato, stessa logica di fusione già vista per la ricerca semantica e full-text, applicata qui a livello di traversal invece che di singolo campo. L'intera catena di frammenti per singola entità, risalita, filtro post-join e combinazione viene eseguita in un'unica chiamata SQL: la ricerca linked, per quanto concettualmente più complessa, non richiede round-trip aggiuntivi verso il database rispetto alle altre tipologie di ricerca.

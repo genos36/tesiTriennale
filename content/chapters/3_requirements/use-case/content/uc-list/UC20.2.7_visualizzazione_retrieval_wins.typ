@@ -14,10 +14,10 @@
                 - Nel sistema di test sono presenti i dati relativi all'ultimo test svolto o in corso
         ],
         post-condizioni: [
-                - Il supervisore ha visualizzato la retrieval wins
+                - Il supervisore ha visualizzato il retrieval wins
                         ],
         scenario-principale:[
-                + Il supervisore visualizza la retrieval wins
+                + Il supervisore visualizza il retrieval wins
         ],
         scenari-alternativi:none,
         trigger: none,

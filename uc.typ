@@ -67,7 +67,7 @@ aggiungere ricerche su singole collection
     - La linked search consiste nel cercare contenuti rilevanti rispetto ad un query scritta dal companion
     - La linked search cerca su tutti i ticket, su tutti i conversation item e su tutti gli allegati.
     - La linked search ritorna N risultati, (da chiarire se N è riferito ai chunk oppure ai ticket)
-    - Il contenuto del risultato è definito dal contenuto della query (come per il select di sql)
+    - Il contenuto del risultato è definito dal contenuto della query
     - Possono esserci diversi criteri per la ricerca sui ticket sui conversation item, sugli allegati (sui ticket sono rilevanti phrase query, match dove ci sono tutte le parole cercate oppure almeno una delle parole, sugli allegati invece potremmo imporre una ricerca solo per frasi, in quanto grazie alla loro dimensione possono avere molti più match)
     - Deve essere possibile specificare filtri.(da chiarire se filtri generici oppure filtri specifici per ticket,conv item, attachment)
   ],

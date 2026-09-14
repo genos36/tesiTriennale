@@ -10,16 +10,16 @@
 ])
 #v(1em)
 
-Il sistema di test, indicato anche come retriever-trial, ha una struttura più semplice rispetto al sistema di ricerca e ne è cliente: espone due soli casi d'uso, l'avvio di una sessione di test, *start test*, e l'esecuzione di una singola query di test, *run one*.
+Il sistema di test, indicato anche come retriever-trial, ha una struttura più semplice rispetto al sistema di ricerca e ne è cliente: espone due soli casi d'uso, l'avvio di una sessione di test, `start_test`, e l'esecuzione di una singola query di test, `run_one`.
 
 
-Locust simula un numero configurabile di client paralleli che eseguono ricerche contro il sistema di ricerca. Lo start test viene invocato una sola volta, all'avvio della sessione di Locust; ciascun client simulato si limita poi a invocare ripetutamente run one.
+Locust simula un numero configurabile di client paralleli che eseguono ricerche contro il sistema di ricerca. Lo `start_test` viene invocato una sola volta, all'avvio della sessione di Locust; ciascun client simulato si limita poi a invocare ripetutamente `run_one`.
 
 Il sistema di test riusa la schema configuration del sistema di ricerca, ma in una forma semplificata contenente le sole entità necessarie ai fini del test e riutilizza le classi di query già definite nel sistema di ricerca, estese con una classe dedicata per rappresentare la ground truth di ciascuna query.
 
-Ogni esecuzione di run one, tramite una porta dedicata, recupera una query di test e la relativa ground truth; tramite una seconda porta esegue la query contro il sistema di ricerca, ottenendo sia il risultato reale sia lo stato corrente della sessione di ingestion (per poter distinguere, in fase di analisi, i risultati raccolti durante un'ingestion in corso da quelli raccolti a dati stabili); infine, tramite una terza porta, registra l'esito su un database dedicato. Da questo database, tramite una vista, vengono calcolate le metriche di interesse, che Grafana si limita a leggere e visualizzare.
+Ogni esecuzione di `run_one`, tramite una porta dedicata, recupera una query di test e la relativa ground truth; tramite una seconda porta esegue la query contro il sistema di ricerca, ottenendo sia il risultato reale sia lo stato corrente della sessione di ingestion (per poter distinguere, in fase di analisi, i risultati raccolti durante un'ingestion in corso da quelli raccolti a dati stabili); infine, tramite una terza porta, registra l'esito su un database dedicato. Da questo database, tramite una vista, vengono calcolate le metriche di interesse, che Grafana si limita a leggere e visualizzare.
 == Perimetro di test
-L'implementazione e la realizzazione dei test sono state ritenute molto dispendiose in termini di tempo, sia a livello di codice che preparazione dei dati di test; ciò ha portato alla scelta di ridurre l'esecuzione automatica alla ricerca linked ibrida non ottimizzata per lingua: essendo la più complessa tra tutte, costituisce un limite superiore ai tempi di esecuzione delle altre. I problemi di accuratezza delle singole ricerche sono intrinseci al tipo di ricerca (@analisi-teorica-ricerche) e vengono mitigati proprio dall'uso della ricerca ibrida.
+L'implementazione e la realizzazione dei test sono state ritenute molto dispendiose in termini di tempo, sia a livello di codice che di preparazione dei dati di test; ciò ha portato alla scelta di ridurre l'esecuzione automatica alla ricerca linked ibrida non ottimizzata per lingua: essendo la più complessa tra tutte, costituisce un limite superiore ai tempi di esecuzione delle altre. I problemi di accuratezza delle singole ricerche sono intrinseci al tipo di ricerca (@analisi-teorica-ricerche) e vengono mitigati proprio dall'uso della ricerca ibrida.
 
 Le altre tipologie di ricerca vengono comunque analizzate tramite test manuali e script al fine di poter comunque esprimere un giudizio su di esse.
 L'estensione del sistema di test al fine di gestire tutte le tipologie di ricerca è lasciata a evoluzioni successive del sistema di test.
@@ -27,13 +27,13 @@ L'estensione del sistema di test al fine di gestire tutte le tipologie di ricerc
 == Architettura del codice
 Anche il sistema di test segue il principio dell'architettura esagonale, con la stessa suddivisione in adapter, port, service e classi di dominio già vista per il sistema di ricerca.
 
-Le classi relative al data modelling riutilizzate dal sistema di ricerca sono le relative alle query e ai search result.
+Le classi relative al data modelling riutilizzate dal sistema di ricerca sono le relative alle query e ai risultati della ricerca.
 Sono state anche riutilizzate le classi entity seppur in modo ridotto; viene usata anche una classe schema configuration ma ridimensionata a collezione di entità.
 
 Sono state aggiunte le seguenti classi di dominio:
 #list(
         [TestQuery, un semplice wrapper che contiene un id e una SearchRequest;],
-        [SearchRequest, aggrega una SimilarityQuery o una hybrid search request alla relativa GroundTruth;],
+        [SearchRequest, aggrega una SimilarityQuery o una HybridSearchRequest alla relativa GroundTruth;],
         [GroundTruth, rappresenta il risultato atteso dalla ricerca;],
         [RealResult, rappresenta il risultato reale di una ricerca;],
         [LogItem, aggrega una query di test con il relativo risultato e altre informazioni come l'id della sessione o lo stato di attività dell'ingestion.],
@@ -73,10 +73,10 @@ Il service utilizza delle porte outbound per comunicare con l'esterno:
 Il sistema di test ha due sistemi di permanenza con funzionalità ed esigenze distinte;
 uno si occupa di memorizzare le query di ricerca da eseguire, TestQueryRepositoryPort, l'altro registra i risultati delle ricerche, LinkedEvaluationLogPort.
 
-*TestQueryRepositoryPort* viene solo letto in modo sequenziale, perciò si è scelto di utilizzare un semplice file jsonl. Questo rende facile la deserializzazione, riutilizzando lo stesso codice usato dal sistema di ricerca per la deserializzazione del payload json delle richieste HTTP.
+*TestQueryRepositoryPort* viene solo letto in modo sequenziale, perciò si è scelto di utilizzare un semplice file JSONL. Questo rende facile la deserializzazione, riutilizzando lo stesso codice usato dal sistema di ricerca per la deserializzazione del payload JSON delle richieste HTTP.
 La sua modifica si traduce in una modifica ad un file. Ha anche una maggiore facilità di condivisione e tracciamento.
 
-*LinkedEvaluationLogPort* viene usato dal backend Python per scritture continue al fine di registrare i risultati delle ricerche, serve inoltre un ricalcolo continuo al fine di calcolare le metriche. Postgres risponde a queste esigenze, le scritture sono veloci e il ricalcolo continuo è eseguito tramite una view.
+*LinkedEvaluationLogPort* viene usato dal backend Python per scritture continue al fine di registrare i risultati delle ricerche, serve inoltre un ricalcolo continuo al fine di calcolare le metriche. Postgres risponde a queste esigenze, le scritture sono veloci e il ricalcolo continuo è eseguito tramite una vista.
 Inoltre Grafana e Postgres  sono  direttamente compatibili, quindi il backend non deve occuparsi né di calcolare le metriche né di comunicarle alla dashboard.
 
 
@@ -93,7 +93,7 @@ Un'esecuzione tipica segue il seguente flusso:
         esecuzione periodica delle ricerche, sono avviate da Locust sempre attraverso un adapter,
         + la TestQuery viene recuperata dalla coda,
         + tramite la porta IngestionStatusPort il service recupera l'informazione relativa allo stato di attività dell'ingestion,
-        + l'adapter RemoteIngestionStatusAdapter recupera l'informazione relativa allo stato di attività dell'ingestion,
+        + l'adapter RemoteIngestionStatusAdapter rinterroga il database Postgres per recuperare l'informazione relativa allo stato di attività dell'ingestion,
         + la ricerca viene eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult,
         + l'adapter RemoteLinkedSearchExecutorAdapter invia la query di ricerca all'endpoint appropriato,
         + il LogItem e l'id della sessione di test corrente vengono persistiti tramite la porta LinkedEvaluationLogPort,
@@ -102,7 +102,7 @@ Un'esecuzione tipica segue il seguente flusso:
 )
 
 == Visualizzazione dei risultati
-Grafana si interfaccia direttamente con il database Postgres utilizzando una sintassi sql-like.
+Grafana si interfaccia direttamente con il database Postgres utilizzando una sintassi SQL-like.
 Per mantenere le query semplici ho scelto di utilizzare la seguente vista per semplificare l'accesso.
 
 
@@ -192,6 +192,7 @@ WHERE test_session_id = '$session'
 == Limitazioni imposte da elementi esterni
 Nell'adapter dedicato al calcolo degli embedding tramite modello remoto è stato necessario introdurre un rallentamento artificiale delle prestazioni, a causa di blocchi temporanei imposti dal servizio remoto: un numero eccessivo di chiamate in un breve intervallo causa un periodo di blocco durante il quale il servizio restituisce sistematicamente un errore 503.
 
-Questo adapter è condiviso da più componenti del sistema di ricerca — la fase di arricchimento dell'ingestion e i service di ricerca semantica e ibrida — motivo per cui la limitazione descritta in questa sezione, per quanto discussa qui in un unico punto, si ripercuote su tutte queste componenti.
+Questo adapter è condiviso da più componenti del sistema di ricerca.
+La fase di arricchimento dell'ingestion e i service di ricerca semantica e ibrida, motivo per cui la limitazione descritta in questa sezione, per quanto discussa qui in un unico punto, si ripercuote su tutte queste componenti.
 
 Da un punto di vista architetturale, questo intervento non introduce un nuovo collo di bottiglia nel sistema, ma sposta parzialmente, dall'esterno verso l'interno del sistema, un collo di bottiglia già esistente e non altrimenti evitabile. Per gestirlo sono stati introdotti meccanismi di retry con attesa esponenziale e numero massimo di tentativi, oltre a un limite al numero di richieste concorrenti verso il servizio remoto, realizzato tramite semafori e contatori.

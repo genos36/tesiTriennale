@@ -8,7 +8,7 @@
 
 = Introduzione Teorica<cap:introduzione-teorica>
 #text(style: "italic", [
-  In questo capitolo approfondisco le basi teoriche rilevanti per la realizzazione del progetto, le tecnologie rilevanti per il progetto e relativi ruoli nella risoluzione dei problemi affrontati, quali strumenti sono stati adottati e altri strumenti adottati durante lo sviluppo.
+  In questo capitolo approfondisco le basi teoriche rilevanti per la realizzazione del progetto, le tecnologie rilevanti per il progetto e i relativi ruoli nella risoluzione dei problemi affrontati, quali strumenti sono stati adottati e altri strumenti adottati durante lo sviluppo.
 ])
 #v(1em)
 
@@ -79,7 +79,7 @@ Il sistema di test comunica con il sistema di ricerca simulando client esterni c
 
 
 == Criteri di scelta delle tecnologie
-I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui vengono approfonditi separatamente nelle sezioni #link(<criteri:main-system>)[sistema di ricerca] e #link(<criteri:test-system>)[sistema di test].
+I criteri di scelta delle tecnologie sono differenti per i due sistemi, per cui vengono approfonditi separatamente nella @criteri:main-system per il sistema principale e @criteri:test-system per il sistema di test.
 === Sistema di ricerca <criteri:main-system>
 La maggior parte delle tecnologie è fissata dai requisiti di vincolo (@tab:requisiti-vincolo). Sono rimaste come scelte libere la libreria di language detection e la scelta del meccanismo di ricerca full-text.
 
@@ -238,7 +238,7 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   // logo: "/images/postgres.png",
   descrizione: [
     Meccanismo di ricerca full-text nativo di Postgres, basato sui
-    tipi di dato tsvector e tsquery e sulla funzione di ranking ts_rank.
+    tipi di dato tsvector e tsquery e sulla funzione di ranking `ts_rank`@postgres-text-search-main.
   ],
   motivazione: [
     Nessun problema di licenza legato all'uso in un prodotto commerciale e livello di funzionalità sufficientemente avanzato rispetto alle esigenze del progetto. Vi sono comunque presenti lacune di funzionalità che hanno richiesto dei workaround analizzati nel dettaglio nella @lavoro-svolto-ricerca-full-text.
@@ -254,7 +254,7 @@ Le tecnologie adottate all'interno del sistema di ricerca sono divise come segue
   ],
   alternative: (
           (nome: "ParadeDB",versione:"0.25.0", motivo: [licenza incompatibile con i vincoli aziendali sull'uso commerciale.]),
-    (nome: "pg_textsearch (TimescaleDB)",versione:"1.3.1", motivo: [il rapporto tra vantaggi, limitazioni@limitazioni-pgtextsearch e incognite da valutare non è stato ritenuto sufficientemente alto da giustificarne l'adozione. Le più importanti sono la mancanza di phrase_query e l'incognita di comparabilità dei punteggi di diverse partizioni di una tabella: il partizionamento era già previsto per conformarsi alle raccomandazioni di pgvector.
+    (nome: "pg_textsearch (TimescaleDB)",versione:"1.3.1", motivo: [il rapporto tra vantaggi, limitazioni@limitazioni-pgtextsearch e incognite da valutare non è stato ritenuto sufficientemente alto da giustificarne l'adozione. Le più importanti sono la mancanza di phrase query e l'incognita di comparabilità dei punteggi di diverse partizioni di una tabella: il partizionamento era già previsto per conformarsi alle raccomandazioni di pgvector.
             La stessa incognita va applicata alla confrontabilità dei punteggi di due entità diverse durante la ricerca linked.]),
   ),
   t-label: "tec:fts-nativa"
@@ -346,7 +346,7 @@ Le tecnologie adottate all'interno del sistema di test sono divise come segue.
 
 ==== Database
 Vengono usati due storage:
-- un file jsonl per la persistenza delle query da eseguire e la ground truth, scelta dovuta alla semplicità di condivisione e alla mancanza di requisiti di prestazioni di scrittura e di lettura non sequenziale;
+- un file JSONL per la persistenza delle query da eseguire e la ground truth, scelta dovuta alla semplicità di condivisione e alla mancanza di requisiti di prestazioni di scrittura e di lettura non sequenziale;
 - un database Postgres, usato per loggare i risultati dei test, scelto per la facilità di integrazione con Grafana e per la necessità di scritture continue e ricalcolo continuo delle metriche, realizzato con una vista.
 Per maggiori dettagli si vedano le informazioni di #link(<tec:postgres>)[Postgres].
 

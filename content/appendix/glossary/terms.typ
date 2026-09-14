@@ -2,7 +2,7 @@
 #let glossary-terms=(
    (key: "api",
            short: [API],
-           long: [Application Program Interface],
+           long: [Application Programming Interface],
            description: [
                    È un’interfaccia utile a permettere o facilitare la comunicazione tra diversi software o parti di un singolo software.
            ],
@@ -158,7 +158,7 @@
     key: "principio-dei-cassetti",
     short: [Principio dei cassetti],
     description: [
-        Noto anche come _pigeonhole principle_, indica una classe di problemi in cui _n_ oggetti vengono distribuiti in _m_ contenitori, con $n > m$; ne consegue necessariamente che almeno un contenitore conterrà più di un oggetto.
+        Noto anche come _pigeonhole principle_, indica una classe di problemi in cui _n_ oggetti vengono distribuiti in _m_ contenitori, con n maggiore di m; ne consegue necessariamente che almeno un contenitore conterrà più di un oggetto.
     ],
   ),
   (
@@ -208,7 +208,7 @@
     // long: [Chunk di testo],
     description: [
       Indica il processo di combinazione dei risultati prodotti da diverse fonti o ricerche.
-      Alcuni esempi sono il rescoring quando i punteggi delle diverse fonti sono direttamente comparabili, rrf o combinazione con modelli appositi quando non direttamente comparabili.
+      Alcuni esempi sono il rescoring quando i punteggi delle diverse fonti sono direttamente comparabili, RRF o combinazione con modelli appositi quando non direttamente comparabili.
     ],
   ),
   (
@@ -227,8 +227,8 @@
     // long: [],
     description: [
             #upper("è") un indice statistico usato per valutare i sistemi di ricerca e recupero informazioni in base a quanto in alto posizionano la prima risposta corretta.
-            Misura la percentuale di tentativi o interazioni che hanno prodotto un risutlato corretto con rank minore o ugeale a k rispetto al totale dei tentativi compiuti.
-            Ad esempio hitrate\@1 misura quantospesso il primo risultato è corretto.
+            Misura la percentuale di tentativi o interazioni che hanno prodotto un risultato corretto con rank minore o uguale a k rispetto al totale dei tentativi compiuti.
+            Ad esempio hitrate\@1 misura quanto spesso il primo risultato è corretto.
             // $"MRR"=1/Q sum^Q_(i=1)"RelevanceLabelValue"/"rank"_i$
     ],
   ),
@@ -280,7 +280,7 @@
   (
     key: "gin",
     short: [GIN],
-    long: [General Inverted Index],
+    long: [Generalized Inverted Index],
     description: [
             Indica una struttura dati che mappa i contenuti (come parole o numeri) direttamente alle loro posizioni o ai documenti in cui compaiono, consentendo ricerche full-text rapide.
             Nel contesto di Postgres indica un tipo di indice progettato per gestire valori composti (o elementi multipli all'interno di una singola riga) ed effettuare ricerche efficienti su di essi.
@@ -293,7 +293,7 @@
     short: [CTE],
     long: [Common Table Expression],
     description: [
-            Indica un set di risultati temporaneo e con un nome proprio, definito all'interno dell'ambito di esecuzione di una singola istruzione SQL (come SELECT, INSERT, UPDATE o DELETE).
+            Indica un set di risultati temporaneo e con un nome proprio, definito all'interno dell'ambito di esecuzione di una singola istruzione SQL (come `SELECT`, `INSERT`, `UPDATE` o `DELETE`).
             Funziona come una tabella virtuale o una sottoquery con un nome, creata al volo durante l'esecuzione della query principale ed eliminata subito dopo.
 
              // [1] (https://learnsql.it/blog/che-cose-una-cte-in-sql-server/), [2] (https://www.datacamp.com/it/tutorial/cte-sql), [3] (https://www.youtube.com/watch?v=qGx0TISr8Q8&t=981)
@@ -322,7 +322,7 @@
     short: [Ground truth],
     // long: [],
     description: [
-            indica un singolo risultato o un insieme di risultati considerati corretti e usati come riferimento per valutare l'accuratezza e le prestazioni di un sistema.
+            Indica un singolo risultato o un insieme di risultati considerati corretti e usati come riferimento per valutare l'accuratezza e le prestazioni di un sistema.
     ],
   ),
   (
@@ -353,8 +353,7 @@
       description: [
         Tecnica di partizionamento orizzontale dei dati in più unità
         indipendenti (dette shard), distribuite su nodi diversi, per migliorare
-        scalabilità e prestazioni di un sistema distribuito
-        @elastic-sharding.
+        scalabilità e prestazioni di un sistema distribuito.
       ],
     ),
     (
@@ -365,8 +364,7 @@
         Algoritmo di pruning per l'ordinamento top-k che sfrutta limiti
         superiori precalcolati sul punteggio dei documenti per escludere
         candidati che non potrebbero rientrare nei risultati finali,
-        riducendo il costo computazionale della ricerca
-        @elastic-blockmaxwand.
+        riducendo il costo computazionale della ricerca.
       ],
     ),
     (
@@ -377,8 +375,7 @@
         Componente che definisce come il testo viene elaborato prima di
         essere indicizzato o interrogato, tipicamente composto da una
         catena di filtri di normalizzazione e da un tokenizer,
-        responsabile della segmentazione del testo in singoli token
-        @elastic-analyzers.
+        responsabile della segmentazione del testo in singoli token.
       ],
     ),
     (
@@ -406,7 +403,7 @@
     ),
     (
       key: "configurazione-testuale",
-      short: "configurazione testuale",
+      short: "Configurazione testuale",
       long: none,
       description: [
         Insieme di regole che definisce come Postgres elabora il testo
@@ -501,6 +498,91 @@
         Modalità di ricerca full‑text che richiede la corrispondenza di una singola parola.
       ],
     ),
+    (
+      key: "composition-root",
+      short: "Composition root",
+      long: none,
+      description: [
+        Punto unico del programma in cui vengono create e collegate tra
+        loro le istanze concrete delle dipendenze dell'applicazione,
+        separando la costruzione degli oggetti dalla logica applicativa
+        che li utilizza.
+      ],
+    ),
+    (
+      key: "aggregate-root",
+      short: "Radice dell'aggregato",
+      long: "Aggregate root",
+      description: [
+        Nel Domain-Driven Design, oggetto che funge da punto di accesso
+        unico a un insieme di entità e valori correlati che devono essere
+        trattati come un'unica unità consistente, garantendo che le
+        invarianti dell'intero aggregato siano rispettate a ogni
+        modifica.
+      ],
+    ),
+    (
+      key: "visitor",
+      short: "Visitor",
+      long: none,
+      description: [
+        Design pattern comportamentale che permette di aggiungere nuove
+        operazioni su una gerarchia di tipi senza modificarne le classi,
+        incapsulando ciascuna operazione in un oggetto separato a cui
+        ogni tipo della gerarchia delega l'esecuzione tramite un metodo
+        dedicato.
+      ],
+    ),
+    (
+      key: "upsert",
+      short: "Upsert",
+      long: none,
+      description: [
+        Operazione di scrittura su database che inserisce un nuovo record
+        oppure, qualora esista già un record in conflitto con un vincolo di
+        unicità, ne aggiorna i valori, evitando così di dover eseguire
+        separatamente un controllo di esistenza seguito da un inserimento
+        o un aggiornamento espliciti.
+      ],
+    ),
+    (
+      key: "quantizzazione-binaria",
+      short: "Quantizzazione binaria",
+      long: none,
+      description: [
+        Tecnica di riduzione di precisione di un vettore che ne rappresenta
+        ciascuna componente con un singolo bit anziché con un valore in
+        virgola mobile, riducendo drasticamente lo spazio occupato e il
+        costo di confronto a scapito della precisione, tipicamente
+        utilizzata per generare rapidamente un insieme di candidati da
+        raffinare in una fase successiva.
+      ],
+    ),
+    (
+      key: "distanza-hamming",
+      short: "Distanza di Hamming",
+      long: none,
+      description: [
+        Metrica di distanza tra due sequenze di bit di uguale lunghezza,
+        definita come il numero di posizioni in cui i bit corrispondenti
+        differiscono; è la metrica naturalmente associata al confronto tra
+        vettori quantizzati in forma binaria.
+      ],
+    ),
+    (
+      key: "dependency-injection",
+      short: "Dependency injection",
+      long: none,
+      description: [
+        Tecnica secondo cui le dipendenze di un componente non vengono
+        create direttamente al suo interno, ma fornite dall'esterno al
+        momento della sua costruzione, disaccoppiando il componente
+        dall'implementazione concreta delle proprie dipendenze e
+        facilitandone la sostituzione e il test.
+      ],
+    ),
+
+
 
         ).map(it=>{
 

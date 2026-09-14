@@ -100,6 +100,7 @@
     "any-word",
     "all-words",
     "post-join",
+    "pydantic-settings",
   )
 
   let pattern = compound-words.join("|")

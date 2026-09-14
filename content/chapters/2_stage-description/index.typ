@@ -14,7 +14,7 @@ Il tirocinio è strutturato per favorire lo sviluppo di un ventaglio di competen
 
 Dal punto di vista metodologico, lo stage mira a consolidare le capacità di analisi dei requisiti,
 astrazione dei problemi complessi e progettazione di soluzioni algoritmiche generali e scalabili,
-promuovendo inoltre la collaborazione con i tutor.
+promuovendo inoltre la collaborazione con il tutor.
 
 Sotto il profilo tecnico, il percorso formativo permetterà di acquisire e approfondire le seguenti tematiche:
 - database avanzati, padronanza nell'utilizzo di Postgres non solo come database relazionale, ma come motore di information retrieval vettoriale tramite l'estensione pgvector;
@@ -59,7 +59,7 @@ La pianificazione, derivata dal piano di lavoro, è la seguente:
 
 I rischi identificati per questo progetto sono classificati con un codice progressivo della forma *RN*, dove *N* è un numero intero incrementale che parte da 01 e decorati con una probabilità di occorrenza, un impatto e una strategia di mitigazione.
 
-Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elasticsearch, delle sue scelte implementative dovute allo stack tecnologico e dalla comprensione degli interessi sperimentativi dell'impresa.
+Ogni rischio è stato analizzato tenendo conto della complessità di comprendere i casi d'uso del sistema di ricerca di paragone Elasticsearch, delle sue scelte implementative dovute allo stack tecnologico e alla comprensione degli interessi sperimentativi dell'impresa.
 
 
 #risc-list(
@@ -217,7 +217,8 @@ Ogni rischio è stato analizzato tenendo conto della complessità di comprendere
                     name: "Sovrapposizione tra le performance di retrieval e generazione",
                     description: [
                       L'architettura RAG si compone di due fasi: la fase di retrieval, che si occupa del recupero delle informazioni e la fase di generazione della risposta.
-                      Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a Elasticsearch, le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
+                      Nel sistema di ricerca attuale solo la parte di retrieval e ingestion di documenti è collegata strettamente a Elasticsearch.
+                      Le altre parti del sistema non sono sottoposte a valutazione nell'ambito di questo progetto.
                     ],
                     mitigation: [
                       Vengono posti dei rigidi confini sul sistema da implementare.

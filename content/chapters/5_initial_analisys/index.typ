@@ -86,7 +86,7 @@ Una sessione può assumere i valori aperta, chiusa e finalizzata: aperta indica 
 La promozione è il processo che trasforma e trasferisce i dati dalla staging area verso le tabelle reali, eliminando contestualmente i dati trascritti con successo.
 
 La staging area si differenzia dalle tabelle originali nei seguenti punti:
-- la chiave primaria è uno staging id incrementale, il che permette di gestire eventuali duplicati in fase di staging e garantisce una maggiore velocità di scrittura;
+- la chiave primaria è uno `staging_id` incrementale, il che permette di gestire eventuali duplicati in fase di staging e garantisce una maggiore velocità di scrittura;
 - non viene utilizzato il tipo `vector`: la staging area non necessita di essere interrogabile per similarità, pertanto gli embedding sono memorizzati come vettori di double;
 - gli indici vengono creati esclusivamente sulle chiavi esterne, al fine di favorire i join necessari in fase di verifica per la promozione dei dati verso le tabelle definitive;
 - le tabelle di staging dei chunk non sono denormalizzate: la denormalizzazione viene gestita dalla logica di promozione, in modo da mantenere l'ingestion disaccoppiata da questa responsabilità.
@@ -145,7 +145,7 @@ Le caratteristiche minime da replicare e i relativi workaround elaborati sono i 
   [
     *Query di filtro*:
 
-    nativamente Postgres offre tre tipologie di query per ranking e filtraggio: phrase query, all-words query e #gl("any-word-query",display:"any-word query"); a ciascuna di queste è possibile aggiungere, per singola parola, un carattere jolly per la ricerca per prefisso.
+    nativamente Postgres offre tre tipologie di query per ranking e filtraggio: phrase query, all-words query e #gl("any-word-query",display:"any-word query")\; a ciascuna di queste è possibile aggiungere, per singola parola, un carattere jolly per la ricerca per prefisso.
 
     Non è previsto alcun supporto nativo per una corrispondenza di almeno X parole. La sua replicazione tramite composizione di tsquery è stata esclusa per l'eccessiva complessità computazionale. È stato quindi adottato un workaround che tratta i tsvector come array di testo ordinati lessicograficamente, ordinamento gestito nativamente da Postgres in fase di creazione del tsvector: questa precondizione di ordinamento consente di ridurre significativamente la complessità della ricerca, richiedendo tuttavia, ai fini dell'ottimizzazione, un tipo di indice diverso da quello utilizzato per le altre query full-text. Da questa scelta deriva che tale meccanismo non può essere utilizzato per il ranking, poiché non produce una tsquery; questo non costituisce una limitazione, poiché anche in Elasticsearch un vincolo di questo tipo viene utilizzato solo ai fini del filtraggio, mentre l'ultimo livello di ranking è affidato a una any-word query.
   ],
@@ -156,7 +156,7 @@ La ricerca avviene sempre per partizione, anche quando ciò non è strettamente 
 Per quanto riguarda il comportamento richiesto dal requisito #rcm-link("Ricerca full-text ottimizzata su lingua"), la ricerca ottimizzata su lingua si limita a filtrare sul campo lingua del chunk, operazione ottimizzata tramite un indice parziale dedicato per ciascuna lingua supportata. La ricerca multilingua, invece, esegue una prima ricerca utilizzando la configurazione di testo non language-specific, seguita da una ricerca language-specific per ciascuna delle lingue previste a catalogo. Questo approccio è sostenibile proprio perché il numero di lingue supportate è ridotto, a fronte di un volume di dati considerevole per ciascuna di esse. I risultati delle diverse ricerche vengono infine combinati tramite rescoring.
 
 ===== Ricerca con soglia di corrispondenza <overlap-text-query>
-Elasticsearch permette di definire una soglia di corrispondenza minima tramite il parametro minimum_should_match, che consente di richiedere che solo una percentuale o un numero minimo di termini della query sia presente nel documento, con soglie che possono variare in funzione della lunghezza della query stessa (query già elaborata dalla configurazione testuale, con le stopword rimosse). Postgres non offre alcun operatore nativo equivalente.
+Elasticsearch permette di definire una soglia di corrispondenza minima tramite il parametro `minimum_should_match`, che consente di richiedere che solo una percentuale o un numero minimo di termini della query sia presente nel documento, con soglie che possono variare in funzione della lunghezza della query stessa (query già elaborata dalla configurazione testuale, con le stopword rimosse). Postgres non offre alcun operatore nativo equivalente.
 
 Prima di arrivare alla soluzione adottata, sono stati considerati e scartati due approcci alternativi:
 - un prefiltro costruito come OR di tutti i termini della query, seguito dal conteggio esatto dei match sui soli candidati. Sebbene l'OR sia indicizzabile tramite GIN, per query lunghe o composte da termini poco selettivi il filtro produce un insieme di candidati che copre una porzione consistente della tabella, vanificando il beneficio dell'indice;
@@ -166,19 +166,19 @@ La soluzione adottata sfrutta il fatto che Postgres ordina nativamente i lessemi
 
 L'ordinamento lessicografico è ciò che rende possibile ricondurre il problema a un semplice controllo su un prefisso dell'array, anziché a un'esplosione combinatoria di sottoinsiemi da verificare: garantendo un ordine deterministico e condiviso tra la query e ogni documento candidato, permette di individuare tramite un singolo slice, calcolato una sola volta sull'array della query, quali posizioni è sufficiente controllare.
 
-Questo meccanismo costituisce un prefiltro, secondo lo stesso principio già adottato dalla ricerca full-text nativa di Postgres, dove il filtraggio tramite indice GIN precede il calcolo del ranking. Il prefiltro rappresenta una condizione necessaria, ma non sufficiente, rispetto alla soglia richiesta: per costruzione, un documento che soddisfa realmente la soglia richiesta contiene necessariamente almeno un match tra i lessemi verificati dal filtro, per un argomento riconducibile al #gl("principio-dei-cassetti").
+Questo meccanismo costituisce un prefiltro, secondo lo stesso principio già adottato dalla ricerca full-text nativa di Postgres, dove il filtraggio tramite indice GIN precede il calcolo del ranking. Il prefiltro rappresenta una condizione necessaria, ma non sufficiente, rispetto alla soglia richiesta: per costruzione, un documento che soddisfa realmente la soglia richiesta contiene necessariamente almeno un match tra i lessemi verificati dal filtro, per un argomento riconducibile al #gl("principio-dei-cassetti",display:"principio dei cassetti").
 Se un documento matcha almeno k lessemi su n totali, non è possibile che tutti i match cadano al di fuori del prefisso controllato dal filtro, poiché al di fuori di esso restano solo k-1 posizioni, insufficienti a raggiungere la soglia.
 Il filtro può tuttavia produrre falsi positivi, poiché verifica solo la presenza di almeno un match nel prefisso, senza garantire che il numero totale di match nel documento raggiunga effettivamente la soglia richiesta. Per questo motivo il prefiltro deve sempre essere seguito da un conteggio esatto dei match sui soli candidati sopravvissuti, così da scartare gli eventuali falsi positivi e verificare la soglia effettiva.
 
 Rispetto all'approccio precedentemente adottato, basato su una any-word query utilizzata anche ai fini del filtraggio, questa soluzione riduce sensibilmente il numero di candidati da valutare singolarmente, poiché il filtro per overlap è più selettivo pur restando indicizzabile.
 ===== Gestione dei tsvector <gestione-tsv>
-La documentazione ufficiale di Postgres non esprime una preferenza netta tra due strategie di ottimizzazione delle ricerche full-text: l'uso di indici su espressione oppure la materializzazione dei tsvector in colonne dedicate. I primi sono più leggeri in termini di spazio occupato, ma più difficili da gestire rispetto ai vettori materializzati.
+La documentazione ufficiale di Postgres@postgres-text-search-main non esprime una preferenza netta tra due strategie di ottimizzazione delle ricerche full-text: l'uso di indici su espressione oppure la materializzazione dei tsvector in colonne dedicate. I primi sono più leggeri in termini di spazio occupato, ma più difficili da gestire rispetto ai vettori materializzati.
 
 Per questo progetto si è scelto di materializzare i tsvector. Alla tabella dei chunk sono state aggiunte due colonne: una per il tsvector language-agnostic e una per quello language-specific. È stata prevista una sola colonna per la versione language-specific, non una per lingua, poiché ogni chunk ha una singola lingua assegnata e non richiede supporto multilingua a livello di singolo chunk.
 
-L'alternativa sarebbe stata mantenere due serie di indici su espressione distinti, uno per il ranking full-text nativo e uno per il filtro overlap. A livello di spazio occupato dagli indici stessi, le due strategie sono equivalenti: la materializzazione non comporta alcun risparmio in tal senso, anzi introduce un costo aggiuntivo, poiché le colonne materializzate occupano spazio extra su disco rispetto al calcolo del tsvector a runtime tramite indici su espressione. Il motivo principale della scelta è quindi di comodità implementativa: avere le colonne materializzate consente di costruire su di esse entrambi gli insiemi di indici senza dover ripetere la stessa espressione in più punti dello schema. Inoltre si è rivelata utile per la realizzazione di un workaround meglio trattato nella @lavoro-svolto-ricerca-full-text.
+L'alternativa sarebbe stata mantenere due serie di indici su espressione distinti, uno per il ranking full-text nativo e uno per il filtro overlap. A livello di spazio occupato dagli indici stessi, le due strategie sono equivalenti: la materializzazione non comporta alcun risparmio in tal senso, anzi introduce un costo aggiuntivo, poiché le colonne materializzate occupano spazio extra su disco rispetto al calcolo del tsvector a runtime tramite indici su espressione. Il motivo principale della scelta è quindi di comodità implementativa: avere le colonne materializzate consente di costruire su di esse entrambi gli insiemi di indici senza dover ripetere la stessa espressione in più punti dello schema. Inoltre questa scelta si è rivelata utile per la realizzazione di un workaround meglio trattato nella @lavoro-svolto-ricerca-full-text.
 
-Resta aperto e non è stato oggetto di analisi approfondita in questo lavoro, il trade-off tra il costo di ricalcolare il tsvector a ogni interrogazione (nel caso di indici su espressione) e lo spazio extra occupato dalla loro materializzazione: una valutazione più rigorosa richiederebbe ulteriori considerazioni e i risultati di sperimentazioni reali.
+Il trade-off tra il costo di ricalcolare il tsvector a ogni interrogazione (nel caso di indici su espressione) e lo spazio extra occupato dalla loro materializzazione resta aperto e non è stato oggetto di analisi approfondita in questo lavoro: una valutazione più rigorosa richiederebbe ulteriori considerazioni e i risultati di sperimentazioni reali.
 
 I due insiemi di indici, quello per la ricerca full-text nativa e quello per il filtro overlap, coesistono sulle stesse colonne materializzate. Questa scelta è coerente con la natura esplorativa del progetto: mantenerli distinti rende le due strategie intercambiabili, semplificando la sperimentazione. Qualora si decidesse in futuro di abbandonare il filtro overlap o l'uso delle tsquery per il filtraggio, l'indice corrispondente può essere eliminato senza conseguenze, poiché le funzioni di ranking native di Postgres non richiedono la presenza di un indice per funzionare.
 
@@ -196,11 +196,11 @@ La ricerca linked permette di recuperare, a partire dalle singole entità, un qu
 
 Nello specifico, la ricerca linked esegue prima una ricerca indipendente su ciascuna entità coinvolta, per poi ricostruire, seguendo le regole di linking definite nel modello dati, i collegamenti tra i risultati tramite join.
 
-Per "risalita" si intende la navigazione delle relazioni dall'entità figlia verso l'entità genitore (ad esempio da attachment verso conversation item e da conversation item verso ticket). Il progetto supporta esclusivamente questa direzione di navigazione: la discesa, oltre a non essere banale da implementare, non rientra tra gli interessi dell'azienda per questo tirocinio.
+Per risalita si intende la navigazione delle relazioni dall'entità figlia verso l'entità genitore (ad esempio da attachment verso conversation item e da conversation item verso ticket). Il progetto supporta esclusivamente questa direzione di navigazione: la discesa, oltre a non essere banale da implementare, non rientra tra gli interessi dell'azienda per questo tirocinio.
 
 Alcune entità, come attachment, dispongono di più regole di linking possibili verso entità diverse (ad esempio verso conversation item oppure direttamente verso ticket). Per questi casi si è scelto di adottare la regola del primo cammino valido: viene applicata la prima regola di linking per cui è presente un riferimento effettivo e le successive vengono considerate solo in sua assenza; ad esempio: se un attachment non presenta un riferimento diretto a un ticket, viene utilizzato il riferimento al conversation item, qualora presente.
 
-Questa regola nasce da una scelta di disaccoppiamento generale. Nei dati reali, un attachment non può avere contemporaneamente un riferimento sia a un conversation item sia a un ticket: si tratta di un vincolo di integrità proprio del modello dati, che tuttavia non è stato implementato come constraint a livello di singola entità (né tramite controllo a database né nella logica applicativa), poiché ritenuto fuori dal perimetro di questo progetto e di scarso beneficio pratico rispetto alla complessità che avrebbe introdotto. Anche qualora fosse stato implementato, associarlo direttamente alle regole di linking non sarebbe stata una soluzione opportuna, per lo stesso principio di separazione già adottato tra la configurazione della ricerca linked e la definizione dei vincoli relazionali tramite chiavi esterne. La regola del primo cammino valido permette quindi alla ricerca linked di funzionare correttamente a prescindere dall'esistenza o meno di un simile vincolo, mantenendo il meccanismo disaccoppiato e più facilmente estendibile in futuro.
+Questa regola nasce da una scelta di disaccoppiamento generale. Nei dati reali, un attachment non può avere contemporaneamente un riferimento sia a un conversation item sia a un ticket: si tratta di un vincolo di integrità proprio del modello dati, che tuttavia non è stato implementato come vincolo a livello di singola entità (né tramite controllo a database né nella logica applicativa), poiché ritenuto fuori dal perimetro di questo progetto e di scarso beneficio pratico rispetto alla complessità che avrebbe introdotto. Anche qualora fosse stato implementato, associarlo direttamente alle regole di linking non sarebbe stata una soluzione opportuna, per lo stesso principio di separazione già adottato tra la configurazione della ricerca linked e la definizione dei vincoli relazionali tramite chiavi esterne. La regola del primo cammino valido permette quindi alla ricerca linked di funzionare correttamente a prescindere dall'esistenza o meno di un simile vincolo, mantenendo il meccanismo disaccoppiato e più facilmente estendibile in futuro.
 
 Per la ricerca linked ibrida, la fusione RRF tra i risultati di ricerca semantica e full-text viene eseguita a livello di singola entità, prima dell'esecuzione del linking. Questa scelta rispecchia il comportamento di Elasticsearch nello stesso scenario.
 
@@ -231,12 +231,12 @@ In questa sezione viene illustrato l'ordine delle operazioni eseguite per ogni t
     La ricerca multilingua riutilizza le ricerche specifiche per lingua appena descritte:
     + esecuzione della ricerca language-agnostic, articolata come le ricerche language-specific;
     + esecuzione delle ricerche language-specific, una per ciascuna lingua supportata a catalogo, ciascuna strutturata secondo i passi della ricerca ottimizzata su lingua descritta sopra;
-    + combinazione dei risultati tramite rescoring semplice, non è necessario un ulteriore join, poiché ciascuna ricerca sottostante lo ha già effettuato;
+    + combinazione dei risultati tramite rescoring semplice;
     + restituzione dei dati richiesti dalla query.
   ],
   [
     La *ricerca ibrida* si articola come segue:
-    + esecuzione della ricerca full-text, recuperando solo le chiavi primarie e i valori restituiti sempre (nome del campo, testo matchato, numero del chunk); la fusione RRF opera infatti sull'ordinamento dei risultati, non richiede il raw score;
+    + esecuzione della ricerca full-text, recuperando solo le chiavi primarie e i valori restituiti sempre (nome del campo, testo matchato, numero del chunk); la fusione RRF opera infatti sull'ordinamento dei risultati e non richiede il raw score;
     + esecuzione della ricerca semantica, con lo stesso criterio di recupero minimale;
     + combinazione dei risultati tramite RRF, applicando i pesi di bilanciamento tra ricerca semantica e full-text: a differenza del rescoring semplice, qui è necessaria la fusione RRF poiché i punteggi delle due tecniche non sono direttamente comparabili tra loro;
     + join sull'entità principale, eseguito una sola volta sui risultati già fusi, evitando di recuperare i dati completi due volte per la stessa entità;
@@ -247,14 +247,14 @@ In questa sezione viene illustrato l'ordine delle operazioni eseguite per ogni t
     + esecuzione della ricerca dello stesso tipo specificato per ciascuna entità coinvolta, garantendo la restituzione delle chiavi primarie;
     + join per ricostruire l'informazione completa, seguendo le regole di linking definite nel modello dati;
     + applicazione di un filtro successivo al join;
-    + combinazione dei risultati delle ricerche sulle diverse entità tramite rescoring semplice: i punteggi prodotti dalle ricerche sulle singole entità sono in questo caso direttamente comparabili, non richiedono quindi una fusione RRF;
+    + combinazione dei risultati delle ricerche sulle diverse entità tramite rescoring semplice: i punteggi prodotti dalle ricerche sulle singole entità sono in questo caso direttamente comparabili e non richiedono quindi una fusione RRF;
     + restituzione dei dati richiesti dalla query.
 
     Nel caso specifico della ricerca linked ibrida, i pesi per campo vengono applicati a livello di singola entità prima della fusione RRF che le combina, anziché successivamente. Si tratta di una deviazione rispetto al principio generale di applicare i pesi dopo la fase di filtraggio e prima della combinazione, ma è una scelta ritenuta accettabile poiché lo stesso comportamento è adottato da Elasticsearch in scenari analoghi.
   ]
 )
 
-Per garantire un round-trip unico, come richiesto dal requisito #rcm-link("Roundtrip unico per le ricerche"), le diverse sequenze di query vengono combinate tramite clausole WITH, costruendo la query complessiva in modo incrementale: ogni livello successivo può fare riferimento alle proprie sotto-query come se fossero dati già disponibili. È importante che le singole porzioni definite tramite WITH non materializzino porzioni di tabella di dimensione non limitata, ma vengano sempre delimitate a un numero finito e contenuto di record tramite clausole LIMIT.
+Per garantire un round-trip unico, come richiesto dal requisito #rcm-link("Roundtrip unico per le ricerche"), le diverse sequenze di query vengono combinate tramite clausole `WITH`, costruendo la query complessiva in modo incrementale: ogni livello successivo può fare riferimento alle proprie sotto-query come se fossero dati già disponibili. È importante che le singole porzioni definite tramite `WITH` non materializzino porzioni di tabella di dimensione non limitata, ma vengano sempre delimitate a un numero finito e contenuto di record tramite clausole `LIMIT`.
 
 
 === Caratteristiche del backend
@@ -278,14 +278,14 @@ La configurazione per la ricerca semantica specifica le seguenti informazioni:
 L'oggetto che gestisce concretamente il threshold in funzione del tipo di distanza utilizzato viene assemblato solo quando necessario, poiché deriva dalla combinazione del threshold, espresso come semplice valore, con il tipo di distanza applicato in quel contesto.
 
 La configurazione per la ricerca full-text contiene invece le seguenti informazioni:
-- la funzione di ranking da utilizzare, ts_rank oppure ts_rank_cd;
+- la funzione di ranking da utilizzare, `ts_rank` oppure `ts_rank_cd`;
 - l'elenco delle tsquery da utilizzare nelle funzioni di ranking, necessario per gestire la composizione di una funzione di ranking più avanzata;
 - un fattore opzionale per la normalizzazione dei punteggi che, come indicato dalla stessa documentazione di Postgres, ha un'utilità relativamente limitata;
 - la clausola da utilizzare per il filtro full-text, che può essere una tsquery oppure una overlap query.
 
 Per la ricerca ibrida, un ulteriore oggetto di configurazione definisce:
 - l'oversampling applicato ai risultati precedentemente alla fusione, descritto nella sezione dedicata alla ricerca ibrida;
-- la costante k che regola il comportamento della fusione RRF, il cui valore standard è 60, pur lasciando la possibilità di modificarlo.
+- la costante k che regola il comportamento della fusione RRF, il cui valore standard è 60@peso-rrf, pur lasciando la possibilità di modificarlo.
 
 Le diverse sotto-ricerche che compongono una ricerca, descritte nella pipeline di esecuzione, vengono costruite come un unico blocco di query, eseguito una sola volta, coerentemente con il requisito #rcm-link("Roundtrip unico per le ricerche").
 
@@ -299,9 +299,9 @@ In questa sezione vengono descritti i principi guida e le caratteristiche del si
 === Definizione modello dati
 Il modello dati del sistema di test è composto da due parti: una riadattata dal modello dati del sistema di ricerca e una dedicata alla gestione della ground truth e del logging, trattata in @caratteristiche-db-test.
 
-Per quanto riguarda la parte riadattata, il sistema di test adotta una versione semplificata del modello dati del sistema di ricerca: la definizione delle entità è la medesima, ma vengono meno i dettagli legati alla configurabilità, quali le configurazioni di ricerca e i vincoli relazionali. Anche la struttura delle ricerche è la stessa di quella descritta per il sistema di ricerca, rimangono solo le parti ritenute utili per la finalità di allineamento all'ambiente di test.
+Per quanto riguarda la parte riadattata, il sistema di test adotta una versione semplificata del modello dati del sistema di ricerca: la definizione delle entità è la medesima, ma vengono meno i dettagli legati alla configurabilità, quali le configurazioni di ricerca e i vincoli relazionali. Anche la struttura delle ricerche è la stessa di quella descritta per il sistema di ricerca; rimangono solo le parti ritenute utili per la finalità di allineamento all'ambiente di test.
 
-Questa scelta è il risultato di un riutilizzo di comodità del codice esistente: i due progetti restano comunque indipendenti a livello di codice, l'unico punto di contatto tra i due sistemi è l'interfaccia API del sistema di ricerca, utilizzata dal sistema di test come da qualunque altro utente.
+Questa scelta è il risultato di un riutilizzo di comodità del codice esistente: i due progetti restano comunque indipendenti a livello di codice; l'unico punto di contatto tra i due sistemi è l'interfaccia API del sistema di ricerca, utilizzata dal sistema di test come da qualunque altro utente.
 
 === Metriche e il loro significato
 Le metriche di valutazione trattate in questa sezione non sono state definite autonomamente, ma fornite durante un colloquio con il tutor aziendale, secondo la seguente definizione e significato.
@@ -309,41 +309,41 @@ Le metriche di valutazione trattate in questa sezione non sono state definite au
 Le metriche valutate sono le seguenti:
 #list(
   [
-    *Retrieval latency*: indica il tempo trascorso tra l'invio di una richiesta di ricerca e la ricezione della relativa risposta.
+    *retrieval latency*: indica il tempo trascorso tra l'invio di una richiesta di ricerca e la ricezione della relativa risposta.
   ],
   [
-    *Retrieval answer rate*: indica la frequenza con cui la ground truth attesa per una query è stata restituita tra i risultati, indipendentemente dalla posizione occupata.
+    *retrieval answer rate*: indica la frequenza con cui la ground truth attesa per una query è stata restituita tra i risultati, indipendentemente dalla posizione occupata.
   ],
   [
-    *Retrieval mean reciprocal rank*: indica la media dei reciproci della posizione in cui la ground truth compare tra i risultati restituiti.
+    *retrieval mean reciprocal rank*: indica la media dei reciproci della posizione in cui la ground truth compare tra i risultati restituiti.
   ],
   [
-    *Retrieval hitrate\@1*: indica la frequenza con cui la ground truth viene restituita come primo risultato.
+    *retrieval hitrate\@1*: indica la frequenza con cui la ground truth viene restituita come primo risultato.
   ],
   [
-    *Retrieval hitrate\@5*: indica la frequenza con cui la ground truth viene restituita tra i primi cinque risultati.
+    *retrieval hitrate\@5*: indica la frequenza con cui la ground truth viene restituita tra i primi cinque risultati.
   ],
   [
-    *Retrieval hitrate\@10*: indica la frequenza con cui la ground truth viene restituita tra i primi dieci risultati.
+    *retrieval hitrate\@10*: indica la frequenza con cui la ground truth viene restituita tra i primi dieci risultati.
   ],
   [
-    *Retrieval wins*: indica il numero di volte in cui una ricerca ha prodotto almeno un risultato.
+    *retrieval wins*: indica il numero di volte in cui una ricerca ha prodotto almeno un risultato.
   ],
   [
-    *Retrieval not found*: indica il numero di volte in cui una ricerca non ha prodotto alcun risultato.
+    *retrieval not found*: indica il numero di volte in cui una ricerca non ha prodotto alcun risultato.
   ],
 )
 
 La differenza tra retrieval answer rate e retrieval wins, per quanto sottile, è particolarmente significativa: un answer rate basso a fronte di un numero elevato di wins indica che il sistema restituisce con frequenza risultati che, pur presenti, non sono rilevanti rispetto alla query.
 
 === Caratteristiche del backend
-Il backend simula un insieme di utenti paralleli tramite Locust, secondo quanto richiesto dal requisito #rcm-link("Specifiche sistema di test"). Le richieste non vengono eseguite direttamente dagli utenti simulati, ma tramite una singola porta inbound (run_one), che preleva una query da una coda, la esegue e ne registra il risultato.
+Il backend simula un insieme di utenti paralleli tramite Locust, secondo quanto richiesto dal requisito #rcm-link("Specifiche sistema di test"). Le richieste non vengono eseguite direttamente dagli utenti simulati, ma tramite una singola porta inbound (`run_one`), che preleva una query da una coda, la esegue e ne registra il risultato.
 
 Il backend non calcola direttamente le metriche di valutazione, ma si limita a registrare i risultati grezzi delle ricerche eseguite.
 
 === Caratteristiche del database <caratteristiche-db-test>
 Il sistema di test adotta due meccanismi di persistenza distinti, ciascuno scelto in base alla natura dell'accesso richiesto.
 
-Il registro delle query da eseguire, comprensivo della relativa ground truth, è mantenuto in un file jsonl: una soluzione ritenuta sufficiente data la natura strettamente sequenziale della sua lettura.
+Il registro delle query da eseguire, comprensivo della relativa ground truth, è mantenuto in un file JSONL: una soluzione ritenuta sufficiente data la natura strettamente sequenziale della sua lettura.
 
-I risultati delle ricerche eseguite vengono invece registrati in un database Postgres, necessario per gestire in modo affidabile le scritture concorrenti provenienti dai diversi utenti simulati. Lo stesso database viene inoltre utilizzato per automatizzare il calcolo delle metriche, esposte sotto forma di viste e può essere monitorato tramite Grafana.
+I risultati delle ricerche eseguite vengono invece registrati in un database Postgres, necessario per gestire in modo affidabile le scritture concorrenti provenienti dai diversi utenti simulati. Lo stesso database viene inoltre utilizzato per automatizzare il calcolo delle metriche, esposte sotto forma di viste, e può essere monitorato tramite Grafana.

@@ -35,15 +35,15 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
     ore:24
     ),
   (
-    descrizione:"Progettazione e codifica ricerca full-text",
+    descrizione:"Progettazione e codifica della ricerca full-text",
     ore:40
     ),
   (
-    descrizione:"Progettazione e codifica ricerca ibrida",
+    descrizione:"Progettazione e codifica della ricerca ibrida",
     ore:8
     ),
   (
-    descrizione:"Progettazione e codifica ricerca linked",
+    descrizione:"Progettazione e codifica della ricerca linked",
     ore:12
     ),
   (
@@ -62,7 +62,7 @@ Una volta terminato il progetto ho redatto il consuntivo orario finale nella @fi
   table(
     columns: 2,
     table.header([*Fase*], [*Ore*]),
-    ..(ore-attivita.map(it=>{(it.descrizione,str(it.ore))}).flatten()),
+    ..(ore-attivita.map(it=>{(it.descrizione,str(it.ore))}).flatten().map(it=>align(left,it))),
 
     [*Totale*], str(ore-attivita.map((it)=>it.ore).sum()),
   ),
@@ -111,32 +111,37 @@ Tutti i requisiti descritti nella @tracciamento-requisiti sono stati implementat
 == Rischi occorsi e mitigati
 I rischi documentati nella @analisi-rischi emersi durante lo stage sono riportati in @fig:rischi-occorsi.\
 #v(1em)
+
 #figure(
   caption: [Rischi occorsi con la loro mitigazione],
-  table(
+)[
+
+  #table(
     columns: 2,
-    table.header([*Descrizione*], [*Mitigazione*]),
-    [*R01*: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale. La mitigazione è stata il confronto con il tutor per colmare le lacune e definire chiaramente i requisiti.],
-    [*R02*: Sovradimensionamento del progetto rispetto alle tempistiche], [Il rischio è stato incontrato tra la fase intermedia e finale del progetto: implementare un sistema di test che permettesse di esaminare tutti i tipi di ricerca richiedeva diverse considerazioni non banali in fase di progettazione e una discreta quantità di tempo. Si è perciò limitato lo scope del test alla ricerca più importante.],
-    [*R07*: Rappresentatività dei dati di test e accesso limitato alla produzione],[
+    table.header([*Descrizione*], [*Mitigazione*]),..((
+    [#link(<r-incompletezza>)[R01]: Incompletezza o ambiguità dei requisiti], [Il rischio è stato incontrato durante lo studio iniziale. La mitigazione è stata il confronto con il tutor per colmare le lacune e definire chiaramente i requisiti.],
+    [#link(<r-sovradimensionamento>)[R02]: Sovradimensionamento del progetto rispetto alle tempistiche], [Il rischio è stato incontrato tra la fase intermedia e finale del progetto: implementare un sistema di test che permettesse di esaminare tutti i tipi di ricerca richiedeva diverse considerazioni non banali in fase di progettazione e una discreta quantità di tempo. Si è perciò limitato lo scope del test alla ricerca più importante.],
+    [#link(<r-rappresentatività>)[R07]: Rappresentatività dei dati di test e accesso limitato alla produzione],[
             Il rischio è stato incontrato durante la preparazione dei dati di test. Non avendo accesso ai dati veri di produzione si è optato per usare dati fittizi, generati a partire da dataset in lingua italiana e inglese.
     ],
-    [*R08*: Difficoltà nella valutazione oggettiva dei risultati di retrieval],[
+    [#link(<r-metriche>)[R08]: Difficoltà nella valutazione oggettiva dei risultati di retrieval],[
             Il rischio è stato incontrato durante la progettazione del sistema di test, mitigato tramite confronto con il tutor in cui sono state fissate le metriche di interesse.
     ],
-    [*R10*: Bias tecnologico e deriva dei requisiti],[
+    [#link(<r-bias-requisiti>)[R10]: Bias tecnologico e deriva dei requisiti],[
             Il rischio è stato incontrato nelle fasi iniziali dell'analisi delle funzionalità da realizzare, mitigato dando priorità alle caratteristiche del problema.
     ]
-  ),
-)<fig:rischi-occorsi>
+    )).map(it=>align(left,it)))
+
+]<fig:rischi-occorsi>
+
 #v(1em)
 
 == Valutazione complessiva sulle tecnologie
 
 Dei vari punti che questo progetto si prefiggeva di chiarire segue un resoconto ed un'analisi.
-- Adeguatezza di pgvector alla ricerca semantica: *Confermato*, le query non sono particolarmente complesse, i tempi di risposta sono sufficientemente bassi di media tra i 200-300 millisecondi;
+- Adeguatezza di pgvector alla ricerca semantica: *Confermato*, le query non sono particolarmente complesse, i tempi di risposta sono sufficientemente bassi, in media tra i 200-300 millisecondi;
 - Fusione di full-text e semantica lato db: *Confermata*, trattando le query SQL di semantica e full-text come subquery è facile implementare l'RRF;
-- Linking lato db: *Confermato*, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il look up avviene tramite indice;
+- Linking lato db: *Confermato*, è possibile eseguire senza problemi i join tra le varie entità, essendo join su chiave primaria il lookup avviene tramite indice;
 - Ricerca full-text: *Non confermata*, Elasticsearch senza troppe sorprese è estremamente più veloce di Postgres per la ricerca full-text, per quanto l'accuratezza tramite i workaround sia diventata sufficiente. Il tempo medio di una ricerca full-text non ottimizzata per lingua va dai 5 ai 10 secondi, contro circa 3 secondi per le ricerche ottimizzate per lingua. Tale risultato è coerente con quanto visto nella @analisi-elasticsearch.
 
 

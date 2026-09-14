@@ -24,7 +24,7 @@ Ad ogni requisito è associato un codice costruito in base alle sue caratteristi
 #align(center)[*R(F/Q/C)(M/D/O)*]
 #v(1em)
 #set list(marker: none)
-- F (_Functional_): definisce una funzione di un sistema o dei suoi componenti;
+- F (_Functional_): definiscono una funzione di un sistema o dei suoi componenti;
 - Q (_Qualitative_): rappresentano come il sistema deve essere per soddisfare i requisiti dello stakeholder;
 - C (_Constraint_): rappresentano dei vincoli o dei limiti che il sistema deve rispettare;
 #v(0.5em)
@@ -77,12 +77,12 @@ In @tab:requisiti-funzionali, @tab:requisiti-qualità e @tab:requisiti-vincolo s
       [Functional],
       ..functional-count.map(it=>str(it)),
       [#functional-count.sum()],
-      [Constraint],
-      ..constraint-count.map(it=>str(it)),
-      [#constraint-count.sum()],
       [Qualitative],
       ..quality-count.map(it=>str(it)),
       [#quality-count.sum()],
+      [Constraint],
+      ..constraint-count.map(it=>str(it)),
+      [#constraint-count.sum()],
 
       // [Qualitative],
       // [#getQR(getLen: true).at(0)],

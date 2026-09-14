@@ -13,7 +13,7 @@
   actors: ("Companion",),
   ext-actors: (),
   includes: (
-        "inserimento query linked",
+        "Inserimento query linked",
         "Ricezione risultati ricerca linked"
         ),
   extends: (

@@ -37,7 +37,7 @@ Gli attori sono classificati in due categorie:
 
      Rappresenta l'utente tecnico qualificato.
      Il suo ruolo è quello di interfacciarsi con il sistema di test a scopo di analisi, validazione e benchmarking.
-     Il Supervisore avvia i test prestazionali, monitora l'infrastruttura e raccoglie le metriche necessarie per valutare e comparare le prestazioni del nuovo database unificato rispetto alla soluzione correntemente usata in produzione.
+     Il Supervisore avvia i test prestazionali, monitora l'infrastruttura e raccoglie le metriche necessarie per valutare e comparare le prestazioni del nuovo database unificato rispetto alla soluzione attualmente usata in produzione.
 
 ]
 

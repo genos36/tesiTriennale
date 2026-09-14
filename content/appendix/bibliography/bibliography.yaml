@@ -81,6 +81,22 @@ pgvector-iterative-scan:
                 value: "https://github.com/pgvector/pgvector#iterative-index-scans"
                 date: 2026-07-01
                 parent: pgvector-repo
+postgres-text-search-main:
+        type: web
+        title: "PostgreSQL: Documentation: 18: Chapter 12. Full Text Search"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: "PostgreSQL Global Development Group"
+        url:
+                value: "https://www.postgresql.org/docs/current/textsearch.html"
+                date: 2026-07-03
+                parent: postgres-doc
+peso-rrf:
+        type: web
+        title: "Reciprocal Rank fusion o RRF - DeepSEO Corso SEO Online"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: "Deepseo"
+        url:
+                value: "https://www.deepseo.it/reciprocal-rank-fusion-o-rrf/"
+                date: 2026-07-03
+                parent: deepseo-info
 postgres-text-search-config:
         type: web
         title: "PostgreSQL: Documentation: 18: 12.6. Dictionaries"  # verifica il titolo esatto della sezione se ce n'è una dedicata
@@ -102,12 +118,20 @@ elastic-doc-main:
         title: "Elastic Docs | Elastic"  # verifica il titolo esatto della sezione se ce n'è una dedicata
         author: Elastic
         url:
-                value: "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusionhttps://www.elastic.co/guide/index.html"
+                value: "https://www.elastic.co/guide/index.html"
+                date: 2026-07-07
+                parent: elastic-doc
+elastic-minimum:
+        type: web
+        title: "Elastic Docs | Elastic"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        author: Elastic
+        url:
+                value: "https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-minimum-should-match"
                 date: 2026-07-07
                 parent: elastic-doc
 parade-rrf-example:
         type: web
-        title: "Reciprocal rank fusion | Elasticsearch Reference"  # verifica il titolo esatto della sezione se ce n'è una dedicata
+        title: "Reciprocal rank fusion | ParadeDB"  # verifica il titolo esatto della sezione se ce n'è una dedicata
         author: ParadeDB
         url:
                 value: "https://www.paradedb.com/learn/search-concepts/reciprocal-rank-fusion#implementation-in-sql"
@@ -157,7 +181,7 @@ distance-pgvector:
 filtering-elastic:
         type: web
         title: "Vector search filtering: how it works & how to use it effectively | Elasticsearch Labs"  # verifica il titolo esatto della sezione se ce n'è una dedicata
-        author: elasticsearch
+        author: Elasticsearch
         url:
                 value: "https://www.elastic.co/search-labs/blog/vector-search-filtering"
                 date: 2026-07-07

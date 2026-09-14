@@ -11,7 +11,7 @@
     ],
 
   descrizione:[
-    Il sistema di ricerca deve supportare flussi di dati paralleli e non ordinati di dati durante l'ingestion.
+    Il sistema di ricerca deve supportare flussi di dati paralleli e non ordinati durante l'ingestion.
 
     Con non ordinati si intende che è possibile caricare prima gli attachment e poi i ticket.
   ],
