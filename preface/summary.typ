@@ -65,7 +65,7 @@ Durante la stesura del testo ho scelto di adottare le seguenti convenzioni tipog
 - Gli acronimi, le abbreviazioni e i termini di uso non comune menzionati vengono definiti nel #link(<glossary>)[glossario], situato alla fine del documento (#link(<glossary>)[p. #context counter(page).at(<glossary>).at(0)]);
 - Per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: #glossary-style("Termine")\;
 - I nomi di funzioni o variabili appartenenti a un linguaggio di programmazione vengono scritti con un carattere `monospaziato`;
-- Le citazioni ad un libro o ad una risorsa presente nella #link(<bibliography>)[bibliografia] (#link(<bibliography>)[p. #context counter(page).at(<bibliography>).at(0)]) saranno affiancate dal rispettivo numero identificativo, es. [1];
+- Le citazioni ad un libro o ad una risorsa presente nella #link(<bibliography>)[bibliografia (p. #context counter(page).at(<bibliography>).at(0))] saranno affiancate dal rispettivo numero identificativo, es. [1];
 - I link a fonti esterne al documento sono contraddistinti dal #apply-style-external-link("colore blu e da una sottolineatura")\;
 - I link a sezioni, tabelle, figure, codici o altro testo interni al documento sono contraddistinti dal #apply-style-internal-ref("peso semibold e da una sottolineatura")\;
 - I blocchi di codice sono rappresentati nel seguente modo:
