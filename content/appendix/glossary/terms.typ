@@ -144,7 +144,7 @@
     short:"Similarity search",
     long: "Ricerca per similarità",
     description: [
-        Una funzione che cerca gli elementi della collezione più simili alla query secondo una misura di similarità e restituisce un ranking ordinato per grado di somiglianza decrescente.
+        Una funzione che cerca gli elementi della collezione più simili alla query secondo una misura di similarità e restituisce un ranking ordinato per somiglianza.
     ],
   ),
   (
@@ -208,7 +208,7 @@
     // long: [Chunk di testo],
     description: [
       Indica il processo di combinazione dei risultati prodotti da diverse fonti o ricerche.
-      Alcuni esempi sono il rescoring quando i punteggi delle diverse fonti sono direttamente comparabili, RRF o combinazione con modelli appositi quando non direttamente comparabili.
+      Alcuni esempi sono il rescoring quando i punteggi delle diverse fonti sono direttamente comparabili, RRF quando non direttamente comparabili.
     ],
   ),
   (
@@ -237,7 +237,7 @@
     short: [Retrieval latency],
     // long: [],
     description: [
-            Indica il tempo di atteso medio trascorso tra l'avvio di una ricerca e la ricezione dei risultati dal punto di vista di chi invia la ricerca.
+            Indica il tempo di attesa medio trascorso tra l'avvio di una ricerca e la ricezione dei risultati dal punto di vista di chi invia la ricerca.
 
     ],
   ),
@@ -282,8 +282,8 @@
     short: [GIN],
     long: [Generalized Inverted Index],
     description: [
-            Indica una struttura dati che mappa i contenuti (come parole o numeri) direttamente alle loro posizioni o ai documenti in cui compaiono, consentendo ricerche full-text rapide.
-            Nel contesto di Postgres indica un tipo di indice progettato per gestire valori composti (o elementi multipli all'interno di una singola riga) ed effettuare ricerche efficienti su di essi.
+            Indica una struttura dati che mappa i contenuti direttamente alle loro posizioni o ai documenti in cui compaiono, consentendo ricerche full-text rapide.
+            Nel contesto di Postgres indica un tipo di indice progettato per gestire valori composti ed effettuare ricerche efficienti su di essi.
             // [1] (https://www.postgresql.org/docs/current/gin.html)
 
     ],
@@ -552,7 +552,7 @@
       description: [
         Tecnica di riduzione di precisione di un vettore che ne rappresenta
         ciascuna componente con un singolo bit anziché con un valore in
-        virgola mobile, riducendo drasticamente lo spazio occupato e il
+        virgola mobile, riducendo lo spazio occupato e il
         costo di confronto a scapito della precisione, tipicamente
         utilizzata per generare rapidamente un insieme di candidati da
         raffinare in una fase successiva.
