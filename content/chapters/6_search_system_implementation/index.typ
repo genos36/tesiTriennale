@@ -115,7 +115,7 @@ class TraversalPath:
 )
 )
 
-È importante notare che LinkedSearchConfiguration si limita a esporre, per ciascuna entità, l'insieme di tutti i cammini possibili verso la radice: non seleziona autonomamente un unico cammino. La regola del primo cammino valido, descritta nella @analisi-ricerca-linked, viene applicata a valle, dal query builder che genera la query SQL della ricerca linked, sulla base dei cammini restituiti da questa classe. Questa separazione è coerente con il principio di disaccoppiamento già discusso a proposito dei vincoli di integrità: il dominio si limita a descrivere le possibilità strutturali, mentre la logica di scelta concreta, che dipende dai dati effettivamente presenti, è responsabilità di un livello successivo.
+È importante notare che LinkedSearchConfiguration si limita a esporre, per ciascuna entità, l'insieme di tutti i cammini possibili verso la radice: non seleziona autonomamente un unico cammino. La regola del primo cammino valido, descritta nella @analisi-ricerca-linked, viene applicata a valle dal query builder che genera la query SQL della ricerca linked, sulla base dei cammini restituiti da questa classe. Questa separazione è coerente con il principio di disaccoppiamento già discusso a proposito dei vincoli di integrità: il dominio si limita a descrivere le possibilità strutturali, mentre la logica di scelta concreta, che dipende dai dati effettivamente presenti, è responsabilità di un livello successivo.
 
 ==== Radice dell'aggregato
 *SchemaConfiguration* è la #gl("aggregate-root",display:"radice dell'aggregato"): raccoglie l'insieme delle entità, dei vincoli di schema e la configurazione di ricerca linked in un'unica struttura immutabile. Le entità sono rappresentate come mappa da EntityName a Entity, anziché come semplice sequenza, per garantire per costruzione l'assenza di duplicati e un accesso diretto in fase di risoluzione dei riferimenti.
@@ -275,7 +275,7 @@ Questo CTE rimuove dalla tabella di staging gli elementi candidati e ne salva te
   )
 )
 
-Questo passo carica sulla tabella reale solo gli elementi già filtrati dal CTE batch (cioè una versione per ciascuna chiave), specificando come gestire eventuali conflitti con righe già presenti nella tabella reale
+Questo passo carica sulla tabella reale solo gli elementi già filtrati dal CTE batch (cioè una versione per ciascuna chiave), specificando come gestire eventuali conflitti con righe già presenti nella tabella reale.
 Da non confondere con la rimozione dei duplicati interni allo staging, gestita al passo precedente. L'azione concreta in caso di conflitto (tipicamente un #gl(display:"upsert","upsert")) è definita dal backend, non hard-coded nella query.
 
 #code-snippet(caption: "Staging promotion - conteggio degli elementi processati",
@@ -292,7 +292,7 @@ Ogni tipologia di ricerca è esposta tramite un endpoint dedicato, realizzato co
 
 Le classi di dominio impiegate differiscono tra ricerca su singola entità e ricerca linked: quest'ultima richiede un filtro con struttura annidata più complessa, che abbina un filtro a ciascuna entità coinvolta nell'attraversamento. Per evitare una duplicazione eccessiva di codice tra le due varianti, senza però introdurre relazioni di subtyping scorrette, si è adottato l'uso di *Generic* e *type alias*: i Generic permettono il riuso della logica di dominio comune, mentre i type alias vengono usati da tutte le classi esterne alla catena di generici per facilitare eventuali modifiche future. Questa scelta si è rivelata utile concretamente durante la realizzazione della ricerca linked, che ha richiesto di distinguere due serie di filtri distinte a partire dalla stessa gerarchia generica.
 
-Per questo motivo, nel seguito vengono descritte solo le parti generiche condivise e un esempio di come vengono specializzate tramite type alias.
+Per questo motivo, nelle prossime parti verranno descritte solo le parti generiche condivise e un esempio di come vengono specializzate tramite type alias.
 
 Le parti che si sono discostate da questo pattern sono state trattate esplicitamente.
 === Filtering

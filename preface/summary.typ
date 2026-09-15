@@ -15,7 +15,7 @@ Il presente documento descrive il lavoro svolto durante il periodo di stage curr
   Al centro di questo elaborato vi è la progettazione e lo sviluppo del modulo di information retrieval basato su ricerca semantica, ricerca full-text e ricerca ibrida.
   Tale modulo è concettualmente destinato a essere utilizzato in un contesto RAG.
 \ \
-Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione pgvector per Postgres, impiegandola come database unificato. Nello specifico, l'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate.
+Lo scopo principale del progetto è valutare l'adeguatezza, la fattibilità tecnica e le performance dell'estensione pgvector per Postgres, impiegandola come database unificato. L'obiettivo è verificare se tale tecnologia possa supportare efficacemente l'indicizzazione dei documenti, la ricerca ibrida (combinazione di ricerca full-text e semantica), l'applicazione di strategie di ranking avanzate e la correlazione relazionale con entità strutturate.
 In particolare, si valuterà una modalità di ricerca detta linked, che permette di cercare un'informazione all'interno dell'intero database e di ricostruirne il contesto.
 \ \
 Per convalidare questa ipotesi e fornire una misura della qualità del sistema, l'infrastruttura progettata verrà sottoposta a test di valutazione ed eventualmente test comparativi contro un sistema basato su Elasticsearch, tecnologia attualmente adottata all'interno dell'impresa.

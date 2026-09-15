@@ -25,7 +25,7 @@ Per recuperare i dati da un sistema di information retrieval vengono usate delle
 All'interno del progetto vengono usati i seguenti tipi di ricerca per similarità:
 #list(
   [
-    *ricerca full-text*, usa un criterio di similarità basato sulla corrispondenza di lessemi e parole chiave;
+          *ricerca full-text*, usa un criterio di similarità basato sulla corrispondenza di #gl("lessema",display:"lessemi") e parole chiave;
   ],
   [
     *ricerca semantica*, usa un criterio di similarità basato sulla distanza dei vettori di embedding corrispondenti alle frasi confrontate;
@@ -72,7 +72,7 @@ Legge il database del sistema di test per calcolare le metriche, gestendo automa
 Grafana non fa parte dei sistemi applicativi sviluppati: vengono forniti solamente i file YAML e JSON necessari a costruirla.
 
 === Relazione tra i sistemi
-I due sistemi non condividono né codice (eccetto un riuso di tipo copia e incolla, per convenienza) né risorse e sono sviluppati su repository separati.
+I due sistemi non condividono né codice né risorse e sono sviluppati su repository separati.
 
 Il sistema di test comunica con il sistema di ricerca simulando client esterni che inviano richieste di ricerca, mentre Grafana accede direttamente al database del sistema di test, bypassandolo, per leggerne le metriche.
 
@@ -284,7 +284,7 @@ Ai fini dello sviluppo e del test in locale è stato realizzato il Dockerfile pe
 ==== Strumenti di supporto
 Altri strumenti di supporto degni di nota sono *uvicorn*, *pydantic-settings*, *sqlparse*.
 
-- Uvicorn è un 	server ASGI, scelta strettamente legata all'uso di FastAPI.
+- Uvicorn è un 	server #gl("asgi"), scelta strettamente legata all'uso di FastAPI.
 
 - Pydantic-settings viene usato per avere una gestione più pulita delle variabili d'ambiente, non richiede l'aggiunta di ulteriori dipendenze in quanto FastAPI utilizza già Pydantic.
 

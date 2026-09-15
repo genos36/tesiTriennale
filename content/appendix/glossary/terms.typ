@@ -581,6 +581,20 @@
         facilitandone la sostituzione e il test.
       ],
     ),
+    (
+      key: "asgi",
+      short: "ASGI",
+      long: "Asynchronous Server Gateway Interface",
+      description: [
+              Interfaccia standard per server, framework e applicazioni web Python che permette la gestione asincrona delle richieste.]
+    ),
+    (
+      key: "lessema",
+      short: "Lessema",
+      // long: "",
+      description: [
+              Unità astratta di significato che raggruppa tutte le forme flesse di una parola; costituisce l'unità di riferimento in molti task di elaborazione del linguaggio naturale, come la lemmatizzazione e l'indicizzazione nei sistemi di information retrieval.]
+    ),
 
 
 

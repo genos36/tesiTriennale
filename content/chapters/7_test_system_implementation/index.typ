@@ -90,13 +90,13 @@ Un'esecuzione tipica segue il seguente flusso:
         avvio, il service si occupa di generare e memorizzare l'id della sessione di test e di recuperare la lista delle TestQuery da eseguire tramite la porta TestQueryRepositoryPort e le organizza in una coda;
         ],
         [
-        esecuzione periodica delle ricerche, sono avviate da Locust sempre attraverso un adapter,
-        + la TestQuery viene recuperata dalla coda,
-        + tramite la porta IngestionStatusPort il service recupera l'informazione relativa allo stato di attività dell'ingestion,
-        + l'adapter RemoteIngestionStatusAdapter rinterroga il database Postgres per recuperare l'informazione relativa allo stato di attività dell'ingestion,
-        + la ricerca viene eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult,
-        + l'adapter RemoteLinkedSearchExecutorAdapter invia la query di ricerca all'endpoint appropriato,
-        + il LogItem e l'id della sessione di test corrente vengono persistiti tramite la porta LinkedEvaluationLogPort,
+        esecuzione periodica delle ricerche, sono avviate da Locust sempre attraverso un adapter;
+        + la TestQuery viene recuperata dalla coda;
+        + tramite la porta IngestionStatusPort il service recupera l'informazione relativa allo stato di attività dell'ingestion;
+        + l'adapter RemoteIngestionStatusAdapter rinterroga il database Postgres per recuperare l'informazione relativa allo stato di attività dell'ingestion;
+        + la ricerca viene eseguita tramite la LinkedSearchExecutorPort per recuperare il RealResult;
+        + l'adapter RemoteLinkedSearchExecutorAdapter invia la query di ricerca all'endpoint appropriato;
+        + il LogItem e l'id della sessione di test corrente vengono persistiti tramite la porta LinkedEvaluationLogPort;
         + l'adapter PostgresLinkedEvaluationLogAdapter si occupa di salvare sul database il LogItem, eventualmente rendendo esplicite informazioni come la posizione della GroundTruth.
         ]
 )
@@ -192,7 +192,8 @@ WHERE test_session_id = '$session'
 == Limitazioni imposte da elementi esterni
 Nell'adapter dedicato al calcolo degli embedding tramite modello remoto è stato necessario introdurre un rallentamento artificiale delle prestazioni, a causa di blocchi temporanei imposti dal servizio remoto: un numero eccessivo di chiamate in un breve intervallo causa un periodo di blocco durante il quale il servizio restituisce sistematicamente un errore 503.
 
-Questo adapter è condiviso da più componenti del sistema di ricerca.
-La fase di arricchimento dell'ingestion e i service di ricerca semantica e ibrida, motivo per cui la limitazione descritta in questa sezione, per quanto discussa qui in un unico punto, si ripercuote su tutte queste componenti.
+Questo adapter è usato in diverse funzioni del sistema che richiedono il calcolo degli embedding: ingestion, ricerca semantica e ricerca ibrida.
+Per questo motivo, la limitazione descritta in questa sezione si ripercuote su tutte queste componenti.
+
 
 Da un punto di vista architetturale, questo intervento non introduce un nuovo collo di bottiglia nel sistema, ma sposta parzialmente, dall'esterno verso l'interno del sistema, un collo di bottiglia già esistente e non altrimenti evitabile. Per gestirlo sono stati introdotti meccanismi di retry con attesa esponenziale e numero massimo di tentativi, oltre a un limite al numero di richieste concorrenti verso il servizio remoto, realizzato tramite semafori e contatori.

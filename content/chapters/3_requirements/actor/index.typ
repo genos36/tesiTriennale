@@ -25,10 +25,7 @@ Gli attori sono classificati in due categorie:
 
 - #block()[ *Companion*
 
-        Con il termine *Companion* si identifica l'applicativo aziendale di intelligenza artificiale di livello superiore. Questo attore software è il client principale: è il software applicativo reale che utilizza il modulo di information retrieval.
-
-        Companion interagisce con il sistema di ricerca tramite chiamate #gl("api").
-
+        Con il termine *Companion* si identifica l'applicativo aziendale di intelligenza artificiale di livello superiore. Questo attore software è il client principale: è il software applicativo reale che utilizza il modulo di information retrieval. Companion interagisce con il sistema di ricerca tramite chiamate #gl("api").
         Companion interagisce con il sistema di ricerca per due scopi fondamentali: delegare l'ingestion dei dati documentali e interrogare la base di conoscenza per ottenere le informazioni necessarie alla generazione delle risposte.
 ]
 

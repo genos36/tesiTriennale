@@ -64,7 +64,7 @@ Il modello dati si traduce sul database secondo le seguenti regole.
 
 Per ogni entità sono previste due tabelle:
 - una tabella principale, contenente tutti i campi non searchable definiti dal modello dati (privi di ruolo o con ruolo filterable);
-- una tabella dei chunk, dedicata alla gestione dei molteplici campi chunkabili. Ha come chiave primaria l'insieme composto dalla chiave esterna verso la tabella principale, dal campo di provenienza del testo e dal numero del chunk. Contiene inoltre tutti i campi necessari alla ricerca: il vettore di embedding, la lingua, il testo in chiaro e la rappresentazione utilizzata per la ricerca full-text (approfondita nella @gestione-tsv).
+- una tabella dei chunk, dedicata alla gestione dei molteplici campi divisi in chunk. Ha come chiave primaria l'insieme composto dalla chiave esterna verso la tabella principale, dal campo di provenienza del testo e dal numero del chunk. Contiene inoltre tutti i campi necessari alla ricerca: il vettore di embedding, la lingua, il testo in chiaro e la rappresentazione utilizzata per la ricerca full-text (approfondita nella @gestione-tsv).
 
 La scelta di normalizzazione deriva dal fatto che pgvector non supporta i multi-vector embedding in modo nativo, anche se in caso servano un numero fisso di vettori è possibile definire più colonne di embedding.
 

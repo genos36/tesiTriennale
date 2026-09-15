@@ -114,8 +114,7 @@ I test comparativi si concentreranno sulle seguenti metriche chiave:
 
 == Scelta del progetto
 Ho scelto questo progetto per tre ragioni principali:
-+ rilevanza dell'argomento, alla base dei moderni sistemi di intelligenza artificiale, come la #gl("rag"), che utilizzano l'#gl("information-retrieval", display:"information retrieval  (IR)") per fornire contesto agli #gl("llm")\;
-
++ rilevanza dell'argomento, elemento cardine dei moderni sistemi di intelligenza artificiale come la #gl("rag"), che si basano sull'#gl("information-retrieval", display: "information retrieval (IR)") per fornire contesto agli #gl("llm")\;
 + evoluzione di un sistema di ricerca reale, permette di partecipare all'evoluzione di un software, sfida che durante il percorso universitario non ho affrontato;
 
 + stack tecnologico, offre l'opportunità di operare con strumenti e framework moderni.
