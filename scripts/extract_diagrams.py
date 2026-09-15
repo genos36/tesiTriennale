@@ -6,7 +6,7 @@ Estrae ed esporta come SVG i diagrammi dei casi d'uso, per il pattern:
     #if utils.debug == true{
         diagram = utils.draw-uc-diagram(...)
     }
-    #use-case(..., immagine: utils.image-path(use-case-nome), ...)
+    #use-case(..., immagine: diagram, ...)
 
 Approccio: per ogni file .typ prende TUTTO il codice prima della chiamata
 #use-case(...) (import, variabili, il blocco #if di generazione), forza a
@@ -61,7 +61,7 @@ def force_debug_true(setup: str) -> str:
     return DEBUG_IF_RE.sub('if true {', setup)
 
 
-def process_file(typ_path: Path, out_dir: Path, typst_bin: str, root_dir, page_width: str, log):
+def process_file(typ_path: Path, out_dir: Path, typst_bin: str, root_dir, page_width: str, top_margin: str, log):
     text = typ_path.read_text(encoding="utf-8")
     setup = find_setup_code(text)
 
@@ -75,7 +75,7 @@ def process_file(typ_path: Path, out_dir: Path, typst_bin: str, root_dir, page_w
     setup_forced = force_debug_true(setup)
     standalone = (
         setup_forced
-        + f"\n#set page(width: {page_width}, height: auto, margin: 0pt)\n"
+        + f"\n#set page(width: {page_width}, height: auto, margin: (top: {top_margin}, rest: 0pt))\n"
         + "#diagram\n"
     )
 
@@ -121,6 +121,8 @@ def main():
     ap.add_argument("--typst", default="typst")
     ap.add_argument("--page-width", default="21cm",
                      help="larghezza fissa della pagina standalone (evita crash con contenuti a width: 100%% dentro pagine width:auto). Default: 21cm")
+    ap.add_argument("--top-margin", default="4cm",
+                     help="margine superiore della pagina standalone: assorbe elementi che 'sconfinano' sopra il box misurato (es. etichette posizionate con place() e dy negativo, come il nome del sistema). Default: 4cm")
     args = ap.parse_args()
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -130,7 +132,7 @@ def main():
     for typ_path in typ_files:
         if typ_path.name.startswith("_tmp_"):
             continue
-        process_file(typ_path, args.out_dir, args.typst, args.root, args.page_width, log)
+        process_file(typ_path, args.out_dir, args.typst, args.root, args.page_width, args.top_margin, log)
 
     name_w = max((len(n) for n, _, _ in log), default=20)
     print(f"{'File':<{name_w}} {'Esito':<8} Dettaglio")

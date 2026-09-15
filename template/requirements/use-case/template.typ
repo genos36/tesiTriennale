@@ -27,7 +27,7 @@
   // heading(level: livello-intestazione)[#codice: #nome]
 block(breakable: block-break)[
 #block(breakable: false)[
-  #{v(1em)+strong[#codice: #nome #label(slugify(nome))]
+  #{v(0.4em)+strong[#codice: #nome #label(slugify(nome))]
   // 2. Gestione Immagine
   if immagine != none {
     // In Typst le variabili sono immutabili, usiamo una variabile di appoggio per la caption
