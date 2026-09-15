@@ -46,7 +46,7 @@ block(breakable: block-break)[
       #if type(immagine) == str {
         image(immagine)
       } else {
-        immagine
+        pdf.artifact(immagine)
       }
     ]
   }}
