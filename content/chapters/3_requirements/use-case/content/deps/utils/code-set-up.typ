@@ -1,5 +1,5 @@
 #import "/template/requirements/use-case/template.typ": use-case
-#import "/template/mod.typ":slugify
+#import "/template/mod.typ":slugify, snakify
 
 #import "/template/general-macros/code-handler.typ": build-map-from-configuration
 
@@ -18,6 +18,17 @@
 #import "/template/general-macros/code-handler.typ":get-code-from-configuration,get-depth-from-configuration
 
 #let get-use-case-code=get-code-from-configuration.with(mappa:uc-mappa,format-settings: uc-format-settings)
+
+#let image-path(nome,folder-path:"/images/use-case/",extension:"svg")={
+        folder-path+get-use-case-code(nome)+"_"+snakify(nome)+"."+extension
+}
+
+#let get-use-case-code-extende(nome,separator:content,extended:true)={
+        get-use-case-code(nome)+if extended{
+          separator+nome
+        } else {[]}
+
+}
 
 #let uc-link(nome,extended:false,separator:none)={
   link(

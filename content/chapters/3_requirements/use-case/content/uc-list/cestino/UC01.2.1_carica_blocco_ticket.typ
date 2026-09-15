@@ -69,6 +69,6 @@
                 - #utils.uc-link("Fallimento ingestion")
         ],
         specializzazioni: none,
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

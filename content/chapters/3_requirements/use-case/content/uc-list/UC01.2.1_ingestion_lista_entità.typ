@@ -58,6 +58,6 @@
         - #utils.uc-link("Ingestion lista conversation item")
         - #utils.uc-link("Ingestion lista attachment")
         ],
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

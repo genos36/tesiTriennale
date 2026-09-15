@@ -1,4 +1,4 @@
-#import "/content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ":get-use-case-code, slugify, use-case, uc-link, uc-link-extended
+#import "/content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ":get-use-case-code, slugify, use-case, uc-link, uc-link-extended,image-path
 
 
 

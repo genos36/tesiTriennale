@@ -52,6 +52,6 @@ top-padding: 0.2 ,
                 - #utils.uc-link("Inserimento query su singola entità non valida")
         ],
         specializzazioni: none,
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

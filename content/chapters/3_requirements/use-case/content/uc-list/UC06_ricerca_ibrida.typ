@@ -64,6 +64,6 @@
                 - #utils.uc-link("Ricerca ibrida con RRF")
                 - #utils.uc-link("Ricerca ibrida con modello di reranking")
         ],
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

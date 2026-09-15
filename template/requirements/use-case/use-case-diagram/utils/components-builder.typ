@@ -3,7 +3,7 @@
 #import fl: node, edge,diagram
 #import "/plugin/uc-diagram/style-theme.typ" as st
 #import "/template/mod.typ":slugify
-#import "/content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ":uc-link-extended as extended-link-label
+#import "/content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ":get-use-case-code-extende as extended-link-label
 // ==========================================
 // COMPONENTI: ATTORI
 // ==========================================
@@ -191,7 +191,7 @@
                 #strong(extended-link-label( parent-uc-name,separator:linebreak()))#h(0.5em)
               ])
               ]
-              
+
               ,
               name: <tab-node>,
               ..st.style-exp-tab

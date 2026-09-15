@@ -52,6 +52,6 @@
                 - #utils.uc-link("Inserimento query linked non valida")
         ],
         specializzazioni: none,
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

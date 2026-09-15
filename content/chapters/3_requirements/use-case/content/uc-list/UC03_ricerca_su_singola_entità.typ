@@ -73,6 +73,6 @@
                 - #utils.uc-link("Ricerca semantica")
                 - #utils.uc-link("Ricerca ibrida")
         ],
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )

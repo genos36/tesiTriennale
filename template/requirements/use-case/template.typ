@@ -44,7 +44,7 @@ block(breakable: block-break)[
       alt:alt-diagramma,
     )[
       #if type(immagine) == str {
-        image(immagine)
+        image(immagine,alt:alt-diagramma,)
       } else {
         pdf.artifact(immagine)
       }

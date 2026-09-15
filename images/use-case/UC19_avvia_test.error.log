@@ -1,0 +1,49 @@
+=== comando ===
+typst compile --format svg --root . content/chapters/3_requirements/use-case/content/uc-list/_tmp_UC19_avvia_test.typ images/use-case/UC19_avvia_test.svg
+
+=== file standalone generato ===
+#import "/content/chapters/3_requirements/use-case/content/deps/utils/utils.typ" as utils: use-case,get-use-case-code
+
+
+#let use-case-nome="Avvia test"
+// #let depth=
+#let diagram=none
+
+
+#if true {
+        diagram=utils.draw-uc-diagram(
+                system-name:"Sistema di test",
+  target-uc: use-case-nome,
+  actors: ("Supervisore",),
+  ext-actors: (),
+  includes: (),
+  extends: (:),
+  generalizations: (),
+  spacing: (4cm, 3cm),
+  width: 100%,
+  max-height: none,
+  actor-offset: 0,
+  ext-actor-offset: 0,
+  note-offset: (1, 0.6),
+        )
+}
+
+#set page(width: 21cm, height: auto, margin: 0pt)
+#diagram
+
+
+=== stderr completo ===
+error: unknown variable: extended
+   ┌─ content/chapters/3_requirements/use-case/content/deps/utils/code-set-up.typ:23:35
+   │
+23 │         get-use-case-code(nome)+if extended{
+   │                                    ^^^^^^^^
+
+  while calling `get-use-case-code-extende` at template/requirements/use-case/use-case-diagram/utils/components-builder.typ:41:36
+    extended-link-label(uc-name,separator:linebreak())
+  while calling `build-use-case` at template/requirements/use-case/use-case-diagram/utils/uc-layout-engine.typ:81:16
+    builder.build-use-case(uc-name: target-uc, uc-position: (target-x, target-y))
+  while calling `compute-uc-layout` at template/requirements/use-case/use-case-diagram/draw-uc-diagram.typ:27:20
+    compute-uc-layout(…)
+  while calling `draw-uc-diagram` at content/chapters/3_requirements/use-case/content/uc-list/_tmp_UC19_avvia_test.typ:10:16
+    utils.draw-uc-diagram(…)

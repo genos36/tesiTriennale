@@ -63,6 +63,6 @@
                 - #utils.uc-link("Visualizza dashboard performance test in corso")
                 - #utils.uc-link("Visualizza dashboard performance test terminato")
         ],
-        immagine: diagram,
+        immagine: utils.image-path(use-case-nome),
         caption: none,
 )
